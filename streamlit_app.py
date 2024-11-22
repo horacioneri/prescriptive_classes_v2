@@ -17,7 +17,7 @@ import zipfile
 
 # Navigation function with forced rerun
 def change_page(delta):
-    st.session_state.page = max(0, min(len(page_title) - 1, st.session_state.page + delta))
+    st.session_state.page = max(0, min(len(page_titles) - 1, st.session_state.page + delta))
     st.session_state.expander_open = False  # Collapse the expander when going to the next page
     st.rerun()  # Force immediate rerun to reflect the updated page state
 
@@ -73,14 +73,14 @@ if current_page == 0:
     if right.button("Next", use_container_width=True, key="next_0"):
         change_page(1)
 
-elif 0 < current_page < len(page_title)-1:
+elif 0 < current_page < len(page_titles)-1:
     left, right = st.columns(2)
     if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
         change_page(-1)
     if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
         change_page(1)
 
-elif current_page == len(page_title)-1:
+elif current_page == len(page_titles)-1:
     left, right = st.columns(2)
     if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
         change_page(-1)
