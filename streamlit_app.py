@@ -186,6 +186,9 @@ if current_page == 2:
                 fig.update_layout(yaxis_title=var)
                 fig.show()
 
+            else:
+                st.write(var_data.value_counts())
+
                 # Bar plot for category distribution
                 fig = px.bar(var_data.value_counts().reset_index(), x='index', y=0, 
                             title=f'Count plot of {var}', labels={'index': var, '0': 'Frequency'})
@@ -197,11 +200,6 @@ if current_page == 2:
                             hole=0.3)
                 fig.update_traces(textinfo='percent+label')
                 fig.show()
-
-            else:
-                st.write(var_data.value_counts())
-
-
 
 
 # Display buttons at the end to navigate between pages
