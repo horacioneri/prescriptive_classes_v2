@@ -7,8 +7,8 @@ from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confus
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from config import page_titles
 from sidebar import sidebar_config
-import altair as alt
-import matplotlib as pl
+import plotly.express as px
+import plotly.graph_objects as go
 import shap
 import time
 import zipfile
@@ -159,12 +159,49 @@ if current_page == 1:
         st.session_state.df_treated = df
 
 if current_page == 2:
-    st.header('Data Loading', divider='rainbow')
     if not st.session_state.treated:
         st.write('Go back to the previous page and reupload your dataset')
     else:
         df = st.session_state.df_treated
-        st.dataframe(df, height = 300)
+        st.header('Single variable analysis', divider='rainbow')
+        col = st.columns(2)
+        for c in range(len(col)):
+            if c = 0:
+                var = st.session_state.var_1
+            else:
+                var = st.session_state.var_2
+
+            st.subheader(var)
+            var_data = df[var]
+            if var_data.dtype in ['int64', 'float64']:
+                st.write(var_data.describe())
+
+                # Visualize the distribution (Histogram with Plotly)
+                fig = px.histogram(var_data, nbins=20, title=f'Distribution of {var}')
+                fig.update_layout(xaxis_title=var, yaxis_title='Frequency')
+                fig.show()
+
+                # Box plot to detect outliers
+                fig = px.box(var_data, title=f'Box plot of {var}')
+                fig.update_layout(yaxis_title=var)
+                fig.show()
+
+                # Bar plot for category distribution
+                fig = px.bar(var_data.value_counts().reset_index(), x='index', y=0, 
+                            title=f'Count plot of {var_name}', labels={'index': var_name, '0': 'Frequency'})
+                fig.show()
+
+                # Pie chart for proportions
+                fig = px.pie(var_data, names=var_data.value_counts().index, 
+                            title=f'Pie chart of {var_name}', 
+                            hole=0.3)
+                fig.update_traces(textinfo='percent+label')
+                fig.show()
+
+            else:
+                st.write(var_data.value_counts())
+
+
 
 
 # Display buttons at the end to navigate between pages
