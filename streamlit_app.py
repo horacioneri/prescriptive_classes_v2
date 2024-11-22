@@ -67,6 +67,35 @@ if current_page > 0:
     sidebar_config(current_page)
 
 
+# Display buttons at the end to navigate between pages
+if current_page == 0:
+    left, right = st.columns(2)
+    if right.button("Next", use_container_width=True, key="next_0"):
+        change_page(1)
+
+elif 0 < current_page < len(page_title)-1:
+    left, right = st.columns(2)
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
+        change_page(-1)
+    if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
+        change_page(1)
+
+elif current_page == len(page_title)-1:
+    left, right = st.columns(2)
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
+        change_page(-1)
+# Restart if needed
+else:
+    st.session_state.page = 0
+
+if current_page > 0:
+    if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}"):
+        st.session_state.page = 0
+        st.session_state.uploaded = False
+        st.session_state.df_original = pd.DataFrame()
+        st.session_state.df_treated = pd.DataFrame()
+        st.rerun()
+
 # # Initiate the model building process
 # if uploaded_file: 
 #     with st.status("Running ...", expanded=True) as status:
@@ -333,34 +362,4 @@ if current_page > 0:
 # # Ask for CSV upload if none is detected
 # else:
 #     st.warning('👈 Upload a CSV file or click *"Load example data"* to get started!')
-
-
-# # Display buttons at the end to navigate between pages
-# if current_page == 0:
-#     left, right = st.columns(2)
-#     if right.button("Next", use_container_width=True, key="next_0"):
-#         change_page(1)
-
-# elif 0 < current_page < len(page_title)-1:
-#     left, right = st.columns(2)
-#     if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
-#         change_page(-1)
-#     if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
-#         change_page(1)
-
-# elif current_page == len(page_title)-1:
-#     left, right = st.columns(2)
-#     if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
-#         change_page(-1)
-# # Restart if needed
-# else:
-#     st.session_state.page = 0
-
-# if current_page > 0:
-#     if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}"):
-#         st.session_state.page = 0
-#         st.session_state.uploaded = False
-#         st.session_state.df_original = pd.DataFrame()
-#         st.session_state.df_treated = pd.DataFrame()
-#         st.rerun()
 
