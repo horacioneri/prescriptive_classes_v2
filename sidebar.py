@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 def sidebar_config(i):
     with st.sidebar:
@@ -13,13 +14,12 @@ def sidebar_config(i):
                 df = st.session_state.df_original
 
             #Revise in the end
-            gam_data = st.toggle('Export Predictions')
-            if gam_data is True:
-                gam_file = st.file_uploader("Upload the data to predict", type=["csv"])
-                if gam_file is not None:
-                    df_gam = pd.read_csv(gam_file, sep=';', index_col=False)
+            #gam_data = st.toggle('Export Predictions')
+            #if gam_data is True:
+            #    gam_file = st.file_uploader("Upload the data to predict", type=["csv"])
+            #    if gam_file is not None:
+            #        df_gam = pd.read_csv(gam_file, sep=';', index_col=False)
 
-            # Load data
             st.header('Data preparation')
             st.write('Categorical data')
             categorical_treat = st.selectbox(
