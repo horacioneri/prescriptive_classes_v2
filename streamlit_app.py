@@ -78,14 +78,14 @@ if current_page == 1:
         st.subheader('Treating categorical columns')
         # Identify categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
-        if categorical_treat == 'Remove columns':
+        if st.session_state.categorical_treat == 'Remove columns':
             df = df.drop(columns=categorical_columns)
-        elif categorical_treat == 'Label encoding':
+        elif st.session_state.categorical_treat == 'Label encoding':
             # Apply Label Encoding to each categorical column
             for col in categorical_columns:
                 le = LabelEncoder()
                 df[col] = le.fit_transform(df[col])
-        elif categorical_treat == 'One-hot encoding':
+        elif st.session_state.categorical_treat == 'One-hot encoding':
             # Apply One-hot encoding to each categorical column
             # Initialize the OneHotEncoder
             encoder = OneHotEncoder(sparse=False, drop=None)
@@ -102,7 +102,7 @@ if current_page == 1:
             # Combine with the original DataFrame (excluding the original categorical columns)
             df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
         
-        st.write(f"After applying the method '{categorical_treat}' to the categorical columns, your dataset looks like:")
+        st.write(f"After applying the method '{st.session_state.categorical_treat}' to the categorical columns, your dataset looks like:")
         st.dataframe(df, height = 300)
 
 # Display buttons at the end to navigate between pages
