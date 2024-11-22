@@ -118,9 +118,12 @@ if current_page == 1:
 
         st.subheader('Treating outlier values')
         if st.session_state.outlier_treat != 'Keep as-is':
+            # Find binary variables to exclude from outlier analysis
+            bin_vars = [col for col in df.columns in set(df[col].unique()) == {0, 1}]
+
             # Calculate the first (25th percentile) and third (75th percentile) quartiles
-            Q1 = df.quantile(0.25)
-            Q3 = df.quantile(0.75)
+            Q1 = df.select_dtypes(include=['float64', 'int64']).quantile(0.25)
+            Q3 = df.select_dtypes(include=['float64', 'int64']).quantile(0.75)
 
             # Calculate IQR (Interquartile Range)
             IQR = Q3 - Q1
@@ -129,23 +132,29 @@ if current_page == 1:
             lower_bound = Q1 - 1.5 * IQR
             upper_bound = Q3 + 1.5 * IQR
 
-            if st.session_state.outlier_treat == 'Remove observation':
-                mask = ((df >= lower_bound) & (df <= upper_bound)).all(axis=1)
-                df = df[mask]
-            elif st.session_state.outlier_treat == 'Imputation: mean':
-                for col in df.select_dtypes(include=['float64', 'int64']).columns:
+            # Initialize a mask that will indicate rows to keep (True means keep the row)
+            keep_rows_mask = pd.Series(True, index=df.index)
+
+            # Iterate through each numerical column (excluding one-hot encoded columns) to identify and remove outliers
+            for col in df.select_dtypes(include=['float64', 'int64']).columns:
+                if col not in bin_vars:  # Skip one-hot encoded columns
                     # Identify outliers (values outside the bounds)
                     outliers = (df[col] < lower_bound[col]) | (df[col] > upper_bound[col])
 
-                    # Replace outliers with the mean of the column
-                    df[col] = df[col].where(~outliers, df[col].mean())
-            elif st.session_state.outlier_treat == 'Imputation: median':
-                for col in df.select_dtypes(include=['float64', 'int64']).columns:
-                    # Identify outliers (values outside the bounds)
-                    outliers = (df[col] < lower_bound[col]) | (df[col] > upper_bound[col])
+                    if st.session_state.outlier_treat == 'Remove observation':
+                        # Mark rows with outliers as False in the mask
+                        keep_rows_mask &= ~outliers  # Only keep rows that don't have outliers
 
-                    # Replace outliers with the mean of the column
-                    df[col] = df[col].where(~outliers, df[col].median())
+                        # Return the DataFrame with rows removed that had outliers in any numerical column
+                        df = df[keep_rows_mask]
+                    
+                    elif st.session_state.outlier_treat == 'Imputation: mean':
+                        # Replace outliers with the mean of the column
+                        df[col] = df[col].where(~outliers, df[col].mean())
+
+                    elif st.session_state.outlier_treat == 'Imputation: median':
+                        # Replace outliers with the mean of the column
+                        df[col] = df[col].where(~outliers, df[col].median())
             
         st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
         st.dataframe(df, height = 300)
