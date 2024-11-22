@@ -63,7 +63,7 @@ if current_page == 0:
   st.write('To engage with the app, you will be able to use the sidebar to make choices that will help prepare and train the machine learning model. Some examples of choices are:\n1. Upload a data set\n2. Select the data imputation methods\n3. Adjust the model training and parameters\nYou will be able to go back and forth to understand the impact of different choices on the results')
 
 # Sidebar for accepting input parameters
-if current_page > 0
+if current_page > 0:
     sidebar_config(current_page)
 
 
