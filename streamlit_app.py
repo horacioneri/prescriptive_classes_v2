@@ -119,7 +119,7 @@ if current_page == 1:
         st.subheader('Treating outlier values')
         if st.session_state.outlier_treat != 'Keep as-is':
             # Find binary variables to exclude from outlier analysis
-            bin_vars = [col for col in df.columns in set(df[col].unique()) == {0, 1}]
+            bin_vars = [c for c in df.columns in set(df[c].unique()) == {0, 1}]
 
             # Calculate the first (25th percentile) and third (75th percentile) quartiles
             Q1 = df.select_dtypes(include=['float64', 'int64']).quantile(0.25)
@@ -136,10 +136,10 @@ if current_page == 1:
             keep_rows_mask = pd.Series(True, index=df.index)
 
             # Iterate through each numerical column (excluding one-hot encoded columns) to identify and remove outliers
-            for col in df.select_dtypes(include=['float64', 'int64']).columns:
-                if col not in bin_vars:  # Skip one-hot encoded columns
+            for c in df.select_dtypes(include=['float64', 'int64']).columns:
+                if c not in bin_vars:  # Skip one-hot encoded columns
                     # Identify outliers (values outside the bounds)
-                    outliers = (df[col] < lower_bound[col]) | (df[col] > upper_bound[col])
+                    outliers = (df[c] < lower_bound[c]) | (df[c] > upper_bound[c])
 
                     if st.session_state.outlier_treat == 'Remove observation':
                         # Mark rows with outliers as False in the mask
@@ -150,11 +150,11 @@ if current_page == 1:
                     
                     elif st.session_state.outlier_treat == 'Imputation: mean':
                         # Replace outliers with the mean of the column
-                        df[col] = df[col].where(~outliers, df[col].mean())
+                        df[c] = df[c].where(~outliers, df[c].mean())
 
                     elif st.session_state.outlier_treat == 'Imputation: median':
                         # Replace outliers with the mean of the column
-                        df[col] = df[col].where(~outliers, df[col].median())
+                        df[c] = df[c].where(~outliers, df[c].median())
             
         st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
         st.dataframe(df, height = 300)
