@@ -179,12 +179,23 @@ if current_page == 2:
 
                     # Visualize the distribution (Histogram with Plotly)
                     fig = px.histogram(var_data, nbins=20, title=f'Distribution of {var}')
-                    fig.update_layout(xaxis_title=var, yaxis_title='Frequency')
+                    fig.update_layout(
+                        xaxis_title=var,
+                        yaxis_title='Frequency',
+                        template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                        showlegend=True,
+                        legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
                     st.plotly_chart(fig, use_container_width=True)
 
                     # Box plot to detect outliers
                     fig = px.box(var_data, title=f'Box plot of {var}')
-                    fig.update_layout(yaxis_title=var)
+                    fig.update_layout(
+                        yaxis_title=var,
+                        template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                        showlegend=True,
+                        legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
                     st.plotly_chart(fig, use_container_width=True)
 
                 else:
@@ -193,6 +204,11 @@ if current_page == 2:
                     # Bar plot for category distribution
                     fig = px.bar(var_data.value_counts().reset_index(), x='index', y=0, 
                                 title=f'Count plot of {var}', labels={'index': var, '0': 'Frequency'})
+                    fig.update_layout(
+                        template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                        showlegend=True,
+                        legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
                     st.plotly_chart(fig, use_container_width=True)
 
                     # Pie chart for proportions
@@ -200,6 +216,11 @@ if current_page == 2:
                                 title=f'Pie chart of {var}', 
                                 hole=0.3)
                     fig.update_traces(textinfo='percent+label')
+                    fig.update_layout(
+                        template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                        showlegend=True,
+                        legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
                     st.plotly_chart(fig, use_container_width=True)
 
 
