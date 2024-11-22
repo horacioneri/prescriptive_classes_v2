@@ -47,13 +47,13 @@ def sidebar_config(i):
             st.header('Variable selection')
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
-                df_treated.columns
+                st.session_state.df_treated.columns
             )
             st.session_state.var_1 = var_1
 
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
-                df_treated.columns
+                st.session_state.df_treated.columns
             )
             st.session_state.var_2 = var_2
 
