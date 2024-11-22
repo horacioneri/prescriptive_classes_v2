@@ -119,7 +119,7 @@ if current_page == 1:
         st.subheader('Treating outlier values')
         if st.session_state.outlier_treat != 'Keep as-is':
             # Find binary variables to exclude from outlier analysis
-            bin_vars = [c for c in df.columns in set(df[c].unique()) == {0, 1}]
+            bin_vars = [c for c in df.columns if set(df[c].unique()) == {0, 1}]
 
             # Calculate the first (25th percentile) and third (75th percentile) quartiles
             Q1 = df.select_dtypes(include=['float64', 'int64']).quantile(0.25)
