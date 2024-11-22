@@ -40,7 +40,7 @@ current_page = st.session_state.page
 st.set_page_config(page_title='Building a ML model', page_icon='', layout = 'wide')
 
 # Display LTP logo
-st.image(image= "images/Asset 6.png", caption = "Powered by", width = 100, use_container_width = False)
+st.image(image= "images/Asset 6.png", caption = "Powered by", width = 100)
 
 if current_page > 0:
     if st.button("Restart", use_container_width=True, key=f"top_restart_{current_page}"):
