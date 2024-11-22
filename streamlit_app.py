@@ -72,6 +72,7 @@ if current_page == 1:
         st.write('Upload a dataset on the sidebar')
     else:
         st.write('This is your dataset:')
+        df = st.session_state.df_original
         st.dataframe(df)
 
 

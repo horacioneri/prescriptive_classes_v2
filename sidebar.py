@@ -11,7 +11,6 @@ def sidebar_config(i):
             if uploaded_file is not None:
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=';', index_col=False)
-                df = st.session_state.df_original
 
             #Revise in the end
             #gam_data = st.toggle('Export Predictions')
