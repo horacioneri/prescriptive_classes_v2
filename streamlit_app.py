@@ -66,6 +66,14 @@ if current_page == 0:
 if current_page > 0:
     sidebar_config(current_page)
 
+if current_page == 1:
+    st.header('Data Loading', divider='rainbow')
+        if not st.session_state.uploaded:
+            st.write('Upload a dataset on the sidebar')
+        else:
+            st.write('This is your dataset:')
+            st.dataframe(df)
+
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:
