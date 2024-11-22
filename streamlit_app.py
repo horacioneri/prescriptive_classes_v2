@@ -74,7 +74,7 @@ if current_page == 1:
         st.dataframe(df, height = 300)
         st.write('The last column of the dataset will be considered your target variable')
         
-        st.header('Data Loading', divider='rainbow')
+        st.header('Data preparation', divider='rainbow')
         st.subheader('Treating categorical columns')
         # Identify categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
@@ -103,6 +103,51 @@ if current_page == 1:
             df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
         
         st.write(f"After applying the method '{st.session_state.categorical_treat}' to the categorical columns, your dataset looks like:")
+        st.dataframe(df, height = 300)
+
+        st.subheader('Treating missing values')
+        if st.session_state.missing_treat == 'Remove observation':
+            df = df.dropna()
+        elif st.session_state.missing_treat == 'Imputation: mean':
+            df = df.fillna(df.mean())
+        elif st.session_state.missing_treat == 'Imputation: median':
+            df = df.fillna(df.median())
+
+        st.write(f"After applying the method '{st.session_state.missing_treat}' to the missing values, your dataset looks like:")
+        st.dataframe(df, height = 300)
+
+        st.subheader('Treating outlier values')
+        if st.session_state.outlier_treat != 'Keep as-is':
+            # Calculate the first (25th percentile) and third (75th percentile) quartiles
+            Q1 = df.quantile(0.25)
+            Q3 = df.quantile(0.75)
+
+            # Calculate IQR (Interquartile Range)
+            IQR = Q3 - Q1
+
+            # Determine the lower and upper bounds for each column
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+
+            if st.session_state.outlier_treat == 'Remove observation':
+                mask = ((df >= lower_bound) & (df <= upper_bound)).all(axis=1)
+                df = df[mask]
+            elif st.session_state.outlier_treat == 'Imputation: mean':
+                for col in df.select_dtypes(include=['float64', 'int64']).columns:
+                    # Identify outliers (values outside the bounds)
+                    outliers = (df[col] < lower_bound[col]) | (df[col] > upper_bound[col])
+
+                    # Replace outliers with the mean of the column
+                    df[col] = df[col].where(~outliers, df[col].mean())
+            elif st.session_state.outlier_treat == 'Imputation: median':
+                for col in df.select_dtypes(include=['float64', 'int64']).columns:
+                    # Identify outliers (values outside the bounds)
+                    outliers = (df[col] < lower_bound[col]) | (df[col] > upper_bound[col])
+
+                    # Replace outliers with the mean of the column
+                    df[col] = df[col].where(~outliers, df[col].median())
+            
+        st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
         st.dataframe(df, height = 300)
 
 # Display buttons at the end to navigate between pages
