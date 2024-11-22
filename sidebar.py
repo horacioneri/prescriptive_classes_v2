@@ -25,19 +25,22 @@ def sidebar_config(i):
                 'How to treat categorical data:',
                 ['Remove columns', 'Label encoding', 'One-hot encoding'] #Add target encoding in the future
             )
+            st.session_state.categorical_treat = categorical_treat
 
             st.write('Missing values treatment')
             missing_treat = st.selectbox(
                 'How to treat missing values:',
                 ['Remove observation', 'Imputation: mean', 'Imputation: median'] 
             )
+            st.session_state.missing_treat = missing_treat
 
             #Add option of how to find outliers
             st.write('Outlier treatment')
-            missing_treat = st.selectbox(
+            outlier_treat = st.selectbox(
                 'How to treat outlier values:',
                 ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'] 
             )
+            st.session_state.outlier_treat = outlier_treat
         
         elif i == 2:
             # Select variables to analyze in detail
@@ -46,19 +49,23 @@ def sidebar_config(i):
                 'Select a variable to analyze in detail:',
                 df_treated.columns
             )
+            st.session_state.var_1 = var_1
 
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
                 df_treated.columns
             )
+            st.session_state.var_2 = var_2
 
         elif i == 3:
 
             st.header('Problem Type')
             problem_type = st.sidebar.radio('Choose model type:', ['Regression', 'Classification'])
+            st.session_state.problem_type = problem_type
 
             st.header('Training Parameters')
             parameter_split_size = st.slider('Data split ratio (% for Training Set)', 10, 90, 80, 5)
+            st.session_state.parameter_split_size = parameter_split_size
 
             st.header('Model Parameters')
             st.subheader('Problem Type')
@@ -68,9 +75,10 @@ def sidebar_config(i):
                 model_to_use = st.sidebar.radio('Choose model type:', ['Linear regression', 'Random forest', 'Gradiant boosting machines'])
             else:
                 model_to_use = st.sidebar.radio('Choose model type:', ['Logistic regression', 'Random forest', 'Gradiant boosting machines'])
+            st.session_state.model_to_use = model_to_use
 
             st.header('Learning Parameters')
-            parameter_n_estimators = st.slider('Number of estimators (n_estimators)', 5, 50, 5, 5)
+            st.session_state.parameter_n_estimators = st.slider('Number of estimators (n_estimators)', 5, 50, 5, 5)
             #parameter_max_features = st.select_slider('Max features (max_features)', options=['all', 'sqrt', 'log2'])
             #parameter_min_samples_split = st.slider('Minimum number of samples required to split an internal node (min_samples_split)', 2, 10, 2, 1)
             #parameter_min_samples_leaf = st.slider('Minimum number of samples required to be at a leaf node (min_samples_leaf)', 1, 10, 2, 1)
@@ -80,7 +88,8 @@ def sidebar_config(i):
                 parameter_criterion = st.select_slider('Performance measure (criterion)', options=['squared_error', 'absolute_error', 'poisson', 'firedman_mse', ])
             else:
                 parameter_criterion = st.select_slider('Performance measure (criterion)', options=['gini', 'entropy', 'log_loss'])
-            parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
+            st.session_state.parameter_criterion = parameter_criterion
+            st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
             #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
             #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
 
@@ -88,14 +97,14 @@ def sidebar_config(i):
             st.header('Result Parameters')
             st.subheader('Metric analysis')
             if problem_type == 'Regression':
-                me_analysis = st.sidebar.radio('Compare Mean Error:', ['Yes', 'No'])
-                mse_analysis = st.sidebar.radio('Compare Mean Square Error:', ['Yes', 'No'])
-                mape_analysis = st.sidebar.radio('Compare Mean Absolute Percentual Error:', ['Yes', 'No'])
+                st.session_stateme_analysis = st.sidebar.radio('Compare Mean Error:', ['Yes', 'No'])
+                st.session_statemse_analysis = st.sidebar.radio('Compare Mean Square Error:', ['Yes', 'No'])
+                st.session_statemape_analysis = st.sidebar.radio('Compare Mean Absolute Percentual Error:', ['Yes', 'No'])
             else:
-                conf_analysis = st.sidebar.radio('Analyze confusion matrix:', ['Yes', 'No'])
-                accuracy_analysis = st.sidebar.radio('Compare accuracy:', ['Yes', 'No'])
-                precision_analysis = st.sidebar.radio('Compare precision:', ['Yes', 'No'])
-                recall_analysis = st.sidebar.radio('Compare recall:', ['Yes', 'No'])
+                st.session_stateconf_analysis = st.sidebar.radio('Analyze confusion matrix:', ['Yes', 'No'])
+                st.session_stateaccuracy_analysis = st.sidebar.radio('Compare accuracy:', ['Yes', 'No'])
+                st.session_stateprecision_analysis = st.sidebar.radio('Compare precision:', ['Yes', 'No'])
+                st.session_staterecall_analysis = st.sidebar.radio('Compare recall:', ['Yes', 'No'])
         
         elif i == 5:
             st.header('Model interpretation')

@@ -75,7 +75,7 @@ if current_page == 1:
         st.write('The last column of the dataset will be considered your target variable')
         
         st.header('Data Loading', divider='rainbow')
-        st.subheader('Treating categorical columns', divider='rainbow')
+        st.subheader('Treating categorical columns')
         # Identify categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
         if categorical_treat == 'Remove columns':
