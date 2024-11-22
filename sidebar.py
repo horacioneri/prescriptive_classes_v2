@@ -53,7 +53,7 @@ def sidebar_config(i):
                 df_treated.columns
             )
 
-        elif i == 3
+        elif i == 3:
 
             st.header('Problem Type')
             problem_type = st.sidebar.radio('Choose model type:', ['Regression', 'Classification'])
