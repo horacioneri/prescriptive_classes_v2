@@ -73,7 +73,9 @@ if current_page == 1:
     else:
         st.write('This is your dataset:')
         df = st.session_state.df_original
-        st.dataframe(df)
+        st.dataframe(df, height = 300)
+
+
 
 
 # Display buttons at the end to navigate between pages
