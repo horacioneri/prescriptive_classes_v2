@@ -51,7 +51,7 @@ if current_page > 0:
         st.rerun()
 
 # Display title of the page
-st.title(page_title[current_page], anchor='title')
+st.title(page_titles[current_page], anchor='title')
 
 if current_page == 0:
   st.header('**What can this app do?**')
