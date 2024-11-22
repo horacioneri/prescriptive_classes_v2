@@ -188,12 +188,12 @@ if current_page == 2:
 
                 # Bar plot for category distribution
                 fig = px.bar(var_data.value_counts().reset_index(), x='index', y=0, 
-                            title=f'Count plot of {var_name}', labels={'index': var_name, '0': 'Frequency'})
+                            title=f'Count plot of {var}', labels={'index': var, '0': 'Frequency'})
                 fig.show()
 
                 # Pie chart for proportions
                 fig = px.pie(var_data, names=var_data.value_counts().index, 
-                            title=f'Pie chart of {var_name}', 
+                            title=f'Pie chart of {var}', 
                             hole=0.3)
                 fig.update_traces(textinfo='percent+label')
                 fig.show()
