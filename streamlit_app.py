@@ -166,7 +166,7 @@ if current_page == 2:
         st.header('Single variable analysis', divider='rainbow')
         col = st.columns(2)
         for c in range(len(col)):
-            if c = 0:
+            if c == 0:
                 var = st.session_state.var_1
             else:
                 var = st.session_state.var_2
