@@ -26,11 +26,8 @@ if "page" not in st.session_state:
 if "uploaded" not in st.session_state:
     st.session_state.uploaded = False
 
-if "df_original" not in st.session_state:
-    st.session_state.df_original = pd.DataFrame()
-
-if "df_treated" not in st.session_state:
-    st.session_state.df_treated = pd.DataFrame()
+if "treated" not in st.session_state:
+    st.session_state.treated = False
 
 current_page = st.session_state.page
 
@@ -158,6 +155,17 @@ if current_page == 1:
             
         st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
         st.dataframe(df, height = 300)
+        st.session_state.treated = True
+        st.session_state.df_treated = df
+
+if current_page == 2:
+    st.header('Data Loading', divider='rainbow')
+    if not st.session_state.treated:
+        st.write('Go back to the previous page and reupload your dataset')
+    else:
+        df = st.session_state.df_treated
+        st.dataframe(df, height = 300)
+
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:
