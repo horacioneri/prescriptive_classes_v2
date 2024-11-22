@@ -23,7 +23,7 @@ def sidebar_config(i):
             st.write('Categorical data')
             categorical_treat = st.selectbox(
                 'How to treat categorical data:',
-                ['Remove column', 'Label encoding', 'One-hot encoding'] #Add target encoding in the future
+                ['Remove columns', 'Label encoding', 'One-hot encoding'] #Add target encoding in the future
             )
 
             st.write('Missing values treatment')

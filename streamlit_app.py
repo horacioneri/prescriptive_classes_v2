@@ -2,11 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from config import page_titles
 from sidebar import sidebar_config
 import altair as alt
@@ -74,9 +72,38 @@ if current_page == 1:
         st.write('This is your dataset:')
         df = st.session_state.df_original
         st.dataframe(df, height = 300)
+        st.write('The last column of the dataset will be considered your target variable')
+        
+        st.header('Data Loading', divider='rainbow')
+        st.subheader('Treating categorical columns', divider='rainbow')
+        # Identify categorical columns
+        categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+        if categorical_treat == 'Remove columns':
+            df = df.drop(columns=categorical_columns)
+        elif categorical_treat == 'Label encoding':
+            # Apply Label Encoding to each categorical column
+            for col in categorical_columns:
+                le = LabelEncoder()
+                df[col] = le.fit_transform(df[col])
+        elif categorical_treat == 'One-hot encoding':
+            # Apply One-hot encoding to each categorical column
+            # Initialize the OneHotEncoder
+            encoder = OneHotEncoder(sparse=False, drop=None)
 
+            # Apply one-hot encoding
+            encoded_data = encoder.fit_transform(df[categorical_columns])
 
+            # Create a DataFrame for the encoded columns
+            encoded_df = pd.DataFrame(
+                encoded_data,
+                columns=encoder.get_feature_names_out(categorical_columns)
+            )
 
+            # Combine with the original DataFrame (excluding the original categorical columns)
+            df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
+        
+        st.write(f"After applying the method '{categorical_treat}' to the categorical columns, your dataset looks like:")
+        st.dataframe(df, height = 300)
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:
