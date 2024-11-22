@@ -88,7 +88,7 @@ if current_page == 1:
         elif st.session_state.categorical_treat == 'One-hot encoding':
             # Apply One-hot encoding to each categorical column
             # Initialize the OneHotEncoder
-            encoder = OneHotEncoder(sparse=False, drop=None)
+            encoder = OneHotEncoder(sparse_output=False, drop=None)
 
             # Apply one-hot encoding
             encoded_data = encoder.fit_transform(df[categorical_columns])
