@@ -198,6 +198,19 @@ if current_page == 1:
                         legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
                     )
             st.plotly_chart(fig, use_container_width=True)
+        
+        # Case 4: Same as 2 but the other way around
+        else:
+            # Box plot
+            fig = px.box(df, x=var_name1, y=var_name2, title=f"Box plot of {var_name2} by {var_name1}")
+            fig.update_layout(
+                        xaxis_title=var_name2, 
+                        yaxis_title=var_name1,
+                        template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                        showlegend=True,
+                        legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                    )
+            st.plotly_chart(fig, use_container_width=True)
 
         st.header('Correlation analysis', divider='rainbow')
         # Select only numeric columns
@@ -208,32 +221,50 @@ if current_page == 1:
         
         # Plot the heatmap
         fig = go.Figure(data=go.Heatmap(
-            z=corr_matrix.values, 
-            x=corr_matrix.columns, 
-            y=corr_matrix.columns, 
-            colorscale='Viridis', 
-            colorbar=dict(title="Correlation Coefficient"),
+            z=corr_matrix.values,
+            x=corr_matrix.columns,
+            y=corr_matrix.columns,
+            colorscale='RdBu',  # Seaborn-like diverging colorscale
+            colorbar=dict(title="Correlation Coefficient", ticksuffix="", outlinewidth=0),
             zmin=-1, zmax=1
         ))
-        
+
         # Add correlation coefficients as text annotations
-        fig.update_traces(text=corr_matrix.round(2).values, 
-                        hoverinfo='text', 
-                        texttemplate="%{text}", 
-                        showscale=True)
+        fig.update_traces(
+            text=corr_matrix.round(2).values,
+            texttemplate="%{text}",  # Format annotations
+            textfont=dict(size=10),  # Smaller text to avoid clutter
+            hoverinfo='text'
+        )
 
         # Update layout
         fig.update_layout(
-            title="Correlation Matrix of Numeric Variables",
-            xaxis_title="Variables",
-            yaxis_title="Variables",
-            xaxis=dict(tickangle=45),
-            yaxis=dict(tickangle=45)
+            title=dict(
+                text="Correlation Matrix of Numeric Variables",
+                x=0.5,  # Center the title
+                xanchor='center'
+            ),
+            xaxis=dict(
+                tickangle=45,
+                showgrid=False,  # No gridlines
+                zeroline=False,
+                showticklabels=True
+            ),
+            yaxis=dict(
+                tickangle=0,
+                showgrid=False,  # No gridlines
+                zeroline=False,
+                showticklabels=True
+            ),
+            font=dict(
+                family="Arial",  # Similar to Seaborn's default
+                size=12
+            ),
+            template="seaborn"  # Use the built-in "seaborn" template
         )
-        
+
         # Show the plot
         st.plotly_chart(fig, use_container_width=True)
-
 
 if current_page == 2:
     if not st.session_state.uploaded:
