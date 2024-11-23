@@ -84,9 +84,9 @@ def sidebar_config(i):
 
             st.header('Other Parameters')
             if problem_type == 'Regression':
-                parameter_criterion = st.select_slider('Performance measure (criterion)', options=['squared_error', 'absolute_error', 'poisson', 'firedman_mse', ])
+                parameter_criterion = st.sidebar.radio('Performance measure (criterion)', ['squared_error', 'absolute_error', 'poisson', 'firedman_mse', ])
             else:
-                parameter_criterion = st.select_slider('Performance measure (criterion)', options=['gini', 'entropy', 'log_loss'])
+                parameter_criterion = st.sidebar.radio('Performance measure (criterion)', ['gini', 'entropy', 'log_loss'])
             st.session_state.parameter_criterion = parameter_criterion
             st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
             #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
