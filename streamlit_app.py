@@ -241,8 +241,8 @@ if current_page == 1:
         fig.update_layout(
             title=dict(
                 text="Correlation Matrix of Numeric Variables",
-                x=0.5,  # Center the title
-                xanchor='center'
+                x=0,  # Left align the title
+                xanchor='left'
             ),
             xaxis=dict(
                 tickangle=45,
