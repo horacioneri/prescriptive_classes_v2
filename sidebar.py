@@ -3,7 +3,7 @@ import pandas as pd
 
 def sidebar_config(i):
     with st.sidebar:
-        if i == 1:
+        if i == 0:
             # Load data
             st.header('Input data')
 
@@ -19,6 +19,22 @@ def sidebar_config(i):
             #    if gam_file is not None:
             #        df_gam = pd.read_csv(gam_file, sep=';', index_col=False)
 
+        elif i == 1:
+            # Select variables to analyze in detail
+            st.header('Variable selection')
+            var_1 = st.selectbox(
+                'Select a variable to analyze in detail:',
+                st.session_state.df_treated.columns
+            )
+            st.session_state.var_1 = var_1
+
+            var_2 = st.selectbox(
+                'Select a second variable to analyze in detail:',
+                list(set(st.session_state.df_treated.columns) - {var_1})
+            )
+            st.session_state.var_2 = var_2
+
+        elif i == 2:
             st.header('Data preparation')
             st.write('Categorical data')
             categorical_treat = st.selectbox(
@@ -41,21 +57,6 @@ def sidebar_config(i):
                 ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'] 
             )
             st.session_state.outlier_treat = outlier_treat
-        
-        elif i == 2:
-            # Select variables to analyze in detail
-            st.header('Variable selection')
-            var_1 = st.selectbox(
-                'Select a variable to analyze in detail:',
-                st.session_state.df_treated.columns
-            )
-            st.session_state.var_1 = var_1
-
-            var_2 = st.selectbox(
-                'Select a second variable to analyze in detail:',
-                st.session_state.df_treated.columns
-            )
-            st.session_state.var_2 = var_2
 
         elif i == 3:
 

@@ -48,20 +48,18 @@ if current_page > 0:
 # Display title of the page
 st.title(page_titles[current_page], anchor='title')
 
+# Sidebar for accepting input parameters
+sidebar_config(current_page)
+
 if current_page == 0:
-  st.header('**What can this app do?**')
-  st.write('This app allow users to build a machine learning (ML) model with an end-to-end workflow simple steps:\n')
-  for i in range(len(page_titles)-1):
+    st.header('**What can this app do?**')
+    st.write('This app allow users to build a machine learning (ML) model with an end-to-end workflow simple steps:\n')
+    for i in range(len(page_titles)-1):
     st.write(f'- {page_titles[i+1]}\n')
 
-  st.header('**How to use the app?**')
-  st.write('To engage with the app, you will be able to use the sidebar to make choices that will help prepare and train the machine learning model. Some examples of choices are:\n1. Upload a data set\n2. Select the data imputation methods\n3. Adjust the model training and parameters\nYou will be able to go back and forth to understand the impact of different choices on the results')
+    st.header('**How to use the app?**')
+    st.write('To engage with the app, you will be able to use the sidebar to make choices that will help prepare and train the machine learning model. Some examples of choices are:\n1. Upload a data set\n2. Select the data imputation methods\n3. Adjust the model training and parameters\nYou will be able to go back and forth to understand the impact of different choices on the results')
 
-# Sidebar for accepting input parameters
-if current_page > 0:
-    sidebar_config(current_page)
-
-if current_page == 1:
     st.header('Data Loading', divider='rainbow')
     if not st.session_state.uploaded:
         st.write('Upload a dataset on the sidebar')
@@ -70,99 +68,12 @@ if current_page == 1:
         df = st.session_state.df_original
         st.dataframe(df, height = 300)
         st.write('The last column of the dataset will be considered your target variable')
-        
-        st.header('Data preparation', divider='rainbow')
-        st.subheader('Treating categorical columns')
-        # Identify categorical columns
-        categorical_columns = df.select_dtypes(include=['object', 'category']).columns
-        if st.session_state.categorical_treat == 'Remove columns':
-            df = df.drop(columns=categorical_columns)
-        elif st.session_state.categorical_treat == 'Label encoding':
-            # Apply Label Encoding to each categorical column
-            for col in categorical_columns:
-                le = LabelEncoder()
-                df[col] = le.fit_transform(df[col])
-        elif st.session_state.categorical_treat == 'One-hot encoding':
-            # Apply One-hot encoding to each categorical column
-            # Initialize the OneHotEncoder
-            encoder = OneHotEncoder(sparse_output=False, drop=None)
 
-            # Apply one-hot encoding
-            encoded_data = encoder.fit_transform(df[categorical_columns])
-
-            # Create a DataFrame for the encoded columns
-            encoded_df = pd.DataFrame(
-                encoded_data,
-                columns=encoder.get_feature_names_out(categorical_columns)
-            )
-
-            # Combine with the original DataFrame (excluding the original categorical columns)
-            df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
-        
-        st.write(f"After applying the method '{st.session_state.categorical_treat}' to the categorical columns, your dataset looks like:")
-        st.dataframe(df, height = 300)
-
-        st.subheader('Treating missing values')
-        if st.session_state.missing_treat == 'Remove observation':
-            df = df.dropna()
-        elif st.session_state.missing_treat == 'Imputation: mean':
-            df = df.fillna(df.mean())
-        elif st.session_state.missing_treat == 'Imputation: median':
-            df = df.fillna(df.median())
-
-        st.write(f"After applying the method '{st.session_state.missing_treat}' to the missing values, your dataset looks like:")
-        st.dataframe(df, height = 300)
-
-        st.subheader('Treating outlier values')
-        if st.session_state.outlier_treat != 'Keep as-is':
-            # Find binary variables to exclude from outlier analysis
-            bin_vars = [c for c in df.columns if set(df[c].unique()) == {0, 1}]
-
-            # Calculate the first (25th percentile) and third (75th percentile) quartiles
-            Q1 = df.select_dtypes(include=['float64', 'int64']).quantile(0.25)
-            Q3 = df.select_dtypes(include=['float64', 'int64']).quantile(0.75)
-
-            # Calculate IQR (Interquartile Range)
-            IQR = Q3 - Q1
-
-            # Determine the lower and upper bounds for each column
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
-
-            # Initialize a mask that will indicate rows to keep (True means keep the row)
-            keep_rows_mask = pd.Series(True, index=df.index)
-
-            # Iterate through each numerical column (excluding one-hot encoded columns) to identify and remove outliers
-            for c in df.select_dtypes(include=['float64', 'int64']).columns:
-                if c not in bin_vars:  # Skip one-hot encoded columns
-                    # Identify outliers (values outside the bounds)
-                    outliers = (df[c] < lower_bound[c]) | (df[c] > upper_bound[c])
-
-                    if st.session_state.outlier_treat == 'Remove observation':
-                        # Mark rows with outliers as False in the mask
-                        keep_rows_mask &= ~outliers  # Only keep rows that don't have outliers
-
-                        # Return the DataFrame with rows removed that had outliers in any numerical column
-                        df = df[keep_rows_mask]
-                    
-                    elif st.session_state.outlier_treat == 'Imputation: mean':
-                        # Replace outliers with the mean of the column
-                        df[c] = df[c].where(~outliers, df[c].mean())
-
-                    elif st.session_state.outlier_treat == 'Imputation: median':
-                        # Replace outliers with the mean of the column
-                        df[c] = df[c].where(~outliers, df[c].median())
-            
-        st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
-        st.dataframe(df, height = 300)
-        st.session_state.treated = True
-        st.session_state.df_treated = df
-
-if current_page == 2:
-    if not st.session_state.treated:
+if current_page == 1:
+    if not st.session_state.uploaded:
         st.write('Go back to the previous page and reupload your dataset')
     else:
-        df = st.session_state.df_treated
+        df = st.session_state.df_original
         st.header('Single variable analysis', divider='rainbow')
         col = st.columns(2)
         for c in range(len(col)):
@@ -321,6 +232,103 @@ if current_page == 2:
         # Show the plot
         st.plotly_chart(fig, use_container_width=True)
 
+
+if current_page == 2:
+    if not st.session_state.uploaded:
+        st.write('Go back to the beginning and reupload your dataset')
+    else:
+        st.header('Data preparation', divider='rainbow')
+        st.subheader('Treating categorical columns')
+        # Identify categorical columns
+        categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+        if st.session_state.categorical_treat == 'Remove columns':
+            df = df.drop(columns=categorical_columns)
+        elif st.session_state.categorical_treat == 'Label encoding':
+            # Apply Label Encoding to each categorical column
+            for col in categorical_columns:
+                le = LabelEncoder()
+                df[col] = le.fit_transform(df[col])
+        elif st.session_state.categorical_treat == 'One-hot encoding':
+            # Apply One-hot encoding to each categorical column
+            # Initialize the OneHotEncoder
+            encoder = OneHotEncoder(sparse_output=False, drop=None)
+
+            # Apply one-hot encoding
+            encoded_data = encoder.fit_transform(df[categorical_columns])
+
+            # Create a DataFrame for the encoded columns
+            encoded_df = pd.DataFrame(
+                encoded_data,
+                columns=encoder.get_feature_names_out(categorical_columns)
+            )
+
+            # Combine with the original DataFrame (excluding the original categorical columns)
+            df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
+        
+        st.write(f"After applying the method '{st.session_state.categorical_treat}' to the categorical columns, your dataset looks like:")
+        st.dataframe(df, height = 300)
+
+        st.subheader('Treating missing values')
+        if st.session_state.missing_treat == 'Remove observation':
+            df = df.dropna()
+        elif st.session_state.missing_treat == 'Imputation: mean':
+            df = df.fillna(df.mean())
+        elif st.session_state.missing_treat == 'Imputation: median':
+            df = df.fillna(df.median())
+
+        st.write(f"After applying the method '{st.session_state.missing_treat}' to the missing values, your dataset looks like:")
+        st.dataframe(df, height = 300)
+
+        st.subheader('Treating outlier values')
+        if st.session_state.outlier_treat != 'Keep as-is':
+            # Find binary variables to exclude from outlier analysis
+            bin_vars = [c for c in df.columns if set(df[c].unique()) == {0, 1}]
+
+            # Calculate the first (25th percentile) and third (75th percentile) quartiles
+            Q1 = df.select_dtypes(include=['float64', 'int64']).quantile(0.25)
+            Q3 = df.select_dtypes(include=['float64', 'int64']).quantile(0.75)
+
+            # Calculate IQR (Interquartile Range)
+            IQR = Q3 - Q1
+
+            # Determine the lower and upper bounds for each column
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+
+            # Initialize a mask that will indicate rows to keep (True means keep the row)
+            keep_rows_mask = pd.Series(True, index=df.index)
+
+            # Iterate through each numerical column (excluding one-hot encoded columns) to identify and remove outliers
+            for c in df.select_dtypes(include=['float64', 'int64']).columns:
+                if c not in bin_vars:  # Skip one-hot encoded columns
+                    # Identify outliers (values outside the bounds)
+                    outliers = (df[c] < lower_bound[c]) | (df[c] > upper_bound[c])
+
+                    if st.session_state.outlier_treat == 'Remove observation':
+                        # Mark rows with outliers as False in the mask
+                        keep_rows_mask &= ~outliers  # Only keep rows that don't have outliers
+
+                        # Return the DataFrame with rows removed that had outliers in any numerical column
+                        df = df[keep_rows_mask]
+                    
+                    elif st.session_state.outlier_treat == 'Imputation: mean':
+                        # Replace outliers with the mean of the column
+                        df[c] = df[c].where(~outliers, df[c].mean())
+
+                    elif st.session_state.outlier_treat == 'Imputation: median':
+                        # Replace outliers with the mean of the column
+                        df[c] = df[c].where(~outliers, df[c].median())
+            
+        st.write(f"After applying the method '{st.session_state.outlier_treat}' to the outlier values, your dataset looks like:")
+        st.dataframe(df, height = 300)
+        st.session_state.treated = True
+        st.session_state.df_treated = df
+
+if current_page == 3:
+    if not st.session_state.treated:
+        st.write('Go back to the beginning and reupload your dataset')
+    else:
+        df = st.session_state.df_treated
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:

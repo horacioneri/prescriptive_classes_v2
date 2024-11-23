@@ -1,2 +1,2 @@
 
-page_titles = ['Introduction', 'Data preparation', 'Exploratory data analysis', 'Model training', 'Results analysis', 'Results interpretation']
+page_titles = ['Introduction', 'Exploratory data analysis', 'Data preparation', 'Model training', 'Results analysis', 'Results interpretation']
