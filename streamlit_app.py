@@ -272,6 +272,7 @@ if current_page == 2:
     else:
         st.header('Data preparation', divider='rainbow')
         st.subheader('Treating categorical columns')
+        df = st.session_state.df_original
         # Identify categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
         if st.session_state.categorical_treat == 'Remove columns':
