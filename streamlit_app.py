@@ -53,12 +53,14 @@ sidebar_config(current_page)
 
 if current_page == 0:
     st.header('**What can this app do?**')
-    st.write('This app allow users to build a machine learning (ML) model with an end-to-end workflow simple steps:\n')
-    for i in range(len(page_titles)-1):
-    st.write(f'- {page_titles[i+1]}\n')
+    with st.expander('**Click to see explanation**', expanded=False):
+        st.write('This app allow users to build a machine learning (ML) model with an end-to-end workflow simple steps:\n')
+        for i in range(len(page_titles)-1):
+            st.write(f'- {page_titles[i+1]}\n')
 
     st.header('**How to use the app?**')
-    st.write('To engage with the app, you will be able to use the sidebar to make choices that will help prepare and train the machine learning model. Some examples of choices are:\n1. Upload a data set\n2. Select the data imputation methods\n3. Adjust the model training and parameters\nYou will be able to go back and forth to understand the impact of different choices on the results')
+    with st.expander('**Click to see explanation**', expanded=False):
+        st.write('To engage with the app, you will be able to use the sidebar to make choices that will help prepare and train the machine learning model. Some examples of choices are:\n1. Upload a data set\n2. Select the data imputation methods\n3. Adjust the model training and parameters\nYou will be able to go back and forth to understand the impact of different choices on the results')
 
     st.header('Data Loading', divider='rainbow')
     if not st.session_state.uploaded:
