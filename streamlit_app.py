@@ -115,8 +115,8 @@ if current_page == 1:
                     st.write(var_data.value_counts())
 
                     # Bar plot for category distribution
-                    fig = px.bar(var_data.value_counts().reset_index(), x=var, y=0, 
-                                title=f'Count plot of {var}', labels={'index': var, '0': 'Frequency'})
+                    fig = px.bar(var_data.value_counts().reset_index(), x=var, y='count', 
+                                title=f'Count plot of {var}', labels={var: var, 'count': 'Frequency'})
                     fig.update_layout(
                         template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
                         showlegend=True,
