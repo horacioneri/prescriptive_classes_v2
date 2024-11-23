@@ -69,8 +69,6 @@ def sidebar_config(i):
             st.session_state.parameter_split_size = parameter_split_size
 
             st.header('Model Parameters')
-            st.subheader('Problem Type')
-            problem_type = st.sidebar.radio('Choose model type:', ['Regression', 'Classification'])
             st.subheader('Machine learning model')
             if problem_type == 'Regression':
                 model_to_use = st.sidebar.radio('Choose model type:', ['Linear regression', 'Random forest', 'Gradiant boosting machines'])
