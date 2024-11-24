@@ -630,7 +630,7 @@ def model_interpretation():
         shap_values = explainer.shap_values(x_test)
         explanation = explainer(x_test)  # New style
         #shap.summary_plot(shap_values, x_test, show=False)  # Suppress direct output
-        shap.plots.beeswarm(explanation, , max_display=20, show=False)
+        shap.plots.beeswarm(explanation, max_display=20, show=False)
         st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
