@@ -183,7 +183,7 @@ def sidebar_config(i):
         
         elif i == 5:
             st.header('Model interpretation')
-            st.subheard('Analysis parameters')
+            st.subheader('Analysis parameters')
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
                 st.session_state.var_analysis = st.selectbox(
                     'Select a variable to analyze in detail:',
