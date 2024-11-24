@@ -183,7 +183,7 @@ def exploratory_data_analysis():
         y=corr_matrix.columns,
         colorscale='RdBu',  # Seaborn-like diverging colorscale
         colorbar=dict(title="Correlation Coefficient", ticksuffix="", outlinewidth=0),
-        zmin=-1, zmax=1
+        zmin=-1, zmax=1,
         hovertemplate="X: %{x}<br>Y: %{y}<br>Correlation: %{z:.2f}<extra></extra>"
     ))
 
@@ -191,7 +191,7 @@ def exploratory_data_analysis():
     fig.update_traces(
         text=corr_matrix.round(2).values,
         texttemplate="%{text}",  # Format annotations
-        textfont=dict(size=10),  # Smaller text to avoid clutter
+        textfont=dict(size=10)#,  # Smaller text to avoid clutter
         #hoverinfo='text'
     )
 
