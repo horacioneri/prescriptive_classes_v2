@@ -426,11 +426,17 @@ def model_training():
         st.write(f'{y_train.shape[0]} in test')
         st.write(f'{y_train_pred.shape[0]} in pred')
         df_y_train_pred = pd.DataFrame(y_train_pred, columns=['pred'])
+        x_train = x_train.reset_index(drop=True)
+        y_train = y_train.reset_index(drop=True)
+        df_y_train_pred = df_y_train_pred.reset_index(drop=True)
         st.dataframe(pd.concat([x_train, y_train, df_y_train_pred], axis=1), height = 300)
 
     with col[1]:
         st.subheader('Test set')
         df_y_test_pred = pd.DataFrame(y_test_pred, columns=['pred'])
+        x_test = x_test.reset_index(drop=True)
+        y_test = y_test.reset_index(drop=True)
+        df_y_test_pred = df_y_test_pred.reset_index(drop=True)
         st.dataframe(pd.concat([x_test, y_test, df_y_test_pred], axis=1), height = 300)
 
 def result_analysis():
