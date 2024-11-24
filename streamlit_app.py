@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from config import page_titles
 from sidebar import sidebar_config
-from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training
+from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training, result_analysis
 import plotly.express as px
 import plotly.graph_objects as go
 import shap
@@ -25,6 +25,9 @@ if "uploaded" not in st.session_state:
 
 if "treated" not in st.session_state:
     st.session_state.treated = False
+
+if "trained" not in st.session_state:
+    st.session_state.trained = False
 
 current_page = st.session_state.page
 
@@ -65,9 +68,15 @@ if current_page == 2:
 
 if current_page == 3:
     if not st.session_state.treated:
-        st.write('Go back to the beginning and reupload your dataset')
+        st.write('Go back to the previous page and prepare your dataset')
     else:
         model_training()
+
+if current_page == 4:
+    if not st.session_state.treated:
+        st.write('Go back to the previous page and train your model')
+    else:
+        result_analysis()
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:
@@ -97,7 +106,7 @@ if current_page > 0:
         st.session_state.df_original = pd.DataFrame()
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
-#please
+
             
 #         st.write("Evaluating performance metrics ...")
 #         #time.sleep(sleep_time)

@@ -159,7 +159,6 @@ def sidebar_config(i):
                 #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
                 #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
 
-
             st.header('Other Parameters')
             st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
 

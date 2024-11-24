@@ -347,7 +347,7 @@ def model_training():
                 min_samples_leaf=st.session_state.parameter_min_samples_leaf
             )
 
-        elif st.session_state.model_to_use == 'Gradiant boosting machines':
+        elif st.session_state.model_to_use == 'Gradient boosting machines':
             st.write('preparing GradientBoostingRegressor')
             ml_mod = GradientBoostingRegressor(
                 loss=st.session_state.parameter_criterion,
@@ -422,3 +422,14 @@ def model_training():
         df_y_test = pd.DataFrame(y_test, columns=['y'])
         df_y_test_pred = pd.DataFrame(y_test_pred, columns=['pred'])
         st.dataframe(pd.concat([x_test, df_y_test, df_y_test_pred], axis=1), height = 300)
+    
+    st.session_state.trained = True
+    st.session_state.x_train = x_train
+    st.session_state.x_test = x_test
+    st.session_state.y_train = y_train
+    st.session_state.y_test = y_test
+    st.session_state.y_train_pred = y_train_pred
+    st.session_state.y_test_pred = y_test_pred
+    st.session_state.ml_mod = ml_mod
+
+def result_analysis():
