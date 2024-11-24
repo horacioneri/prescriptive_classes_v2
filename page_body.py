@@ -625,6 +625,7 @@ def model_interpretation():
 
         # Partial dependence plots
         st.subheader("Partial Dependence Plots")
+
         fig, ax = plt.subplots(figsize=(10, 6))
-        PartialDependenceDisplay.from_estimator(ml_mod, x_test, st.session_state.var_analysis, ax=ax)
+        PartialDependenceDisplay.from_estimator(ml_mod, x_test, [st.session_state.var_analysis], ax=ax)
         st.pyplot(fig)
