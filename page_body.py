@@ -409,20 +409,6 @@ def model_training():
     y_train_pred = ml_mod.predict(x_train)
     y_test_pred = ml_mod.predict(x_test)
 
-    st.write('Your model has finished training, see below the predictions for the training and tests:')
-    col = st.columns(2)
-    with col[0]:
-        st.subheader('Train set')
-        df_y_train = pd.DataFrame(y_train, columns=['y'])
-        df_y_train_pred = pd.DataFrame(y_train_pred, columns=['pred'])
-        st.dataframe(pd.concat([x_train, y_train, df_y_train_pred], axis=1), height = 300)
-
-    with col[1]:
-        st.subheader('Test set')
-        df_y_test = pd.DataFrame(y_test, columns=['y'])
-        df_y_test_pred = pd.DataFrame(y_test_pred, columns=['pred'])
-        st.dataframe(pd.concat([x_test, y_test, df_y_test_pred], axis=1), height = 300)
-    
     st.session_state.trained = True
     st.session_state.x_train = x_train
     st.session_state.x_test = x_test
@@ -431,6 +417,21 @@ def model_training():
     st.session_state.y_train_pred = y_train_pred
     st.session_state.y_test_pred = y_test_pred
     st.session_state.ml_mod = ml_mod
+
+    st.write('Your model has finished training, see below the predictions for the training and tests:')
+    col = st.columns(2)
+    with col[0]:
+        st.subheader('Train set')
+        st.write(f'{x_train.shape[0]} in train')
+        st.write(f'{y_train.shape[0]} in test')
+        st.write(f'{y_train_pred.shape[0]} in pred')
+        df_y_train_pred = pd.DataFrame(y_train_pred, columns=['pred'])
+        st.dataframe(pd.concat([x_train, y_train, df_y_train_pred], axis=1), height = 300)
+
+    with col[1]:
+        st.subheader('Test set')
+        df_y_test_pred = pd.DataFrame(y_test_pred, columns=['pred'])
+        st.dataframe(pd.concat([x_test, y_test, df_y_test_pred], axis=1), height = 300)
 
 def result_analysis():
     a=1
