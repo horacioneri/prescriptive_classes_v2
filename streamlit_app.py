@@ -106,7 +106,7 @@ if current_page > 0:
         st.session_state.df_original = pd.DataFrame()
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
-#
+
             
 #         st.write("Evaluating performance metrics ...")
 #         #time.sleep(sleep_time)
