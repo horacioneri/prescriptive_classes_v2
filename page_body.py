@@ -9,7 +9,7 @@ from sklearn.utils.class_weight import compute_sample_weight
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, auc, log_loss
 from sklearn.metrics import ConfusionMatrixDisplay
-from sklearn.inspection import PartialDependenceDisplay, permutation_importance
+from sklearn.inspection import PartialDependenceDisplay, permutation_importance, partial_dependence
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import shap
@@ -632,11 +632,23 @@ def model_interpretation():
         st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
-        feature_to_plot = st.session_state.var_analysis  # The feature for PDP selection
+        feature_to_plot = [st.session_state.var_analysis]
+
+        # Compute Partial Dependence
+        pdp_result = partial_dependence(ml_mod, X=x_test, features=feature_to_plot)
+
+        # Extract the grid and average predictions for the feature
+        feature_values = pdp_result['values'][0]
+        average_predictions = pdp_result['average'][0]
+
+        # Plot using Plotly
         fig = go.Figure()
+        fig.add_trace(go.Scatter(x=feature_values, y=average_predictions, mode="lines", name="Partial Dependence"))
 
-        pdp = PartialDependenceDisplay.from_estimator(ml_mod, X=x_test, features=[st.session_state.var_analysis], kind="average")
-        fig.add_trace(go.Scatter(x=pdp.base_lines_[0], y=pdp.average[0], mode="lines", name=feature))
-
-        fig.update_layout(title="Partial Dependence Plot", xaxis_title="Feature Value", yaxis_title="Predicted Outcome", template="seaborn")
+        fig.update_layout(
+            title="Partial Dependence Plot",
+            xaxis_title=f"Feature: {feature_to_plot[0]}",
+            yaxis_title="Predicted Outcome",
+            template="seaborn"
+        )
         st.plotly_chart(fig)
