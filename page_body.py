@@ -316,10 +316,12 @@ def data_preparation():
 
 def model_training():
     df = st.session_state.df_treated
-    x = df[st.session_state.to_predict]
-    y = df[st.session_state.input_variables]
+    y = df[st.session_state.to_predict]
+    x = df[st.session_state.input_variables]
 
-    st.write('to predict:')
-    st.dataframe(y, height = 300)
-    st.write('input:')
-    st.dataframe(x, height = 300)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=(100-st.session_state.parameter_split_size)/100, random_state=st.session_state.parameter_random_state)
+
+    st.dataframe(x_train, height = 300)
+    st.dataframe(x_test, height = 300)
+    st.dataframe(y_train, height = 300)
+    st.dataframe(y_test, height = 300)
