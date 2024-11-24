@@ -442,7 +442,7 @@ def result_analysis():
     st.header('Analysis of result metrics', divider='rainbow')
     
     col = st.columns(2)
-    for c in range(len(col)-1)
+    for c in range(len(col)-1):
     with col[c]:
         if c == 0:
             st.subheader('Train set')
@@ -470,7 +470,7 @@ def result_analysis():
                 evs = explained_variance_score(y, y_pred)
                 st.write(f"Explained Variance Score: {evs:.4f}")
         else:
-            if show_conf_matrix:
+            if st.session_state.conf_analysis:
                 # Calculate the confusion matrix
                 conf_matrix = confusion_matrix(y, y_pred)
                 labels = [f"Class {i}" for i in range(len(conf_matrix))]  # Modify based on your class labels
@@ -505,19 +505,19 @@ def result_analysis():
                 # Display the confusion matrix
                 st.plotly_chart(fig, use_container_width=True)
 
-            if show_accuracy:
+            if st.session_state.accuracy_analysis:
                 acc = accuracy_score(y, y_pred)
                 st.write(f"Accuracy: {acc:.4f}")
-            if show_precision:
+            if st.session_state.precision_analysis:
                 prec = precision_score(y, y_pred, average='weighted')
                 st.write(f"Precision: {prec:.4f}")
-            if show_recall:
+            if st.session_state.recall_analysis:
                 rec = recall_score(y, y_pred, average='weighted')
                 st.write(f"Recall: {rec:.4f}")
-            if show_f1:
+            if st.session_state.f1_analysis:
                 f1 = f1_score(y, y_pred, average='weighted')
                 st.write(f"F1 Score: {f1:.4f}")
-            if show_auc and y_test_prob is not None:
+            if st.session_state.auc_analysis:
                 roc_auc = roc_auc_score(y, y_pred, multi_class='ovr')  # Adjust for multi-class
                 st.write(f"ROC AUC Score: {roc_auc:.4f}")
 
@@ -537,6 +537,6 @@ def result_analysis():
                 )
                 st.plotly_chart(fig, use_container_width=True)
             
-            if show_logloss and y_test_prob is not None:
+            if st.session_state.logloss_analysis:
                 logloss = log_loss(y, y_pred)
                 st.write(f"Log Loss: {logloss:.4f}")
