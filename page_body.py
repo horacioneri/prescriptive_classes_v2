@@ -625,7 +625,6 @@ def model_interpretation():
 
         # Partial dependence plots
         st.subheader("Partial Dependence Plots")
-        top_features = feature_importance.index[:2]  # Select top 2 features
         fig, ax = plt.subplots(figsize=(10, 6))
-        PartialDependenceDisplay.from_estimator(ml_mod, x_test, top_features, ax=ax)
+        PartialDependenceDisplay.from_estimator(ml_mod, x_test, st.session_state.var_analysis, ax=ax)
         st.pyplot(fig)
