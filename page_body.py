@@ -412,12 +412,12 @@ def model_training():
     col = st.columns(2)
     with col[0]:
         st.subheader('Train set')
-        df_y_train = pd.DataFrame(df2, columns=['y'])
-        df_y_train_pred = pd.DataFrame(df3, columns=['pred'])
+        df_y_train = pd.DataFrame(y_train, columns=['y'])
+        df_y_train_pred = pd.DataFrame(y_train_pred, columns=['pred'])
         st.dataframe(pd.concat([x_train, df_y_train, df_y_train_pred], axis=1), height = 300)
 
     with col[1]:
         st.subheader('Test set')
-        df_y_test = pd.DataFrame(df2, columns=['y'])
-        df_y_test_pred = pd.DataFrame(df3, columns=['pred'])
+        df_y_test = pd.DataFrame(y_test, columns=['y'])
+        df_y_test_pred = pd.DataFrame(y_test_pred, columns=['pred'])
         st.dataframe(pd.concat([x_test, df_y_test, df_y_test_pred], axis=1), height = 300)
