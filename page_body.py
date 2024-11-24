@@ -451,7 +451,7 @@ def result_analysis():
                 y_pred = st.session_state.y_train_pred
             else:
                 st.subheader('Test set')
-                y = st.session_state.y_train
+                y = st.session_state.y_test
                 y_pred = st.session_state.y_test_pred
             
             if st.session_state.problem_type == 'Regression':
