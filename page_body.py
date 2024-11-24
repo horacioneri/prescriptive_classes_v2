@@ -605,7 +605,11 @@ def model_interpretation():
         st.subheader("Traditional Feature Importance")
         feature_importance = pd.Series(ml_mod.feature_importances_, index=x_train.columns)
         feature_importance = feature_importance.sort_values(ascending=False)
-        st.bar_chart(feature_importance)
+        
+        # Plot feature importance using Plotly
+        fig = go.Figure([go.Bar(x=feature_importance.index, y=feature_importance.values, marker_color='royalblue')])
+        fig.update_layout(title="Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
+        st.plotly_chart(fig)
 
         # Permutation importance
         st.subheader("Permutation Importance")
@@ -614,7 +618,11 @@ def model_interpretation():
             "Feature": x_train.columns,
             "Importance": perm_importance.importances_mean
         }).sort_values("Importance", ascending=False)
-        st.dataframe(perm_importance_df)
+        
+        # Plot permutation importance using Plotly
+        fig = go.Figure([go.Bar(x=perm_importance_df['Feature'], y=perm_importance_df['Importance'], marker_color='indianred')])
+        fig.update_layout(title="Permutation Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
+        st.plotly_chart(fig)
 
         # SHAP values
         st.subheader("SHAP Values")
@@ -624,7 +632,13 @@ def model_interpretation():
         st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
-        st.subheader("Partial Dependence Plots")
-        fig, ax = plt.subplots(figsize=(10, 6))
-        PartialDependenceDisplay.from_estimator(ml_mod, x_test, [st.session_state.var_analysis], ax=ax)
-        st.pyplot(fig)
+        feature_to_plot = st.session_state.var_analysis  # The feature for PDP selection
+        fig = go.Figure()
+
+        for feature in feature_to_plot:
+            # Compute the partial dependence manually
+            pdp = PartialDependenceDisplay.from_estimator(ml_mod, X=x_test, features=[feature], kind="average")
+            fig.add_trace(go.Scatter(x=pdp.base_lines_[0], y=pdp.average[0], mode="lines", name=feature))
+
+        fig.update_layout(title="Partial Dependence Plot", xaxis_title="Feature Value", yaxis_title="Predicted Outcome", template="seaborn")
+        st.plotly_chart(fig)
