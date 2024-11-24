@@ -402,7 +402,7 @@ def model_training():
 
     if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Gradient boosting machines':
         ml_mod.fit(x_train, y_train, sample_weight=class_weights)
-    else
+    else:
         ml_mod.fit(x_train, y_train)
 
     y_train_pred = ml_mod.predict(x_train)
