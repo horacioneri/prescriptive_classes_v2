@@ -100,8 +100,9 @@ def sidebar_config(i):
             st.session_state.model_to_use = model_to_use
 
             st.subheader('Learning Parameters')
-            if model_to_use == 'Linear regression':
+            #if model_to_use == 'Linear regression':
                 # No additional parameters
+            
             if model_to_use == 'Logistic regression':
                 st.session_state.parameter_penalty = st.sidebar.radio(
                     'Penalty type (penalty)', ['l2', 'none'])
