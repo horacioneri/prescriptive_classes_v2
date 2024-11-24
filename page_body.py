@@ -316,3 +316,10 @@ def data_preparation():
 
 def model_training():
     df = st.session_state.df_treated
+    x = df[st.session_state.to_predict]
+    y = df[st.session_state.input_variables]
+
+    st.write('to predict:')
+    st.dataframe(y, height = 300)
+    st.write('input:')
+    st.dataframe(x, height = 300)
