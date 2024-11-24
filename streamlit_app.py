@@ -98,39 +98,6 @@ if current_page > 0:
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
 
-# # Initiate the model building process
-# if uploaded_file: 
-#     with st.status("Running ...", expanded=True) as status:
-    
-  
-#         st.write("Model training ...")
-#         time.sleep(sleep_time)
-
-#         if parameter_max_features == 'all':
-#             parameter_max_features = None
-#             parameter_max_features_metric = X.shape[1]
-
-#         # Initialize the random forest model
-#         if problem_type == 'Regression': 
-#             rf = RandomForestRegressor(
-#                     n_estimators=parameter_n_estimators,
-#                     max_features=parameter_max_features,
-#                     min_samples_split=parameter_min_samples_split,
-#                     min_samples_leaf=parameter_min_samples_leaf,
-#                     random_state=parameter_random_state,
-#                     criterion=parameter_criterion,
-#                     bootstrap=parameter_bootstrap,
-#                     oob_score=parameter_oob_score)
-#         else:
-#             rf = RandomForestClassifier(n_estimators=parameter_n_estimators, max_features=parameter_max_features, min_samples_split=parameter_min_samples_split, min_samples_leaf=parameter_min_samples_leaf, criterion=parameter_criterion, random_state=parameter_random_state)
-           
-#         # Train the model
-#         rf.fit(X_train, y_train)
-
-#         st.write("Applying model to make predictions ...")
-#         #time.sleep(sleep_time)
-#         y_train_pred = rf.predict(X_train)
-#         y_test_pred = rf.predict(X_test)
             
 #         st.write("Evaluating performance metrics ...")
 #         #time.sleep(sleep_time)
