@@ -447,11 +447,11 @@ def result_analysis():
             if c == 0:
                 st.subheader('Train set')
                 y = st.session_state.y_train
-                y_pred = st.session_state.df_y_train_pred
+                y_pred = st.session_state.y_train_pred
             else:
                 st.subheader('Test set')
                 y = st.session_state.y_train
-                y_pred = st.session_state.df_y_train_pred
+                y_pred = st.session_state.y_test_pred
             
             if st.session_state.problem_type == 'Regression':
                 if st.session_state.mae_analysis:
