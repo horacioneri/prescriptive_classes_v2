@@ -660,7 +660,7 @@ def model_interpretation():
             )
             st.pyplot(bbox_inches="tight")
 
-        elif st.session_state.problem_type == 'Regression':
+        else:
             shap.plots.beeswarm(explanation, max_display=20, show=False)
             st.pyplot(bbox_inches='tight')
 
