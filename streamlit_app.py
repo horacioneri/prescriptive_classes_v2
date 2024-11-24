@@ -5,9 +5,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
-import config
-import sidebar
-import page_body
+from config import page_titles
+from sidebar import sidebar_config
+from page_body import introduction_text
 import plotly.express as px
 import plotly.graph_objects as go
 import shap
