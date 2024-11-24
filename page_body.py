@@ -326,7 +326,7 @@ def model_training():
     st.write(f"Your training set has {rows} observations and {cols} input variables.")
     rows, cols = x_test.shape
     st.write(f"Your test set has {rows} observations and {cols} input variables.")
-    rows, cols = y_train.shape
-    st.write(f"Your training set has {rows} observations and {cols} target variable.")
-    rows, cols = y_test.shape
-    st.write(f"Your test set has {rows} observations and {cols} target variable.")
+    rows = y_train.shape
+    st.write(f"Your training set has {rows} observations and 1 target variable.")
+    rows = y_test.shape
+    st.write(f"Your test set has {rows} observations and 1 target variable.")
