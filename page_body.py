@@ -348,6 +348,7 @@ def model_training():
             )
 
         elif st.session_state.model_to_use == 'Gradient boosting machines':
+            st.write('preparing GradientBoostingRegressor')
             ml_mod = GradientBoostingRegressor(
                 loss=st.session_state.parameter_criterion,
                 n_estimators=st.session_state.parameter_n_estimators,
