@@ -443,7 +443,7 @@ def result_analysis():
     st.header('Analysis of result metrics', divider='rainbow')
     
     col = st.columns(2)
-    for c in range(len(col)-1):
+    for c in range(len(col)):
         with col[c]:
             if c == 0:
                 st.subheader('Train set')
