@@ -608,7 +608,7 @@ def model_interpretation():
 
         # Permutation importance
         st.subheader("Permutation Importance")
-        perm_importance = permutation_importance(ml_mod, x_test, y_test, n_repeats=10, random_state=st.session_state.random_state)
+        perm_importance = permutation_importance(ml_mod, x_test, y_test, n_repeats=10, random_state=st.session_state.parameter_random_state)
         perm_importance_df = pd.DataFrame({
             "Feature": x_train.columns,
             "Importance": perm_importance.importances_mean
