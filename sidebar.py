@@ -94,9 +94,9 @@ def sidebar_config(i):
             st.header('Model Parameters')
             st.subheader('Machine learning model')
             if problem_type == 'Regression':
-                model_to_use = st.sidebar.radio('Choose model:', ['Linear regression', 'Random forest', 'Gradiant boosting machines'])
+                model_to_use = st.sidebar.radio('Choose model:', ['Linear regression', 'Random forest', 'Gradient boosting machines'])
             else:
-                model_to_use = st.sidebar.radio('Choose model:', ['Logistic regression', 'Random forest', 'Gradiant boosting machines'])
+                model_to_use = st.sidebar.radio('Choose model:', ['Logistic regression', 'Random forest', 'Gradient boosting machines'])
             st.session_state.model_to_use = model_to_use
 
             st.subheader('Learning Parameters')

@@ -347,7 +347,7 @@ def model_training():
                 min_samples_leaf=st.session_state.parameter_min_samples_leaf
             )
 
-        elif st.session_state.model_to_use == 'Gradient boosting machines':
+        elif st.session_state.model_to_use == 'Gradiant boosting machines':
             st.write('preparing GradientBoostingRegressor')
             ml_mod = GradientBoostingRegressor(
                 loss=st.session_state.parameter_criterion,
