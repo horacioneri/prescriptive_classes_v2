@@ -3,11 +3,7 @@ import pandas as pd
 import numpy as np
 from config import page_titles
 from sidebar import sidebar_config
-from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training, result_analysis
-import plotly.express as px
-import plotly.graph_objects as go
-import shap
-import time
+from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training, result_analysis, model_interpretation
 import zipfile
 
 # Navigation function with forced rerun
@@ -73,10 +69,16 @@ if current_page == 3:
         model_training()
 
 if current_page == 4:
-    if not st.session_state.treated:
+    if not st.session_state.trained:
         st.write('Go back to the previous page and train your model')
     else:
         result_analysis()
+
+if current_page == 5:
+    if not st.session_state.trained:
+        st.write('Go back to the model training page and train your model')
+    else:
+        model_interpretation()
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:

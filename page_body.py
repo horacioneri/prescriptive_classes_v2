@@ -9,6 +9,9 @@ from sklearn.utils.class_weight import compute_sample_weight
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, auc, log_loss
 from sklearn.metrics import ConfusionMatrixDisplay
+from sklearn.inspection import PartialDependenceDisplay
+import statsmodels.api as sm
+import shap
 import plotly.express as px
 import plotly.graph_objects as go
 from config import page_titles
@@ -541,3 +544,87 @@ def result_analysis():
                 if st.session_state.logloss_analysis:
                     logloss = log_loss(y, y_pred)
                     st.write(f"Log Loss: {logloss:.4f}")
+
+def model_interpretation():
+    
+    x_train = st.session_state.x_train
+    y_train = st.session_state.y_train
+    x_test = st.session_state.x_test
+    y_test = st.session_state.y_test
+    ml_mod = st.session_state.ml_mod
+    
+    if st.session_state.model_to_use == 'Linear regression':
+        st.header("Linear regression analysis", divider='rainbow')
+
+        # Fit statsmodels for additional stats (replace with actual data)
+        x_train_sm = sm.add_constant(x_train)  # Add intercept term
+        ols_model = sm.OLS(y_train, x_train_sm).fit()
+
+        # Intercept and coefficients
+        st.subheader("Coefficients")
+        coeffs_df = pd.DataFrame({
+            "Feature": ["Intercept"] + list(x_train.columns),
+            "Coefficient": [ols_model.params[0]] + list(ols_model.params[1:]),
+            "P-Value": [ols_model.pvalues[0]] + list(ols_model.pvalues[1:]),
+            "95% CI Lower": ols_model.conf_int().iloc[:, 0],
+            "95% CI Upper": ols_model.conf_int().iloc[:, 1]
+        })
+        coeffs_df = coeffs_df.sort_values("Coefficient", key=abs, ascending=False)
+        st.dataframe(coeffs_df)
+
+        # R² and Adjusted R²
+        st.subheader("R² Metrics")
+        st.write(f"R²: {ols_model.rsquared:.4f}")
+        st.write(f"Adjusted R²: {ols_model.rsquared_adj:.4f}")
+
+    elif st.session_state.model_to_use == 'Logistic regression':
+        st.header("Logistic regression analysis", divider='rainbow')
+
+        # Fit statsmodels for additional stats (replace with actual data)
+        x_train_sm = sm.add_constant(x_train)  # Add intercept term
+        logit_model = sm.Logit(y_train, x_train_sm).fit()
+
+        # Coefficients and odds ratios
+        st.subheader("Coefficients and Odds Ratios")
+        coeffs_df = pd.DataFrame({
+            "Feature": ["Intercept"] + list(x_train.columns),
+            "Coefficient": [logit_model.params[0]] + list(logit_model.params[1:]),
+            "Odds Ratio": np.exp([logit_model.params[0]] + list(logit_model.params[1:])),
+            "P-Value": [logit_model.pvalues[0]] + list(logit_model.pvalues[1:]),
+            "95% CI Lower": logit_model.conf_int().iloc[:, 0],
+            "95% CI Upper": logit_model.conf_int().iloc[:, 1]
+        })
+        coeffs_df = coeffs_df.sort_values("Odds Ratio", key=abs, ascending=False)
+        st.dataframe(coeffs_df)
+
+    elif st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
+        st.header("Machine learning model analysis", divider='rainbow')
+
+        # Traditional feature importance
+        st.subheader("Traditional Feature Importance")
+        feature_importance = pd.Series(ml_mod.feature_importances_, index=x_train.columns)
+        feature_importance = feature_importance.sort_values(ascending=False)
+        st.bar_chart(feature_importance)
+
+        # Permutation importance
+        st.subheader("Permutation Importance")
+        perm_importance = permutation_importance(ml_mod, x_test, y_test, n_repeats=10, random_state=st.session_state.random_state)
+        perm_importance_df = pd.DataFrame({
+            "Feature": x_train.columns,
+            "Importance": perm_importance.importances_mean
+        }).sort_values("Importance", ascending=False)
+        st.dataframe(perm_importance_df)
+
+        # SHAP values
+        st.subheader("SHAP Values")
+        explainer = shap.TreeExplainer(ml_mod)
+        shap_values = explainer.shap_values(x_test)
+        shap.summary_plot(shap_values, x_test, show=False)  # Suppress direct output
+        st.pyplot(bbox_inches='tight')
+
+        # Partial dependence plots
+        st.subheader("Partial Dependence Plots")
+        top_features = feature_importance.index[:2]  # Select top 2 features
+        fig, ax = plt.subplots(figsize=(10, 6))
+        PartialDependenceDisplay.from_estimator(ml_mod, x_test, top_features, ax=ax)
+        st.pyplot(fig)
