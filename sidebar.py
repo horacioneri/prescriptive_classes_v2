@@ -73,6 +73,19 @@ def sidebar_config(i):
             problem_type = st.sidebar.radio('Choose problem type:', ['Regression', 'Classification'])
             st.session_state.problem_type = problem_type
 
+            st.header('Variable selection')
+            to_predict = st.selectbox(
+                'Select the variable you want to predict:',
+                st.session_state.df_treated.columns
+            )
+            st.session_state.to_predict = to_predict
+            
+            input_variables = streamlit.multiselect(
+                'Select the input variables you want to use:', 
+                list(set(st.session_state.df_original.columns) - {to_predict})
+            )
+            st.session_state.input_variables = input_variables
+
             st.header('Training Parameters')
             parameter_split_size = st.slider('Data split ratio (% for Training Set)', 10, 90, 80, 5)
             st.session_state.parameter_split_size = parameter_split_size
