@@ -629,9 +629,40 @@ def model_interpretation():
         explainer = shap.TreeExplainer(ml_mod)
         shap_values = explainer.shap_values(x_test)
         explanation = explainer(x_test)  # New style
-        #shap.summary_plot(shap_values, x_test, show=False)  # Suppress direct output
-        shap.plots.beeswarm(explanation, max_display=20, show=False)
-        st.pyplot(bbox_inches='tight')
+
+        # Classification: Handle multi-class SHAP values
+        if st.session_state.problem_type == 'Classification':
+            # Number of classes
+            num_classes = len(explanation.values[0][0])
+            st.write("For classification, select which class to analyze SHAP values.")
+
+            # Interactive class selection
+            class_index = st.selectbox(
+                "Select class to analyze:",
+                options=list(range(num_classes)),
+                format_func=lambda x: f"Class {x}"
+            )
+
+            # Extract SHAP values for the selected class
+            shap_class_values = explanation.values[:, :, class_index]
+
+            # Beeswarm plot for the selected class
+            st.write(f"Beeswarm plot for class {class_index}:")
+            shap.plots.beeswarm(
+                shap.Explanation(
+                    values=shap_class_values,
+                    base_values=explanation.base_values[:, class_index],
+                    data=explanation.data,
+                    feature_names=explanation.feature_names
+                ),
+                max_display=20,
+                show=False
+            )
+            st.pyplot(bbox_inches="tight")
+
+        elif st.session_state.problem_type == 'Regression':
+            shap.plots.beeswarm(explanation, max_display=20, show=False)
+            st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
         feature_to_plot = [st.session_state.var_analysis]
