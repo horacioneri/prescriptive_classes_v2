@@ -631,7 +631,7 @@ def model_interpretation():
         explanation = explainer(x_test)  # New style
 
         # Classification: Handle multi-class SHAP values
-        if st.session_state.problem_type == 'Classification':
+        if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Random forest':
             # Number of classes
             num_classes = len(explanation.values[0][0])
             st.write("For classification, select which class to analyze SHAP values.")
