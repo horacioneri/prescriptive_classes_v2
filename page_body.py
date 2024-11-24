@@ -3,9 +3,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier, GradientBoostingRegressor, GradientBoostingClassifier
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from sklearn.utils.class_weight import compute_sample_weight
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, explained_variance_score
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, roc_curve, auc, log_loss
+from sklearn.metrics import ConfusionMatrixDisplay
 import plotly.express as px
 import plotly.graph_objects as go
 from config import page_titles
@@ -437,4 +439,104 @@ def model_training():
     st.session_state.ml_mod = ml_mod
 
 def result_analysis():
-    a=1
+    st.header('Analysis of result metrics', divider='rainbow')
+    
+    col = st.columns(2)
+    for c in range(len(col)-1)
+    with col[c]:
+        if c == 0:
+            st.subheader('Train set')
+            y = st.session_state.y_train
+            y_pred = st.session_state.df_y_train_pred
+        else:
+            st.subheader('Test set')
+            y = st.session_state.y_train
+            y_pred = st.session_state.df_y_train_pred
+        
+        if st.session_state.problem_type == 'Regression':
+            if st.session_state.mae_analysis:
+                mae = mean_absolute_error(y, y_pred)
+                st.write(f"Mean Absolute Error (MAE): {mae:.4f}")
+            if st.session_state.mse_analysis:
+                mse = mean_squared_error(y, y_pred)
+                st.write(f"Mean Squared Error (MSE): {mse:.4f}")
+            if st.session_state.rmse_analysis:
+                rmse = np.sqrt(mean_squared_error(y, y_pred))
+                st.write(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
+            if st.session_state.r2_analysis:
+                r2 = r2_score(y, y_pred)
+                st.write(f"R² Score: {r2:.4f}")
+            if st.session_state.evs_analysis:
+                evs = explained_variance_score(y, y_pred)
+                st.write(f"Explained Variance Score: {evs:.4f}")
+        else:
+            if show_conf_matrix:
+                # Calculate the confusion matrix
+                conf_matrix = confusion_matrix(y, y_pred)
+                labels = [f"Class {i}" for i in range(len(conf_matrix))]  # Modify based on your class labels
+
+                # Create a heatmap with Plotly
+                fig = go.Figure(
+                    data=go.Heatmap(
+                        z=conf_matrix,
+                        x=labels,
+                        y=labels,
+                        colorscale="Blues",
+                        colorbar=dict(title="Count"),
+                        hoverongaps=False,
+                        text=conf_matrix,  # Annotate the heatmap with counts
+                        texttemplate="%{text}",  # Display values on the heatmap
+                        textfont=dict(size=12)  # Text font size for annotations
+                    )
+                )
+
+                # Update layout for better readability
+                fig.update_layout(
+                    title="Confusion Matrix",
+                    xaxis_title="Predicted Label",
+                    yaxis_title="True Label",
+                    xaxis=dict(tickmode='linear'),
+                    yaxis=dict(tickmode='linear'),
+                    template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                    showlegend=True,
+                    legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                )
+
+                # Display the confusion matrix
+                st.plotly_chart(fig, use_container_width=True)
+
+            if show_accuracy:
+                acc = accuracy_score(y, y_pred)
+                st.write(f"Accuracy: {acc:.4f}")
+            if show_precision:
+                prec = precision_score(y, y_pred, average='weighted')
+                st.write(f"Precision: {prec:.4f}")
+            if show_recall:
+                rec = recall_score(y, y_pred, average='weighted')
+                st.write(f"Recall: {rec:.4f}")
+            if show_f1:
+                f1 = f1_score(y, y_pred, average='weighted')
+                st.write(f"F1 Score: {f1:.4f}")
+            if show_auc and y_test_prob is not None:
+                roc_auc = roc_auc_score(y, y_pred, multi_class='ovr')  # Adjust for multi-class
+                st.write(f"ROC AUC Score: {roc_auc:.4f}")
+
+                fpr, tpr, _ = roc_curve(y_test, y_test_prob)
+                roc_auc = auc(fpr, tpr)
+
+                fig = go.Figure()
+                fig.add_trace(go.Scatter(x=fpr, y=tpr, mode='lines', name=f"ROC Curve (AUC = {roc_auc:.2f})"))
+                fig.add_trace(go.Scatter(x=[0, 1], y=[0, 1], mode='lines', line=dict(dash='dash'), name='Random Guess'))
+                fig.update_layout(
+                    title="ROC Curve", 
+                    xaxis_title="False Positive Rate", 
+                    yaxis_title="True Positive Rate",
+                    template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
+                    showlegend=True,
+                    legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            
+            if show_logloss and y_test_prob is not None:
+                logloss = log_loss(y, y_pred)
+                st.write(f"Log Loss: {logloss:.4f}")

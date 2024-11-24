@@ -166,14 +166,20 @@ def sidebar_config(i):
             st.header('Result Parameters')
             st.subheader('Metric analysis')
             if problem_type == 'Regression':
-                st.session_stateme_analysis = st.sidebar.radio('Compare Mean Error:', ['Yes', 'No'])
-                st.session_statemse_analysis = st.sidebar.radio('Compare Mean Square Error:', ['Yes', 'No'])
-                st.session_statemape_analysis = st.sidebar.radio('Compare Mean Absolute Percentual Error:', ['Yes', 'No'])
+                st.session_state.mae_analysis = st.sidebar.radio('Compare Mean Absolute Error (MAE):', ['Yes', 'No'])
+                st.session_state.mse_analysis = st.sidebar.radio('Compare Mean Squared Error (MSE):', ['Yes', 'No'])
+                st.session_state.rmse_analysis = st.sidebar.radio('Compare Root Mean Squared Error (RMSE):', ['Yes', 'No'])
+                st.session_state.r2_analysis = st.sidebar.radio('Compare R² Score:', ['Yes', 'No'])
+                st.session_state.evs_analysis = st.sidebar.radio('Compare Explained Variance Score:', ['Yes', 'No'])
+
             else:
-                st.session_stateconf_analysis = st.sidebar.radio('Analyze confusion matrix:', ['Yes', 'No'])
-                st.session_stateaccuracy_analysis = st.sidebar.radio('Compare accuracy:', ['Yes', 'No'])
-                st.session_stateprecision_analysis = st.sidebar.radio('Compare precision:', ['Yes', 'No'])
-                st.session_staterecall_analysis = st.sidebar.radio('Compare recall:', ['Yes', 'No'])
+                st.session_state.conf_analysis = st.sidebar.radio('Analyze Confusion Matrix:', ['Yes', 'No'])
+                st.session_state.accuracy_analysis = st.sidebar.radio('Compare Accuracy:', ['Yes', 'No'])
+                st.session_state.precision_analysis = st.sidebar.radio('Compare Precision:', ['Yes', 'No'])
+                st.session_state.recall_analysis = st.sidebar.radio('Compare Recall:', ['Yes', 'No'])
+                st.session_state.f1_analysis = st.sidebar.radio('Compare F1 Score:', ['Yes', 'No'])
+                st.session_state.auc_analysis = st.sidebar.radio('Analyze ROC AUC:', ['Yes', 'No'])
+                st.session_state.logloss_analysis = st.sidebar.radio('Compare Log Loss:', ['Yes', 'No'])
         
         elif i == 5:
             st.header('Model interpretation')
