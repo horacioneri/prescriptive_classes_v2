@@ -638,7 +638,7 @@ def model_interpretation():
         pdp_result = partial_dependence(ml_mod, X=x_test, features=feature_to_plot)
 
         # Extract the grid and average predictions for the feature
-        feature_values = pdp_result['values'][0]
+        feature_values = pdp_result['grid_values'][0]
         average_predictions = pdp_result['average'][0]
 
         # Plot using Plotly
