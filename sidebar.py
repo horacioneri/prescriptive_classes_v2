@@ -165,7 +165,7 @@ def sidebar_config(i):
         elif i == 4:
             st.header('Result Parameters')
             st.subheader('Metric analysis')
-            if problem_type == 'Regression':
+            if st.session_state.problem_type == 'Regression':
                 st.session_state.mae_analysis = st.sidebar.radio('Compare Mean Absolute Error (MAE):', ['Yes', 'No'])
                 st.session_state.mse_analysis = st.sidebar.radio('Compare Mean Squared Error (MSE):', ['Yes', 'No'])
                 st.session_state.rmse_analysis = st.sidebar.radio('Compare Root Mean Squared Error (RMSE):', ['Yes', 'No'])
