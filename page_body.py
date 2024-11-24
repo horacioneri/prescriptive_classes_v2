@@ -433,3 +433,4 @@ def model_training():
     st.session_state.ml_mod = ml_mod
 
 def result_analysis():
+    a=1
