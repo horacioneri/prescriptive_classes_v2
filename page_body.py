@@ -228,7 +228,7 @@ def data_preparation():
     st.header('Data preparation', divider='rainbow')
     st.subheader('Treating categorical columns')
     df = st.session_state.df_original
-    
+
     # Identify categorical columns
     categorical_columns = df.select_dtypes(include=['object', 'category']).columns
     if st.session_state.categorical_treat == 'Remove columns':
@@ -313,3 +313,6 @@ def data_preparation():
     st.dataframe(df, height = 300)
     st.session_state.treated = True
     st.session_state.df_treated = df
+
+def model_training():
+    df = st.session_state.df_treated

@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confus
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from config import page_titles
 from sidebar import sidebar_config
-from page_body import introduction_text, exploratory_data_analysis, data_preparation
+from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training
 import plotly.express as px
 import plotly.graph_objects as go
 import shap
@@ -71,7 +71,7 @@ if current_page == 3:
     if not st.session_state.treated:
         st.write('Go back to the beginning and reupload your dataset')
     else:
-        df = st.session_state.df_treated
+        model_training()
 
 # Display buttons at the end to navigate between pages
 if current_page == 0:
