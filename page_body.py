@@ -522,7 +522,7 @@ def result_analysis():
                     roc_auc = roc_auc_score(y, y_pred, multi_class='ovr')  # Adjust for multi-class
                     st.write(f"ROC AUC Score: {roc_auc:.4f}")
 
-                    fpr, tpr, _ = roc_curve(y_test, y_test_prob)
+                    fpr, tpr, _ = roc_curve(y, y_pred)
                     roc_auc = auc(fpr, tpr)
 
                     fig = go.Figure()
