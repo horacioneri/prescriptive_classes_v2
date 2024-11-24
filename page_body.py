@@ -508,7 +508,7 @@ def result_analysis():
                     )
 
                     # Display the confusion matrix
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key=f'confusion_graph_{c}')
 
                 if st.session_state.accuracy_analysis:
                     acc = accuracy_score(y, y_pred)
@@ -540,7 +540,7 @@ def result_analysis():
                         showlegend=True,
                         legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
                     )
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig, use_container_width=True, key=f'auc_graph_{c}')
                 
                 if st.session_state.logloss_analysis:
                     logloss = log_loss(y, y_pred)
@@ -625,7 +625,6 @@ def model_interpretation():
 
         # Partial dependence plots
         st.subheader("Partial Dependence Plots")
-
         fig, ax = plt.subplots(figsize=(10, 6))
         PartialDependenceDisplay.from_estimator(ml_mod, x_test, [st.session_state.var_analysis], ax=ax)
         st.pyplot(fig)
