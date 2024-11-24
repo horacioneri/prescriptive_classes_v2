@@ -7,10 +7,19 @@ def sidebar_config(i):
             # Load data
             st.header('Input data')
 
+            col_sep = st.selectbox(
+                'What is the column separator of your file:',
+                [',',';']
+            )
+            dec_id = st.selectbox(
+                'What is the decimal point character:',
+                ['.',',']
+            )
+
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
                 st.session_state.uploaded  = True
-                st.session_state.df_original = pd.read_csv(uploaded_file, sep=';', index_col=False)
+                st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
 
             #Revise in the end
             #gam_data = st.toggle('Export Predictions')
