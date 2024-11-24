@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier, GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder
+from sklearn.utils.class_weight import compute_sample_weight
 import plotly.express as px
 import plotly.graph_objects as go
 from config import page_titles
@@ -322,11 +324,96 @@ def model_training():
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=(100-st.session_state.parameter_split_size)/100, random_state=st.session_state.parameter_random_state)
 
     # Summarize the dataset
+    st.header('Dataset split', divider='rainbow')
     rows, cols = x_train.shape
     st.write(f"Your training set has {rows} observations and {cols} input variables.")
     rows, cols = x_test.shape
     st.write(f"Your test set has {rows} observations and {cols} input variables.")
-    rows = y_train.shape
-    st.write(f"Your training set has {rows} observations and 1 target variable.")
-    rows = y_test.shape
-    st.write(f"Your test set has {rows} observations and 1 target variable.")
+
+    # Start training
+    st.header('Model training', divider='rainbow')
+    if st.session_state.problem_type == 'Regression':
+        if st.session_state.model_to_use == 'Linear regression':
+            # Linear Regression does not require additional hyperparameters in most cases
+            ml_mod = LinearRegression()
+
+        elif st.session_state.model_to_use == 'Random forest':
+            ml_mod = RandomForestRegressor(
+                n_estimators=st.session_state.parameter_n_estimators,
+                random_state=st.session_state.parameter_random_state,
+                criterion=st.session_state.parameter_criterion,
+                max_depth=st.session_state.parameter_max_depth,
+                min_samples_split=st.session_state.parameter_min_samples_split,
+                min_samples_leaf=st.session_state.parameter_min_samples_leaf
+            )
+
+        elif st.session_state.model_to_use == 'Gradient boosting machines':
+            ml_mod = GradientBoostingRegressor(
+                loss=st.session_state.parameter_criterion,
+                n_estimators=st.session_state.parameter_n_estimators,
+                learning_rate=st.session_state.parameter_learning_rate,
+                max_depth=st.session_state.parameter_max_depth,
+                min_samples_split=st.session_state.parameter_min_samples_split,
+                min_samples_leaf=st.session_state.parameter_min_samples_leaf,
+                random_state=st.session_state.parameter_random_state
+            )
+
+    elif st.session_state.problem_type == 'Classification':
+        if st.session_state.model_to_use == 'Logistic regression':
+            ml_mod = LogisticRegression(
+                penalty=st.session_state.parameter_penalty,
+                C=st.session_state.parameter_c_value,
+                solver=st.session_state.parameter_solver,
+                random_state=st.session_state.parameter_random_state
+            )
+
+        elif st.session_state.model_to_use == 'Random forest':
+            if st.session_state.balance_strat == 'Balanced':
+                class_weights = 'balanced'
+            else:
+                class_weights = None
+            
+            ml_mod = RandomForestClassifier(
+                n_estimators=st.session_state.parameter_n_estimators,
+                random_state=st.session_state.parameter_random_state,
+                criterion=st.session_state.parameter_criterion,
+                max_depth=st.session_state.parameter_max_depth,
+                min_samples_split=st.session_state.parameter_min_samples_split,
+                min_samples_leaf=st.session_state.parameter_min_samples_leaf,
+                class_weight=class_weights
+            )
+
+        elif st.session_state.model_to_use == 'Gradient boosting machines':
+            if st.session_state.balance_strat == 'Balanced':
+                class_weights = compute_sample_weight(
+                    class_weight='balanced', y=y_train)
+            else:
+                class_weights = None
+
+            ml_mod = GradientBoostingClassifier(
+                loss=st.session_state.parameter_criterion,
+                n_estimators=st.session_state.parameter_n_estimators,
+                learning_rate=st.session_state.parameter_learning_rate,
+                max_depth=st.session_state.parameter_max_depth,
+                min_samples_split=st.session_state.parameter_min_samples_split,
+                min_samples_leaf=st.session_state.parameter_min_samples_leaf,
+                random_state=st.session_state.parameter_random_state
+            )
+
+    if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Gradient boosting machines':
+        ml_mod.fit(x_train, y_train, sample_weight=class_weights)
+    else
+        ml_mod.fit(x_train, y_train)
+
+    y_train_pred = ml_mod.predict(x_train)
+    y_test_pred = ml_mod.predict(x_test)
+
+    st.write('Your model has finished training, see below the predictions for the training and tests:')
+    col = st.columns(2)
+    with col[0]:
+        st.subheader('Train set')
+        st.dataframe(pd.concat([x_train, y_train, y_train_pred], axis=1), height = 300)
+
+    with col[1]:
+        st.subheader('Test set')
+        st.dataframe(pd.concat([x_test, y_test, y_test_pred], axis=1), height = 300)

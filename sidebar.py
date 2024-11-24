@@ -99,21 +99,68 @@ def sidebar_config(i):
                 model_to_use = st.sidebar.radio('Choose model:', ['Logistic regression', 'Random forest', 'Gradiant boosting machines'])
             st.session_state.model_to_use = model_to_use
 
-            st.header('Learning Parameters')
-            st.session_state.parameter_n_estimators = st.slider('Number of estimators (n_estimators)', 5, 50, 5, 5)
-            #parameter_max_features = st.select_slider('Max features (max_features)', options=['all', 'sqrt', 'log2'])
-            #parameter_min_samples_split = st.slider('Minimum number of samples required to split an internal node (min_samples_split)', 2, 10, 2, 1)
-            #parameter_min_samples_leaf = st.slider('Minimum number of samples required to be at a leaf node (min_samples_leaf)', 1, 10, 2, 1)
+            st.subheader('Learning Parameters')
+            if model_to_use == 'Linear regression':
+                # No additional parameters
+            if model_to_use == 'Logistic regression':
+                st.session_state.parameter_penalty = st.sidebar.radio(
+                    'Penalty type (penalty)', ['l2', 'none'])
+                st.session_state.parameter_c_value = st.sidebar.slider(
+                    'Regularization strength (C)', 0.01, 10.0, 1.0, 0.01)
+                st.session_state.parameter_solver = st.sidebar.radio(
+                    'Solver', ['lbfgs', 'saga', 'liblinear'])
+            
+            if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
+                st.session_state.parameter_n_estimators = st.sidebar.slider(
+                    'Number of estimators (n_estimators)', 5, 500, 100, 5)
+                
+                if st.session_state.model_to_use == 'Gradient boosting machines':
+                    st.session_state.parameter_learning_rate = st.sidebar.slider(
+                        'Learning rate', 0.01, 1.0, 0.1, 0.01)
+                
+                st.session_state.parameter_max_depth = st.sidebar.slider(
+                    'Maximum depth of trees (max_depth)', 1, 100, 10, 1)
+                
+                st.session_state.parameter_min_samples_split = st.sidebar.slider(
+                    'Minimum samples to split a node (min_samples_split)', 2, 20, 2, 1)
+                
+                st.session_state.parameter_min_samples_leaf = st.sidebar.slider(
+                    'Minimum samples in leaf node (min_samples_leaf)', 1, 20, 1, 1)
+                
+                if st.session_state.problem_type == 'Regression':
+                    if st.session_state.model_to_use == 'Random forest':
+                        st.session_state.parameter_criterion = st.sidebar.radio(
+                            'Performance measure (criterion)', 
+                            ['squared_error', 'absolute_error', 'poisson', 'friedman_mse']
+                        )
+                    elif st.session_state.model_to_use == 'Gradient boosting machines':
+                        st.session_state.parameter_criterion = st.sidebar.radio(
+                            'Loss function (loss)', 
+                            ['squared_error', 'absolute_error', 'huber', 'quantile']
+                        )
+
+                elif st.session_state.problem_type == 'Classification':
+                    if st.session_state.model_to_use == 'Random forest':
+                        st.session_state.parameter_criterion = st.sidebar.radio(
+                            'Performance measure (criterion)', 
+                            ['gini', 'entropy', 'log_loss']
+                        )
+                    elif st.session_state.model_to_use == 'Gradient boosting machines':
+                        st.session_state.parameter_criterion = st.sidebar.radio(
+                            'Loss function (loss)', 
+                            ['log_loss', 'exponential']
+                        )
+                    st.session_state.balance_strat = st.sidebar.radio(
+                            'Balancing strategy', 
+                            ['None', 'Balance']
+                        )
+
+                #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
+                #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
+
 
             st.header('Other Parameters')
-            if problem_type == 'Regression':
-                parameter_criterion = st.sidebar.radio('Performance measure (criterion)', ['squared_error', 'absolute_error', 'poisson', 'firedman_mse', ])
-            else:
-                parameter_criterion = st.sidebar.radio('Performance measure (criterion)', ['gini', 'entropy', 'log_loss'])
-            st.session_state.parameter_criterion = parameter_criterion
             st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
-            #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
-            #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
 
         elif i == 4:
             st.header('Result Parameters')

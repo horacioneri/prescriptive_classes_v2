@@ -1,10 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, confusion_matrix, classification_report
-from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 from config import page_titles
 from sidebar import sidebar_config
 from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training
@@ -106,28 +102,7 @@ if current_page > 0:
 # if uploaded_file: 
 #     with st.status("Running ...", expanded=True) as status:
     
-#         st.write("Loading data ...")
-#         time.sleep(sleep_time)
-
-#         st.write("Preparing data ...")
-#         time.sleep(sleep_time)
-#         X = df.iloc[:,:-1]
-#         y = df.iloc[:,-1]
-            
-#         st.write("Splitting data ...")
-#         time.sleep(sleep_time)
-
-#         categorical_cols = X.select_dtypes(include=['object', 'category']).columns
-#         st.write("Categorical columns:", categorical_cols)
-#         one_hot_encoder = OneHotEncoder()
-#         X_encoded = one_hot_encoder.fit_transform(X[categorical_cols])
-
-#         # Convert the one-hot encoded columns to a DataFrame and combine with the remaining columns
-#         X_encoded_df = pd.DataFrame(X_encoded.toarray(), columns=one_hot_encoder.get_feature_names_out(categorical_cols))
-#         X_combined = pd.concat([X_encoded_df, X.drop(columns=categorical_cols).reset_index(drop=True)], axis=1)
-
-#         X_train, X_test, y_train, y_test = train_test_split(X_combined, y, test_size=(100-parameter_split_size)/100, random_state=parameter_random_state)
-    
+  
 #         st.write("Model training ...")
 #         time.sleep(sleep_time)
 
