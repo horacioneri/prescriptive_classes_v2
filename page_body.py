@@ -321,7 +321,12 @@ def model_training():
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=(100-st.session_state.parameter_split_size)/100, random_state=st.session_state.parameter_random_state)
 
-    st.dataframe(x_train, height = 300)
-    st.dataframe(x_test, height = 300)
-    st.dataframe(y_train, height = 300)
-    st.dataframe(y_test, height = 300)
+    # Summarize the dataset
+    rows, cols = x_train.shape
+    st.write(f"Your training set has {rows} observations and {cols} input variables.")
+    rows, cols = x_test.shape
+    st.write(f"Your test set has {rows} observations and {cols} input variables.")
+    rows, cols = y_train.shape
+    st.write(f"Your training set has {rows} observations and {cols} target variable.")
+    rows, cols = y_test.shape
+    st.write(f"Your test set has {rows} observations and {cols} target variable.")
