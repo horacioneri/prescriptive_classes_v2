@@ -635,10 +635,8 @@ def model_interpretation():
         feature_to_plot = st.session_state.var_analysis  # The feature for PDP selection
         fig = go.Figure()
 
-        for feature in feature_to_plot:
-            # Compute the partial dependence manually
-            pdp = PartialDependenceDisplay.from_estimator(ml_mod, X=x_test, features=[feature], kind="average")
-            fig.add_trace(go.Scatter(x=pdp.base_lines_[0], y=pdp.average[0], mode="lines", name=feature))
+        pdp = PartialDependenceDisplay.from_estimator(ml_mod, X=x_test, features=[st.session_state.var_analysis], kind="average")
+        fig.add_trace(go.Scatter(x=pdp.base_lines_[0], y=pdp.average[0], mode="lines", name=feature))
 
         fig.update_layout(title="Partial Dependence Plot", xaxis_title="Feature Value", yaxis_title="Predicted Outcome", template="seaborn")
         st.plotly_chart(fig)
