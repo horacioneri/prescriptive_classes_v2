@@ -628,8 +628,7 @@ def model_interpretation():
         st.subheader("SHAP Values")
         explainer = shap.TreeExplainer(ml_mod)
         shap_values = explainer.shap_values(x_test)
-        #shap.summary_plot(shap_values, x_test, show=False)  # Suppress direct output
-        shap.plots.beeswarm(shap_values, max_display = 20, show=False)
+        shap.summary_plot(shap_values, x_test, show=False)  # Suppress direct output
         st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
