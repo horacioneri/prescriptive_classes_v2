@@ -80,7 +80,7 @@ def sidebar_config(i):
             )
             st.session_state.to_predict = to_predict
             
-            input_variables = streamlit.multiselect(
+            input_variables = st.multiselect(
                 'Select the input variables you want to use:', 
                 list(set(st.session_state.df_original.columns) - {to_predict})
             )
