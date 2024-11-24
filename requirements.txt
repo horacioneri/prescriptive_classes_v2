@@ -3,4 +3,3 @@ scikit-learn
 shap
 plotly
 statsmodels
-statsmodels.api
