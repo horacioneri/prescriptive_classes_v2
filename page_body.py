@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 from config import page_titles
 from sidebar import sidebar_config
 
-def introduction_text:
+def introduction_text():
     st.header('**What can this app do?**')
     with st.expander('**Click to see explanation**', expanded=False):
         st.write('This app allow users to build a machine learning (ML) model with an end-to-end workflow simple steps:\n')

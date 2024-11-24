@@ -53,16 +53,7 @@ st.title(page_titles[current_page], anchor='title')
 sidebar_config(current_page)
 
 if current_page == 0:
-    introduction_text
-
-    st.header('Data Loading', divider='rainbow')
-    if not st.session_state.uploaded:
-        st.write('Upload a dataset on the sidebar')
-    else:
-        st.write('This is your dataset:')
-        df = st.session_state.df_original
-        st.dataframe(df, height = 300)
-        st.write('The last column of the dataset will be considered your target variable')
+    introduction_text()
 
 if current_page == 1:
     if not st.session_state.uploaded:
