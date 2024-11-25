@@ -190,3 +190,25 @@ def sidebar_config(i):
                     st.session_state.x_train.columns
                 )
                 
+        elif i == 6:
+            st.header('Prediction data')
+
+            col_sep = st.selectbox(
+                'What is the column separator of your file:',
+                [',',';']
+            )
+            dec_id = st.selectbox(
+                'What is the decimal point character:',
+                ['.',',']
+            )
+
+            uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
+            if uploaded_file is not None:
+                st.session_state.to_predict  = True
+                st.session_state.df_to_predict = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
+
+            st.session_state.download_everything = st.selectbox(
+                'Do you want to download the training and test set:',
+                ['Yes','No'],
+                index=1
+            )

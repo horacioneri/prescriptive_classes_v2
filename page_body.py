@@ -685,3 +685,114 @@ def model_interpretation():
             template="seaborn"
         )
         st.plotly_chart(fig)
+
+def exercise_summary():
+    st.write('During this exercise you followed a series of steps that are part of a data scientist job. In this page you will find a short summary of each step')
+    st.header('Input data', divider='rainbow')
+    st.write('You started by uploading a dataset with a series of variables:')
+    st.dataframe(st.session_state.df_original, height = 300)
+    st.header('Exploratory data analysis', divider='rainbow')
+    st.write("Next, you analyzed different variables individually and in pairs, using different visualizations depending on the variable's type. You also examined the correlation matrix to find insights from the data")
+    st.header('Data preparation', divider='rainbow')
+    st.write("Next, you made some decisions on how to treat different aspects of the dataset, these were your main decisions:")
+    st.write(f"-For categorical columns, you decided to use {st.session_state.categorical_treat}")
+    st.write(f"-For missing values, you decided to {st.session_state.missing_treat}")
+    st.write(f"-For oultier values, you decided to {st.session_state.outlier_treat}")
+    st.write('This was the treated dataset that resulted from your decisions:')
+    st.dataframe(st.session_state.df_treated, height = 300)
+    st.header('Model training', divider='rainbow')
+    st.write("Next, you started to work on training the predictive model")
+    st.write(f"You identified your problem as a {st.session_state.problem_type} problem")
+    st.write(f"The variable you wanted to predict was {st.session_state.to_predict}")
+    input_vars = ""
+    for i in range(len(st.session_state.input_variables)):
+        input_vars = input_vars + st.session_state.input_variables[i] + ", "
+    st.write(f"As input variables you chose: {st.session_state.input_vars}")
+    st.write(f"You selected the model {st.session_state.model_to_use} for your problem")
+    st.write(f"You were able to play with different parameters to set up the model")
+    st.header('Result analysis', divider='rainbow')
+    st.write("After training the model you started examining its results")
+    if st.session_state.problem_type == "Regression":
+        st.write(f"Your model had a mean squared error of {mean_squared_error(st.session_state.y_train, st.session_state.y_train_pred):.4f} in the training set and {mean_squared_error(st.session_state.y_test, st.session_state.y_test_pred):.4f} in the test set")
+    else:
+        st.write(f"Your model had an accuracy of {accuracy_score(st.session_state.y_train, st.session_state.y_train_pred):.4f} in the training set and {accuracy_score(st.session_state.y_test, st.session_state.y_test_pred):.4f} in the test set")
+        st.write(f"Your model had a precision of {precision_score(st.session_state.y_train, st.session_state.y_train_pred, average='weighted'):.4f} in the training set and {precision_score(st.session_state.y_test, st.session_state.y_test_pred, average='weighted'):.4f} in the test set")
+        st.write(f"Your model had a recall of {recall_score(st.session_state.y_train, st.session_state.y_train_pred, average='weighted'):.4f} in the training set and {recall_score(st.session_state.y_test, st.session_state.y_test_pred, average='weighted'):.4f} in the test set")
+    st.header('Download results', divider='rainbow')
+    st.write("You can now download the results of the exercise")
+
+
+    if st.session_state.download_everything:
+        # Zip dataset files
+        st.session_state.df_original.to_csv('dataset_original.csv', index=False)
+        st.session_state.df_treated.to_csv('dataset_treated.csv', index=False)
+        st.session_state.x_train.to_csv('X_train.csv', index=False)
+        st.session_state.y_train.to_csv('y_train.csv', index=False)
+        st.session_state.x_test.to_csv('X_test.csv', index=False)
+        st.session_state.y_test.to_csv('y_test.csv', index=False)
+        st.session_state.y_train_pred_df.to_csv('pred_train.csv', index=False)
+        st.session_state.y_test_pred_df.to_csv('pred_test.csv', index=False)
+
+        list_files = ['dataset_original.csv', 'dataset_treated.csv', 'X_train.csv', 'y_train.csv', 'X_test.csv', 'y_test.csv', 'pred_train.csv', 'pred_test.csv']
+        with zipfile.ZipFile('exercise.zip', 'w') as zipF:
+            for file in list_files:
+                zipF.write(file, compress_type=zipfile.ZIP_DEFLATED)
+
+        with open('exercise.zip', 'rb') as datazip:
+            btn = st.download_button(
+                    label='Download ZIP',
+                    data=datazip,
+                    file_name="exercise.zip",
+                    mime="application/octet-stream"
+                    )
+
+
+    if st.session_state.to_predict:
+        df = st.session_state.df_to_predict
+        # Repeat treatment of the dataset -> don't treat for missing values and for outliers
+        # Identify categorical columns
+        categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+        if st.session_state.categorical_treat == 'Remove columns':
+            df = df.drop(columns=categorical_columns)
+        elif st.session_state.categorical_treat == 'Label encoding':
+            # Apply Label Encoding to each categorical column
+            for col in categorical_columns:
+                le = LabelEncoder()
+                df[col] = le.fit_transform(df[col])
+        elif st.session_state.categorical_treat == 'One-hot encoding':
+            # Apply One-hot encoding to each categorical column
+            # Initialize the OneHotEncoder
+            encoder = OneHotEncoder(sparse_output=False, drop=None)
+
+            # Apply one-hot encoding
+            encoded_data = encoder.fit_transform(df[categorical_columns])
+
+            # Create a DataFrame for the encoded columns
+            encoded_df = pd.DataFrame(
+                encoded_data,
+                columns=encoder.get_feature_names_out(categorical_columns)
+            )
+
+            # Combine with the original DataFrame (excluding the original categorical columns)
+            df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
+        
+        # Get input variables
+        x = df[st.session_state.input_variables]
+
+        # Predict
+        y = st.session_state.ml_mod.predict(x_train)
+
+        df_y = pd.DataFrame(y, columns=['Pred'])
+        
+        @st.cache_data
+        def convert_df(df):
+            # IMPORTANT: Cache the conversion to prevent computation on every rerun
+            return df.to_csv().encode("utf-8")
+        y_csv = convert_df(df_y)
+
+        st.download_button(
+            label="Download predictions",
+            data=y_csv,
+            file_name="my_predictions.csv",
+            mime="text/csv",
+        )
