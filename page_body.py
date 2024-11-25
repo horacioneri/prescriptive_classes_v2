@@ -708,7 +708,7 @@ def exercise_summary():
     input_vars = ""
     for i in range(len(st.session_state.input_variables)):
         input_vars = input_vars + st.session_state.input_variables[i] + ", "
-    st.write(f"As input variables you chose: {st.session_state.input_vars}")
+    st.write(f"As input variables you chose: {input_vars}")
     st.write(f"You selected the model {st.session_state.model_to_use} for your problem")
     st.write(f"You were able to play with different parameters to set up the model")
     st.header('Result analysis', divider='rainbow')
