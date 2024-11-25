@@ -202,8 +202,8 @@ def sidebar_config(i):
                 ['.',',']
             )
 
-            uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
-            if uploaded_file is not None:
+            uploaded_file_output = st.file_uploader("Upload the training set", type=["csv"])
+            if uploaded_file_output is not None:
                 st.session_state.to_predict  = True
                 st.session_state.df_to_predict = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
 
