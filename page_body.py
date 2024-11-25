@@ -723,7 +723,7 @@ def exercise_summary():
     st.write("You can now download the results of the exercise")
 
 
-    if st.session_state.download_everything:
+    if st.session_state.download_everything == 'Yes':
         # Zip dataset files
         st.session_state.df_original.to_csv('dataset_original.csv', index=False)
         st.session_state.df_treated.to_csv('dataset_treated.csv', index=False)
