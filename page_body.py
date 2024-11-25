@@ -781,7 +781,7 @@ def exercise_summary():
         x = df[st.session_state.input_variables]
 
         # Predict
-        y = st.session_state.ml_mod.predict(x_train)
+        y = st.session_state.ml_mod.predict(x)
 
         df_y = pd.DataFrame(y, columns=['Pred'])
         
