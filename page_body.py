@@ -17,6 +17,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from config import page_titles
 from sidebar import sidebar_config
+import zipfile
 
 def introduction_text():
     st.header('**What can this app do?**')

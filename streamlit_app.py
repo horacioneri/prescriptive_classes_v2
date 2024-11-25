@@ -4,7 +4,6 @@ import numpy as np
 from config import page_titles
 from sidebar import sidebar_config
 from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training, result_analysis, model_interpretation, exercise_summary
-import zipfile
 
 # Navigation function with forced rerun
 def change_page(delta):
