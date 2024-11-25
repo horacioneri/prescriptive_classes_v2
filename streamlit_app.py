@@ -24,8 +24,8 @@ if "treated" not in st.session_state:
 if "trained" not in st.session_state:
     st.session_state.trained = False
 
-if "to_predict" not in st.session_state:
-    st.session_state.to_predict = False
+if "predict_output" not in st.session_state:
+    st.session_state.predict_output = False
 
 current_page = st.session_state.page
 

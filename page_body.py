@@ -748,7 +748,7 @@ def exercise_summary():
                     )
 
 
-    if st.session_state.to_predict:
+    if st.session_state.predict_output:
         df = st.session_state.df_to_predict
         # Repeat treatment of the dataset -> don't treat for missing values and for outliers
         # Identify categorical columns
