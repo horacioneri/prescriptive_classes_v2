@@ -731,8 +731,8 @@ def exercise_summary():
         st.session_state.y_train.to_csv('y_train.csv', index=False)
         st.session_state.x_test.to_csv('X_test.csv', index=False)
         st.session_state.y_test.to_csv('y_test.csv', index=False)
-        st.session_state.y_train_pred_df.to_csv('pred_train.csv', index=False)
-        st.session_state.y_test_pred_df.to_csv('pred_test.csv', index=False)
+        st.session_state.y_train_pred.to_csv('pred_train.csv', index=False)
+        st.session_state.y_test_pred.to_csv('pred_test.csv', index=False)
 
         list_files = ['dataset_original.csv', 'dataset_treated.csv', 'X_train.csv', 'y_train.csv', 'X_test.csv', 'y_test.csv', 'pred_train.csv', 'pred_test.csv']
         with zipfile.ZipFile('exercise.zip', 'w') as zipF:
