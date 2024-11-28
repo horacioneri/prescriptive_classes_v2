@@ -36,13 +36,13 @@ def introduction_text():
     else:
         st.write('This is your dataset:')
         df = st.session_state.df_original
-        st.dataframe(df, height = 300)
-        st.write('These are the data types identified for your dataset:')
         for col in df.columns:
             try:
                 df[col] = pd.to_numeric(df[col], errors='coerce')
             except ValueError:
                 pass
+        st.dataframe(df, height = 300)
+        st.write('These are the data types identified for your dataset:')
         st.write(df.dtypes)
 
 def exploratory_data_analysis():
