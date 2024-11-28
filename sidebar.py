@@ -106,11 +106,36 @@ def sidebar_config(i):
 
             st.header('Model Parameters')
             st.subheader('Machine learning model')
+            # Model Selection - Radio Button
             if problem_type == 'Regression':
-                model_to_use = st.sidebar.radio('Choose model:', ['Linear regression', 'Random forest', 'Gradient boosting machines'])
+                # Define the valid models for regression
+                available_models = ['Linear regression', 'Random forest', 'Gradient boosting machines']
+                
+                # If a model was previously selected and it's not valid for regression, set to a default
+                if 'model_to_use' in st.session_state:
+                    if st.session_state.model_to_use not in available_models:
+                        st.session_state.model_to_use = 'Linear regression'  # Default model for regression
+                else:
+                    st.session_state.model_to_use = 'Linear regression'  # Default model for first-time selection
+
             else:
-                model_to_use = st.sidebar.radio('Choose model:', ['Logistic regression', 'Random forest', 'Gradient boosting machines'])
-            st.session_state.model_to_use = model_to_use
+                # Define the valid models for classification
+                available_models = ['Logistic regression', 'Random forest', 'Gradient boosting machines']
+                
+                # If a model was previously selected and it's not valid for classification, set to a default
+                if 'model_to_use' in st.session_state:
+                    if st.session_state.model_to_use not in available_models:
+                        st.session_state.model_to_use = 'Logistic regression'  # Default model for classification
+                else:
+                    st.session_state.model_to_use = 'Logistic regression'  # Default model for first-time selection
+
+            # Display the model selection radio button
+            model_to_use = st.sidebar.radio(
+                'Choose model:', 
+                available_models, 
+                index=available_models.index(st.session_state.model_to_use)
+            )
+            st.session_state.model_to_use = model_to_use  # Save to session state
 
             st.subheader('Learning Parameters')
             #if model_to_use == 'Linear regression':
@@ -206,11 +231,11 @@ def sidebar_config(i):
         elif i == 6:
             st.header('Prediction data')
 
-            col_sep = st.selectbox(
+            col_sep_out = st.selectbox(
                 'What is the column separator of your file:',
                 [',',';']
             )
-            dec_id = st.selectbox(
+            dec_id_out = st.selectbox(
                 'What is the decimal point character:',
                 ['.',',']
             )
@@ -218,7 +243,7 @@ def sidebar_config(i):
             uploaded_file_output = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file_output is not None:
                 st.session_state.predict_output  = True
-                st.session_state.df_to_predict = pd.read_csv(uploaded_file_output, sep=col_sep, index_col=False, decimal=dec_id)
+                st.session_state.df_to_predict = pd.read_csv(uploaded_file_output, sep=col_sep_out, index_col=False, decimal=dec_id_out)
 
             st.session_state.download_everything = st.selectbox(
                 'Do you want to download the training and test set:',
