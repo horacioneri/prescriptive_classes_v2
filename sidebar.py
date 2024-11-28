@@ -9,37 +9,37 @@ def sidebar_config(i):
 
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
-                [',',';']
+                [',',';'],
+                index=0 if 'col_sep' not in st.session_state else st.session_state.col_sep
             )
+            st.session_state.col_sep = col_sep
+
             dec_id = st.selectbox(
                 'What is the decimal point character:',
-                ['.',',']
+                ['.',','],
+                index=0 if 'dec_id' not in st.session_state else st.session_state.dec_id
             )
+            st.session_state.dec_id = dec_id
 
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
 
-            #Revise in the end
-            #gam_data = st.toggle('Export Predictions')
-            #if gam_data is True:
-            #    gam_file = st.file_uploader("Upload the data to predict", type=["csv"])
-            #    if gam_file is not None:
-            #        df_gam = pd.read_csv(gam_file, sep=';', index_col=False)
-
         elif i == 1:
             # Select variables to analyze in detail
             st.header('Variable selection')
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
-                st.session_state.df_original.columns
+                st.session_state.df_original.columns,
+                index=0 if 'var_1' not in st.session_state else st.session_state.var_1
             )
             st.session_state.var_1 = var_1
 
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
-                list(set(st.session_state.df_original.columns) - {var_1})
+                list(set(st.session_state.df_original.columns) - {var_1}),
+                index=0 if 'var_2' not in st.session_state else st.session_state.var_2
             )
             st.session_state.var_2 = var_2
 
@@ -48,14 +48,16 @@ def sidebar_config(i):
             st.write('Categorical data')
             categorical_treat = st.selectbox(
                 'How to treat categorical data:',
-                ['Remove columns', 'Label encoding', 'One-hot encoding'] #Add target encoding in the future
+                ['Remove columns', 'Label encoding', 'One-hot encoding'], #Add target encoding in the future
+                index=0 if 'categorical_treat' not in st.session_state else st.session_state.categorical_treat
             )
             st.session_state.categorical_treat = categorical_treat
 
             st.write('Missing values treatment')
             missing_treat = st.selectbox(
                 'How to treat missing values:',
-                ['Remove observation', 'Imputation: mean', 'Imputation: median'] 
+                ['Remove observation', 'Imputation: mean', 'Imputation: median'],
+                index=0 if 'missing_treat' not in st.session_state else st.session_state.missing_treat
             )
             st.session_state.missing_treat = missing_treat
 
@@ -63,32 +65,43 @@ def sidebar_config(i):
             st.write('Outlier treatment')
             outlier_treat = st.selectbox(
                 'How to treat outlier values:',
-                ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'] 
+                ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'],
+                index=0 if 'outlier_treat' not in st.session_state else st.session_state.outlier_treat
             )
             st.session_state.outlier_treat = outlier_treat
 
         elif i == 3:
 
             st.header('Problem Type')
-            problem_type = st.sidebar.radio('Choose problem type:', ['Regression', 'Classification'])
+            problem_type = st.sidebar.radio(
+                'Choose problem type:', 
+                ['Regression', 'Classification'],
+                index=0 if 'problem_type' not in st.session_state else st.session_state.problem_type
+            )
             st.session_state.problem_type = problem_type
 
             st.header('Variable selection')
             to_predict = st.selectbox(
                 'Select the variable you want to predict:',
-                st.session_state.df_treated.columns
+                st.session_state.df_treated.columns,
+                index=0 if 'to_predict' not in st.session_state else st.session_state.to_predict
             )
             st.session_state.to_predict = to_predict
             
             input_variables = st.multiselect(
                 'Select the input variables you want to use:', 
                 list(set(st.session_state.df_treated.columns) - {to_predict}),
-                default=list(set(st.session_state.df_treated.columns) - {to_predict})
+                default=list(set(st.session_state.df_treated.columns) - {to_predict}) if 'input_variables' not in st.session_state else st.session_state.input_variables
             )
             st.session_state.input_variables = input_variables
 
             st.header('Training Parameters')
-            parameter_split_size = st.slider('Data split ratio (% for Training Set)', 10, 90, 80, 5)
+            parameter_split_size = st.slider(
+                'Data split ratio (% for Training Set)', 
+                min_value=10, 
+                max_value=90, 
+                value=80 if 'parameter_split_size' not in st.session_state else st.session_state.parameter_split_size, 
+                step=5)
             st.session_state.parameter_split_size = parameter_split_size
 
             st.header('Model Parameters')
