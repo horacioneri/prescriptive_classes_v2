@@ -59,7 +59,7 @@ def exploratory_data_analysis():
             st.subheader(var)
             var_data = df[var]
             if var_data.dtype in ['int64', 'float64']:
-                st.dataframe(var_data.describe(), height=100)
+                st.dataframe(var_data.describe(), height=150)
 
                 # Visualize the distribution (Histogram with Plotly)
                 fig = px.histogram(var_data, nbins=20, title=f'Distribution of {var}')
@@ -83,7 +83,7 @@ def exploratory_data_analysis():
                 st.plotly_chart(fig, use_container_width=True)
 
             else:
-                st.dataframe(var_data.value_counts(), height=100)
+                st.dataframe(var_data.value_counts(), height=150)
 
                 # Bar plot for category distribution
                 fig = px.bar(var_data.value_counts().reset_index(), x=var, y='count', 
