@@ -39,6 +39,9 @@ if current_page > 0:
     if st.button("Restart", use_container_width=True, key=f"top_restart_{current_page}"):
         st.session_state.page = 0
         st.session_state.uploaded = False
+        st.session_state.treated = False
+        st.session_state.trained = False
+        st.session_state.predict_output = False
         st.session_state.df_original = pd.DataFrame()
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
@@ -113,6 +116,9 @@ if current_page > 0:
     if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}"):
         st.session_state.page = 0
         st.session_state.uploaded = False
+        st.session_state.treated = False
+        st.session_state.trained = False
+        st.session_state.predict_output = False
         st.session_state.df_original = pd.DataFrame()
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
