@@ -135,8 +135,8 @@ def exploratory_data_analysis():
         # Box plot
         fig = px.box(df, x=var_name2, y=var_name1, title=f"Box plot of {var_name1} by {var_name2}")
         fig.update_layout(
-                    xaxis_title=var_name1, 
-                    yaxis_title=var_name2,
+                    xaxis_title=var_name2, 
+                    yaxis_title=var_name1,
                     template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
                     showlegend=True,
                     legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
@@ -175,8 +175,8 @@ def exploratory_data_analysis():
         # Box plot
         fig = px.box(df, x=var_name1, y=var_name2, title=f"Box plot of {var_name2} by {var_name1}")
         fig.update_layout(
-                    xaxis_title=var_name2, 
-                    yaxis_title=var_name1,
+                    xaxis_title=var_name1, 
+                    yaxis_title=var_name2,
                     template="seaborn",  # Choose a template (e.g., "plotly_dark", "ggplot2", etc.)
                     showlegend=True,
                     legend = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
