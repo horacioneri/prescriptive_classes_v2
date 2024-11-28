@@ -123,3 +123,13 @@ if current_page > 0:
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
 
+# Debug
+# df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
+# df
+# df.dtypes
+# for col in df.columns:
+#     try:
+#         df[col] = pd.to_numeric(df[col], errors='coerce')
+#     except ValueError:
+#         pass
+# df.dtypes

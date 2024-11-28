@@ -37,8 +37,12 @@ def introduction_text():
         st.write('This is your dataset:')
         df = st.session_state.df_original
         st.dataframe(df, height = 300)
-        st.write('The last column of the dataset will be considered your target variable') # Review at the end
         st.write('These are the data types identified for your dataset:')
+        for col in df.columns:
+            try:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
+            except ValueError:
+                pass
         st.write(df.dtypes)
 
 def exploratory_data_analysis():
