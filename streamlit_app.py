@@ -127,9 +127,9 @@ if current_page > 0:
 # df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
 # df
 # df.dtypes
+# # col = df.columns[13]
 # for col in df.columns:
-#     try:
+#     if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.5 * len(df[col]):
 #         df[col] = pd.to_numeric(df[col], errors='coerce')
-#     except ValueError:
-#         pass
 # df.dtypes
+# df

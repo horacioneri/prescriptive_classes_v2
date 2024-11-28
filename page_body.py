@@ -37,13 +37,13 @@ def introduction_text():
         st.write('This is your dataset:')
         df = st.session_state.df_original
         for col in df.columns:
-            try:
+            # Se mais de 90% dos valores únicos existentes forem números, considerar coluna como número
+            if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.9*len(df[col].dropna().unique()):
                 df[col] = pd.to_numeric(df[col], errors='coerce')
-            except ValueError:
-                pass
         st.dataframe(df, height = 300)
         st.write('These are the data types identified for your dataset:')
         st.write(df.dtypes)
+        st.session_state.df_original = df
 
 def exploratory_data_analysis():
     df = st.session_state.df_original
@@ -255,7 +255,7 @@ def data_preparation():
     elif st.session_state.categorical_treat == 'One-hot encoding':
         # Apply One-hot encoding to each categorical column
         # Initialize the OneHotEncoder
-        encoder = OneHotEncoder(sparse_output=False, drop=None)
+        encoder = OneHotEncoder(sparse_output=False, drop='if_binary')
 
         # Apply one-hot encoding
         encoded_data = encoder.fit_transform(df[categorical_columns])
