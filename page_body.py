@@ -83,7 +83,7 @@ def exploratory_data_analysis():
                 st.plotly_chart(fig, use_container_width=True)
 
             else:
-                st.write(var_data.value_counts())
+                st.write(var_data.value_counts(), height=300)
 
                 # Bar plot for category distribution
                 fig = px.bar(var_data.value_counts().reset_index(), x=var, y='count', 
