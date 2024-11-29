@@ -43,32 +43,26 @@ def sidebar_config(i):
 
             st.header('Data preparation')
             st.write('Categorical data')
-            options_categorical=['Remove columns', 'Label encoding', 'One-hot encoding']
-            categorical_treat = st.selectbox(
-                'How to treat categorical data:',
-                options_categorical, #Add target encoding in the future
-                index=0 if 'categorical_treat' not in st.session_state else options_categorical.index(st.session_state.categorical_treat)
+            select_choice(
+                'categorical_treat', 
+                ['Remove columns', 'Label encoding', 'One-hot encoding'], 
+                'How to treat categorical data:'
             )
-            st.session_state.categorical_treat = categorical_treat
 
             st.write('Missing values treatment')
-            options_missing = ['Remove observation', 'Imputation: mean', 'Imputation: median']
-            missing_treat = st.selectbox(
-                'How to treat missing values:',
-                options_missing,
-                index=0 if 'missing_treat' not in st.session_state else options_missing.index(st.session_state.missing_treat)
+            select_choice(
+                'missing_treat', 
+                ['Remove observation', 'Imputation: mean', 'Imputation: median'], 
+                'How to treat missing values:'
             )
-            st.session_state.missing_treat = missing_treat
 
             #Add option of how to find outliers
             st.write('Outlier treatment')
-            options_outlier= ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median']
-            outlier_treat = st.selectbox(
-                'How to treat outlier values:',
-                options_outlier,
-                index=0 if 'outlier_treat' not in st.session_state else options_outlier.index(st.session_state.outlier_treat)
+            select_choice(
+                'outlier_treat', 
+                ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'], 
+                'How to treat outlier values:'
             )
-            st.session_state.outlier_treat = outlier_treat
 
         elif i == 3:
 
