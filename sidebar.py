@@ -8,21 +8,26 @@ def sidebar_config(i):
             st.header('Input data')
 
             # Initialize session state for 'col_sep' and 'dec_id'
+            options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
-                st.session_state.col_sep = ','  # Default value
+                st.session_state.col_sep = options_col_sep[0]  # Default value
 
+            options_dec_id = ['.',',']
             if 'dec_id' not in st.session_state:
-                st.session_state.dec_id = '.'  # Default value
+                st.session_state.dec_id = options_dec_id[0]  # Default value
 
+            
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
-                [',',';'],
+                options_col_sep,
+                index=options_col_sep.index(st.session_state.col_sep)
                 key='col_sep'
             )
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
-                ['.',','],
+                options_dec_id,
+                index=options_dec_id.index(st.session_state.dec_id)
                 key='dec_id'  # Directly bind to session state
             )
 
@@ -35,10 +40,15 @@ def sidebar_config(i):
             # Select variables to analyze in detail
             st.header('Variable selection')
             var_1_options = list(set(st.session_state.df_original.columns))
+            
+            if 'var_1' not in st.session_state:
+                st.session_state.var_1 = var_1_options[0]  # Default value
+
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
                 var_1_options,
-                index=0 if 'var_1' not in st.session_state else var_1_options.index(st.session_state.var_1)
+                index=0 if 'var_1' not in st.session_state else var_1_options.index(st.session_state.var_1),
+                key = 'var_1'
             )
             st.session_state.var_1 = var_1
 
