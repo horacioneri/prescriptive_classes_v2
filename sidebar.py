@@ -70,7 +70,7 @@ def sidebar_config(i):
             missing_treat = st.selectbox(
                 'How to treat missing values:',
                 options,
-                index=0 if 'missing_treat' not in st.session_state else options.missing_treat
+                index=0 if 'missing_treat' not in st.session_state else options.index(missing_treat)
             )
             st.session_state.missing_treat = missing_treat
 
@@ -80,7 +80,7 @@ def sidebar_config(i):
             outlier_treat = st.selectbox(
                 'How to treat outlier values:',
                 options,
-                index=0 if 'outlier_treat' not in st.session_state else options.outlier_treat
+                index=0 if 'outlier_treat' not in st.session_state else options.index(outlier_treat)
             )
             st.session_state.outlier_treat = outlier_treat
 
