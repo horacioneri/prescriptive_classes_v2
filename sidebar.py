@@ -62,9 +62,9 @@ def sidebar_config(i):
 
             # Determine the index for the default selection
             if 'var_2' not in st.session_state or st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options.index(0)  # Default to the first option
+                st.session_state.var_2 = var_2_options[0] # Default to the first option
             if st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options.index(0)
+                st.session_state.var_2 = var_2_options.index[0]
 
             # Render the selectbox with the computed index
             var_2 = st.selectbox(
