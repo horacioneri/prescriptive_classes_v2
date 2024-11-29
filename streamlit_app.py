@@ -27,7 +27,7 @@ if "predict_output" not in st.session_state:
     st.session_state.predict_output = False
 
 current_page = st.session_state.page
-run_id = 0
+st.session_state.run_id = 0
 
 # Page config
 st.set_page_config(page_title='Building a ML model', page_icon='', layout = 'wide')
@@ -96,26 +96,26 @@ if current_page == 6:
 # Display buttons at the end to navigate between pages
 if current_page == 0:
     left, right = st.columns(2)
-    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{run_id}"):
+    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{st.session_state.run_id}"):
         change_page(1)
 
 elif 0 < current_page < len(page_titles)-1:
     left, right = st.columns(2)
-    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{run_id}"):
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{st.session_state.run_id}"):
         change_page(-1)
-    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{run_id}"):
+    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{st.session_state.run_id}"):
         change_page(1)
 
 elif current_page == len(page_titles)-1:
     left, right = st.columns(2)
-    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{run_id}"):
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{st.session_state.run_id}"):
         change_page(-1)
 # Restart if needed
 else:
     st.session_state.page = 0
 
 if current_page > 0:
-    if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}_{run_id}"):
+    if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}_{run_st.session_state.run_id}"):
         st.session_state.page = 0
         st.session_state.uploaded = False
         st.session_state.treated = False
@@ -125,7 +125,7 @@ if current_page > 0:
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
 
-run_id = run_id+1
+st.session_state.run_id = st.session_state.run_id+1
 # Debug
 # df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
 # df
