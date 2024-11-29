@@ -21,7 +21,7 @@ def sidebar_config(i):
             st.header('Input data')
 
             select_choice('col_sep', [',',';'] , 'What is the column separator of your file:')
-            elect_choice('dec_id', ['.',','] , 'What is the decimal point character:')
+            select_choice('dec_id', ['.',','] , 'What is the decimal point character:')
 
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
