@@ -145,7 +145,7 @@ def sidebar_config(i):
             #if model_to_use == 'Linear regression':
                 # No additional parameters
             
-            if model_to_use == 'Logistic regression':
+            if st.session_state.model_to_use == 'Logistic regression':
                 st.session_state.parameter_penalty = st.sidebar.radio(
                     'Penalty type (penalty)', ['l2', 'none'])
                 st.session_state.parameter_c_value = st.sidebar.slider(
