@@ -123,6 +123,7 @@ def sidebar_config(i):
                 list(set(st.session_state.df_treated.columns)), 
                 'Select the variable you want to predict:'
             )
+            st.write(list(set(st.session_state.df_treated.columns) - {st.session_state.to_predict}))
             multiselect_choice(
                 'input_variables',
                 list(set(st.session_state.df_treated.columns) - {st.session_state.to_predict}),
