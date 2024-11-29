@@ -118,7 +118,7 @@ else:
     st.session_state.page = 0
 
 if current_page > 0:
-    if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}_{run_st.session_state.run_id}"):
+    if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}"):
         st.session_state.page = 0
         st.session_state.uploaded = False
         st.session_state.treated = False
