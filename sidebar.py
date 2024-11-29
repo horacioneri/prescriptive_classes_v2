@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import time
 
-def select_choice(var_name, options, intro_text='Select the option'):
+def select_choice(var_name, options, intro_text='Select:'):
     if var_name not in st.session_state:
         st.session_state[var_name] = options[0]
 
@@ -20,38 +20,13 @@ def sidebar_config(i):
             # Load data
             st.header('Input data')
 
-            # Initialize session state for 'col_sep' and 'dec_id'
-            # options_col_sep = [',',';']
-            # if 'col_sep' not in st.session_state:
-            #    st.session_state.col_sep = options_col_sep[0]  # Default value
-
-            options_dec_id = ['.',',']
-            if 'dec_id' not in st.session_state:
-                st.session_state.dec_id = options_dec_id[0]  # Default value
-
-            # col_sep = st.selectbox(
-            #     'What is the column separator of your file:',
-            #     options_col_sep,
-            #     index = options_col_sep.index(st.session_state.col_sep),
-            #     key = 'col_sep'
-            # )
             select_choice('col_sep', [',',';'] , 'What is the column separator of your file:')
-
-            dec_id = st.selectbox(
-                'What is the decimal point character:',
-                options_dec_id,
-                key='dec_id'  # Directly bind to session state
-            )
+            elect_choice('dec_id', ['.',','] , 'What is the decimal point character:')
 
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
-
-            st.write(st.session_state.col_sep)
-            st.write(options_col_sep)
-            st.write(st.session_state.dec_id)
-            st.write(options_dec_id)
 
         elif i == 1:
 
