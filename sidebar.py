@@ -14,19 +14,18 @@ def sidebar_config(i):
             # Initialize session state for 'col_sep' and 'dec_id'
             options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
-                def_col_sep = options_col_sep[0]  # Default value
-            else:
-                def_col_sep = st.session_state.col_sep
+                st.session_state.col_sep = options_col_sep[0]  # Default value
 
             options_dec_id = ['.',',']
             if 'dec_id' not in st.session_state:
                 st.session_state.dec_id = options_dec_id[0]  # Default value
 
             
-            st.session_state.col_sep = st.selectbox(
+            col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
-                index = options_col_sep.index(def_col_sep)
+                index = None,
+                key = 'col_sep'
             )
 
             dec_id = st.selectbox(
