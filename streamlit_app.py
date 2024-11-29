@@ -52,7 +52,7 @@ if current_page > 0:
 st.title(page_titles[current_page], anchor='title')
 
 for k, v in st.session_state.items():
-    if k != 'page':
+    if k != 'page' and 'next' not in k and 'prev' not in k and 'restart' not in k:
         st.session_state[k] = v
 
 sidebar_config(current_page)
@@ -96,24 +96,22 @@ if current_page == 6:
     else:
         exercise_summary()
 
-st.session_state.run_id = st.session_state.run_id+1
-
 # Display buttons at the end to navigate between pages
 if current_page == 0:
     left, right = st.columns(2)
-    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{st.session_state.run_id}"):
+    if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
         change_page(1)
 
 elif 0 < current_page < len(page_titles)-1:
     left, right = st.columns(2)
-    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{st.session_state.run_id}"):
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
         change_page(-1)
-    if right.button("Next", use_container_width=True, key=f"next_{current_page}_{st.session_state.run_id}"):
+    if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
         change_page(1)
 
 elif current_page == len(page_titles)-1:
     left, right = st.columns(2)
-    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}_{st.session_state.run_id}"):
+    if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
         change_page(-1)
 # Restart if needed
 else:
