@@ -48,6 +48,17 @@ def multiselect_choice(var_name, options, intro_text='Select/Unselect:', default
             key = var_name
         )
 
+def slider_choice(var_name, slider_params, intro_text='Choose the value:'):
+    if var_name not in st.session_state:
+        st.session_state[var_name] = slide_params[2]
+    st.session_state.parameter_c_value = st.sidebar.slider(
+                        intro_text, 
+                        slider_params[0], 
+                        slider_params[1], 
+                        st.session_state[var_name], 
+                        slider_params[3]
+                    )
+
 
 def sidebar_config(i):
     with st.sidebar:
@@ -119,13 +130,7 @@ def sidebar_config(i):
             )
 
             st.header('Training Parameters')
-            parameter_split_size = st.slider(
-                'Data split ratio (% for Training Set)', 
-                min_value=10, 
-                max_value=90, 
-                value=80 if 'parameter_split_size' not in st.session_state else st.session_state.parameter_split_size, 
-                step=5)
-            st.session_state.parameter_split_size = parameter_split_size
+            slider_choice('parameter_split_size', [10,90,80,5],'Data split ratio (% for Training Set)')
 
             st.header('Model Parameters')
             st.subheader('Machine learning model')
@@ -146,83 +151,61 @@ def sidebar_config(i):
                 # No additional parameters
             
             if st.session_state.model_to_use == 'Logistic regression':
-                st.session_state.parameter_penalty = st.sidebar.radio(
-                    'Penalty type (penalty)', ['l2', 'none'])
-                st.session_state.parameter_c_value = st.sidebar.slider(
-                    'Regularization strength (C)', 0.01, 10.0, 1.0, 0.01)
-                st.session_state.parameter_solver = st.sidebar.radio(
-                    'Solver', ['lbfgs', 'saga', 'liblinear'])
+                radio_choice('parameter_penalty',['l2', 'none'],'Penalty type (penalty)')
+                slider_choice('parameter_c_value', [0.01, 10.0, 1.0, 0.01], 'Regularization strength (C)')
+                radio_choice('parameter_solver',['lbfgs', 'saga', 'liblinear'],'Solver')
             
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
-                st.session_state.parameter_n_estimators = st.sidebar.slider(
-                    'Number of estimators (n_estimators)', 5, 500, 100, 5)
-                
+                slider_choice('parameter_n_estimators', [5, 500, 100, 5], 'Number of estimators (n_estimators)')
+
                 if st.session_state.model_to_use == 'Gradient boosting machines':
-                    st.session_state.parameter_learning_rate = st.sidebar.slider(
-                        'Learning rate', 0.01, 1.0, 0.1, 0.01)
+                    slider_choice('parameter_learning_rate', [0.01, 1.0, 0.1, 0.01], 'Learning rate')
                 
-                st.session_state.parameter_max_depth = st.sidebar.slider(
-                    'Maximum depth of trees (max_depth)', 1, 100, 10, 1)
-                
-                st.session_state.parameter_min_samples_split = st.sidebar.slider(
-                    'Minimum samples to split a node (min_samples_split)', 2, 20, 2, 1)
-                
-                st.session_state.parameter_min_samples_leaf = st.sidebar.slider(
-                    'Minimum samples in leaf node (min_samples_leaf)', 1, 20, 1, 1)
+                slider_choice('parameter_max_depth', [1, 100, 10, 1], 'Maximum depth of trees (max_depth)')
+                slider_choice('parameter_min_samples_split', [2, 20, 2, 1], 'Minimum samples to split a node (min_samples_split)')
+                slider_choice('parameter_min_samples_leaf', [1, 20, 1, 1], 'Minimum samples in leaf node (min_samples_leaf)')
                 
                 if st.session_state.problem_type == 'Regression':
                     if st.session_state.model_to_use == 'Random forest':
-                        st.session_state.parameter_criterion = st.sidebar.radio(
-                            'Performance measure (criterion)', 
-                            ['squared_error', 'absolute_error', 'poisson', 'friedman_mse']
-                        )
+                        radio_choice(parameter_criterion, ['squared_error', 'absolute_error', 'poisson', 'friedman_mse'], 'Performance measure (criterion)')
+
                     elif st.session_state.model_to_use == 'Gradient boosting machines':
-                        st.session_state.parameter_criterion = st.sidebar.radio(
-                            'Loss function (loss)', 
-                            ['squared_error', 'absolute_error', 'huber', 'quantile']
-                        )
+                        radio_choice(parameter_criterion, ['squared_error', 'absolute_error', 'huber', 'quantile'], 'Loss function (loss)')
 
                 elif st.session_state.problem_type == 'Classification':
                     if st.session_state.model_to_use == 'Random forest':
-                        st.session_state.parameter_criterion = st.sidebar.radio(
-                            'Performance measure (criterion)', 
-                            ['gini', 'entropy', 'log_loss']
-                        )
+                        radio_choice(parameter_criterion, ['gini', 'entropy', 'log_loss'], 'Performance measure (criterion)')
+
                     elif st.session_state.model_to_use == 'Gradient boosting machines':
-                        st.session_state.parameter_criterion = st.sidebar.radio(
-                            'Loss function (loss)', 
-                            ['log_loss', 'exponential']
-                        )
-                    st.session_state.balance_strat = st.sidebar.radio(
-                            'Balancing strategy', 
-                            ['None', 'Balance']
-                        )
+                        radio_choice(parameter_criterion, ['log_loss', 'exponential'], 'Loss function (loss)')
+                        
+                    radio_choice(balance_strat, ['None', 'Balance'], 'Balancing strategy')
 
                 #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
                 #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
 
             st.header('Other Parameters')
-            st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
+            slider_choice('parameter_random_state', [0, 1000, 42, 1], 'Seed number (random_state)')
 
         elif i == 4:
 
             st.header('Result Parameters')
             st.subheader('Metric analysis')
             if st.session_state.problem_type == 'Regression':
-                st.session_state.mae_analysis = st.sidebar.radio('Compare Mean Absolute Error (MAE):', ['Yes', 'No'])
-                st.session_state.mse_analysis = st.sidebar.radio('Compare Mean Squared Error (MSE):', ['Yes', 'No'])
-                st.session_state.rmse_analysis = st.sidebar.radio('Compare Root Mean Squared Error (RMSE):', ['Yes', 'No'])
-                st.session_state.r2_analysis = st.sidebar.radio('Compare R² Score:', ['Yes', 'No'])
-                st.session_state.evs_analysis = st.sidebar.radio('Compare Explained Variance Score:', ['Yes', 'No'])
+                radio_choice(mae_analysis, ['Yes', 'No'], 'Compare Mean Absolute Error (MAE):')
+                radio_choice(mse_analysis, ['Yes', 'No'], 'Compare Mean Squared Error (MSE):')
+                radio_choice(rmse_analysis, ['Yes', 'No'], 'Compare Root Mean Squared Error (RMSE):')
+                radio_choice(r2_analysis, ['Yes', 'No'], 'Compare R² Score:')
+                radio_choice(evs_analysis, ['Yes', 'No'], 'Compare Explained Variance Score:')
 
             else:
-                st.session_state.conf_analysis = st.sidebar.radio('Analyze Confusion Matrix:', ['Yes', 'No'])
-                st.session_state.accuracy_analysis = st.sidebar.radio('Compare Accuracy:', ['Yes', 'No'])
-                st.session_state.precision_analysis = st.sidebar.radio('Compare Precision:', ['Yes', 'No'])
-                st.session_state.recall_analysis = st.sidebar.radio('Compare Recall:', ['Yes', 'No'])
-                st.session_state.f1_analysis = st.sidebar.radio('Compare F1 Score:', ['Yes', 'No'])
-                st.session_state.auc_analysis = st.sidebar.radio('Analyze ROC AUC:', ['Yes', 'No'])
-                st.session_state.logloss_analysis = st.sidebar.radio('Compare Log Loss:', ['Yes', 'No'])
+                radio_choice(conf_analysis, ['Yes', 'No'], 'Analyze Confusion Matrix:')
+                radio_choice(accuracy_analysis, ['Yes', 'No'], 'Compare Accuracy:')
+                radio_choice(precision_analysis, ['Yes', 'No'], 'Compare Precision:')
+                radio_choice(recall_analysis, ['Yes', 'No'], 'Compare Recall:')
+                radio_choice(f1_analysis, ['Yes', 'No'], 'Compare F1 Score:')
+                radio_choice(auc_analysis, ['Yes', 'No'], 'Analyze ROC AUC:')
+                radio_choice(logloss_analysis, ['Yes', 'No'], 'Compare Log Loss:')
         
         elif i == 5:
             st.header('Model interpretation')
