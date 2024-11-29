@@ -8,14 +8,12 @@ def change_value(session_state, var):
 def sidebar_config(i):
     with st.sidebar:
         if i == 0:
-            st.write(st.session_state.col_sep)
             # Load data
             st.header('Input data')
 
             # Initialize session state for 'col_sep' and 'dec_id'
             options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
-                st.write(st.session_state.col_sep)
                 st.session_state.col_sep = options_col_sep[0]  # Default value
 
             options_dec_id = ['.',',']
@@ -28,7 +26,6 @@ def sidebar_config(i):
                 index = options_col_sep.index(st.session_state.col_sep),
                 key = 'col_sep'
             )
-            st.write(st.session_state.col_sep)
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
@@ -48,6 +45,7 @@ def sidebar_config(i):
 
         elif i == 1:
             # Select variables to analyze in detail
+            st.write(st.session_state.col_sep)
             st.header('Variable selection')
             var_1_options = list(set(st.session_state.df_original.columns))
             
