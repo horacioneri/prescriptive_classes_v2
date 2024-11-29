@@ -15,11 +15,17 @@ def select_choice(var_name, options, intro_text='Select:'):
             key = var_name
         )
 
-def radio_choice(var_name, options, intro_text='Choose:'):
+def radio_choice(var_name, options, intro_text='Choose:', default_option='first'):
     if var_name not in st.session_state:
-        st.session_state[var_name] = options[0]
+        if default_option == 'first':
+            st.session_state[var_name] = options[0]
+        else:
+            st.session_state[var_name] = default_option
     if st.session_state[var_name] not in options:
-        st.session_state[var_name] = options[0]
+        if default_option == 'first':
+            st.session_state[var_name] = options[0]
+        else:
+            st.session_state[var_name] = default_option
 
     var = st.sidebar.radio(
             intro_text, 
@@ -191,7 +197,7 @@ def sidebar_config(i):
                 radio_choice('mse_analysis', ['Yes', 'No'], 'Compare Mean Squared Error (MSE):')
                 radio_choice('rmse_analysis', ['Yes', 'No'], 'Compare Root Mean Squared Error (RMSE):')
                 radio_choice('r2_analysis', ['Yes', 'No'], 'Compare R² Score:')
-                radio_choice('evs_analysis', ['Yes', 'No'], 'Compare Explained Variance Score:')
+                radio_choice('evs_analysis', ['Yes', 'No'], 'Compare Explained Variance Score:', 'No')
 
             else:
                 radio_choice('conf_analysis', ['Yes', 'No'], 'Analyze Confusion Matrix:')
@@ -199,8 +205,8 @@ def sidebar_config(i):
                 radio_choice('precision_analysis', ['Yes', 'No'], 'Compare Precision:')
                 radio_choice('recall_analysis', ['Yes', 'No'], 'Compare Recall:')
                 radio_choice('f1_analysis', ['Yes', 'No'], 'Compare F1 Score:')
-                radio_choice('auc_analysis', ['Yes', 'No'], 'Analyze ROC AUC:')
-                radio_choice('logloss_analysis', ['Yes', 'No'], 'Compare Log Loss:')
+                radio_choice('auc_analysis', ['Yes', 'No'], 'Analyze ROC AUC:', 'No')
+                radio_choice('logloss_analysis', ['Yes', 'No'], 'Compare Log Loss:', 'No')
         
         elif i == 5:
             st.header('Model interpretation')
