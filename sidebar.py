@@ -32,14 +32,14 @@ def sidebar_config(i):
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
                 st.session_state.df_original.columns,
-                index=0 if 'var_1' not in st.session_state else st.session_state.var_1
+                index=0 if 'var_1' not in st.session_state else st.session_state.df_original.columns.index(st.session_state.var_1)
             )
             st.session_state.var_1 = var_1
 
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
                 list(set(st.session_state.df_original.columns) - {var_1}),
-                index=0 if 'var_2' not in st.session_state else st.session_state.var_2
+                index=0 if 'var_2' not in st.session_state else st.session_state.df_original.columns.index(st.session_state.var_2)
             )
             st.session_state.var_2 = var_2
 
