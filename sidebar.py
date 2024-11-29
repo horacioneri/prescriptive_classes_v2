@@ -129,36 +129,17 @@ def sidebar_config(i):
 
             st.header('Model Parameters')
             st.subheader('Machine learning model')
-            # Model Selection - Radio Button
-            if problem_type == 'Regression':
+            if st.session_state.problem_type == 'Regression':
                 # Define the valid models for regression
                 available_models = ['Linear regression', 'Random forest', 'Gradient boosting machines']
-                
-                # If a model was previously selected and it's not valid for regression, set to a default
-                if 'model_to_use' in st.session_state:
-                    if st.session_state.model_to_use not in available_models:
-                        st.session_state.model_to_use = 'Linear regression'  # Default model for regression
-                else:
-                    st.session_state.model_to_use = 'Linear regression'  # Default model for first-time selection
-
             else:
-                # Define the valid models for classification
                 available_models = ['Logistic regression', 'Random forest', 'Gradient boosting machines']
-                
-                # If a model was previously selected and it's not valid for classification, set to a default
-                if 'model_to_use' in st.session_state:
-                    if st.session_state.model_to_use not in available_models:
-                        st.session_state.model_to_use = 'Logistic regression'  # Default model for classification
-                else:
-                    st.session_state.model_to_use = 'Logistic regression'  # Default model for first-time selection
 
-            # Display the model selection radio button
-            model_to_use = st.sidebar.radio(
-                'Choose model:', 
+            radio_choice(
+                'model_to_use', 
                 available_models, 
-                index=available_models.index(st.session_state.model_to_use)
+                'Choose predictive model:'
             )
-            st.session_state.model_to_use = model_to_use  # Save to session state
 
             st.subheader('Learning Parameters')
             #if model_to_use == 'Linear regression':
