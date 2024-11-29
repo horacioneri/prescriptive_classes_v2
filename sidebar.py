@@ -23,12 +23,11 @@ def sidebar_config(i):
                 st.session_state.dec_id = options_dec_id[0]  # Default value
 
             
-            col_sep = st.selectbox(
+            st.session_state.col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
                 index = options_col_sep.index(def_col_sep)
             )
-            st.session_state.col_sep = col_sep
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
