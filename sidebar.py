@@ -113,7 +113,7 @@ def sidebar_config(i):
             )
             multiselect_choice(
                 'input_variables',
-                list(set(st.session_state.df_treated.columns) - {to_predict}),
+                list(set(st.session_state.df_treated.columns) - {st.session_state.to_predict}),
                 'Select the input variables you want to use:',
                 'All'
             )
