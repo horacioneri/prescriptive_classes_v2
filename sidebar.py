@@ -4,7 +4,8 @@ import time
 
 def select_choice(var_name, options, intro_text='Select the option'):
     if var_name not in st.session_state:
-        st.session_state.index(var_name) = options[0]
+        st.session_state[var_name] = options[0]
+
     var = st.selectbox(
         intro_text,
         options,
