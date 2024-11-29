@@ -49,7 +49,7 @@ def sidebar_config(i):
             var_1_options = list(set(st.session_state.df_original.columns))
             
             if 'var_1' not in st.session_state:
-                st.session_state.var_1 = var_1_options.index(0)  # Default value
+                st.session_state.var_1 = var_1_options[0]  # Default value
 
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
