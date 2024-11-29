@@ -49,7 +49,7 @@ def sidebar_config(i):
             var_1_options = list(set(st.session_state.df_original.columns))
             
             if 'var_1' not in st.session_state:
-                st.session_state.var_1 = var_1_options[0]  # Default value
+                st.session_state.var_1 = var_1_options.index(0)  # Default value
 
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
@@ -62,9 +62,9 @@ def sidebar_config(i):
 
             # Determine the index for the default selection
             if 'var_2' not in st.session_state or st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options[0]  # Default to the first option
+                st.session_state.var_2 = var_2_options.index(0)  # Default to the first option
             if st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options[0]
+                st.session_state.var_2 = var_2_options.index(0)
 
             # Render the selectbox with the computed index
             var_2 = st.selectbox(
