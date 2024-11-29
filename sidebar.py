@@ -57,27 +57,30 @@ def sidebar_config(i):
         elif i == 2:
             st.header('Data preparation')
             st.write('Categorical data')
+            options=['Remove columns', 'Label encoding', 'One-hot encoding']
             categorical_treat = st.selectbox(
                 'How to treat categorical data:',
-                ['Remove columns', 'Label encoding', 'One-hot encoding'], #Add target encoding in the future
-                index=0 if 'categorical_treat' not in st.session_state else st.session_state.categorical_treat
+                options, #Add target encoding in the future
+                index=0 if 'categorical_treat' not in st.session_state else options.index(st.session_state.categorical_treat)
             )
             st.session_state.categorical_treat = categorical_treat
 
             st.write('Missing values treatment')
+            options = ['Remove observation', 'Imputation: mean', 'Imputation: median']
             missing_treat = st.selectbox(
                 'How to treat missing values:',
-                ['Remove observation', 'Imputation: mean', 'Imputation: median'],
-                index=0 if 'missing_treat' not in st.session_state else st.session_state.missing_treat
+                options,
+                index=0 if 'missing_treat' not in st.session_state else options.missing_treat
             )
             st.session_state.missing_treat = missing_treat
 
             #Add option of how to find outliers
             st.write('Outlier treatment')
+            options= ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median']
             outlier_treat = st.selectbox(
                 'How to treat outlier values:',
-                ['Keep as-is', 'Remove observation', 'Imputation: mean', 'Imputation: median'],
-                index=0 if 'outlier_treat' not in st.session_state else st.session_state.outlier_treat
+                options,
+                index=0 if 'outlier_treat' not in st.session_state else options.outlier_treat
             )
             st.session_state.outlier_treat = outlier_treat
 
