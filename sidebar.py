@@ -35,14 +35,8 @@ def multiselect_choice(var_name, options, intro_text='Select/Unselect:', default
         else:
             st.session_state[var_name] = []
 
-    if st.session_state[var_name] not in options:
-        if default_option == 'All':
-            st.session_state[var_name] = options
-        else:
-            st.session_state[var_name] = [] 
-
     var = st.multiselect(
-            'Select the input variables you want to use:', 
+            intro_text, 
             options,
             default = st.session_state[var_name],
             key = var_name
