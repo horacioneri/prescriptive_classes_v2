@@ -200,6 +200,7 @@ def sidebar_config(i):
                 radio_choice('recall_analysis', ['Yes', 'No'], 'Compare Recall:')
                 radio_choice('f1_analysis', ['Yes', 'No'], 'Compare F1 Score:')
                 radio_choice('auc_analysis', ['Yes', 'No'], 'Analyze ROC AUC:')
+                st.write(st.session_state.auc_analysis)
                 radio_choice('logloss_analysis', ['Yes', 'No'], 'Compare Log Loss:')
         
         elif i == 5:
