@@ -14,7 +14,7 @@ def sidebar_config(i):
             if 'dec_id' not in st.session_state:
                 st.session_state.dec_id = '.'  # Default value
 
-           col_sep = st.selectbox(
+            col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 [',',';'],
                 key='col_sep'
