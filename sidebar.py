@@ -9,7 +9,7 @@ def select_choice(var_name, options, intro_text='Select the option'):
     var = st.selectbox(
         intro_text,
         options,
-        indext = st.session_state.index(var_name)
+        index = st.session_state[var_name],
         key = var_name
     )
 
