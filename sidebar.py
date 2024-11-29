@@ -24,15 +24,12 @@ def sidebar_config(i):
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
-                index=options_col_sep.index(st.session_state.col_sep),
                 key='col_sep',
-                on_change=time.sleep(0.5)
             )
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
                 options_dec_id,
-                index=options_dec_id.index(st.session_state.dec_id),
                 key='dec_id'  # Directly bind to session state
             )
 
