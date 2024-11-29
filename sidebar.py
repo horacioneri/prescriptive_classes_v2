@@ -40,6 +40,11 @@ def multiselect_choice(var_name, options, intro_text='Select/Unselect:', default
             st.session_state[var_name] = options
         else:
             st.session_state[var_name] = []
+    if not set(st.session_state[var_name]).issubset(set(options)):
+        if default_option == 'All':
+            st.session_state[var_name] = options
+        else:
+            st.session_state[var_name] = []
 
     var = st.multiselect(
             intro_text, 
