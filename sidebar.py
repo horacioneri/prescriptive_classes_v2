@@ -23,7 +23,7 @@ def sidebar_config(i):
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
-                index = None,
+                index = 'col_sep',
                 key = 'col_sep'
             )
 
