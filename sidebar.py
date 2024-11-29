@@ -9,11 +9,45 @@ def select_choice(var_name, options, intro_text='Select:'):
         st.session_state[var_name] = options[0]
 
     var = st.selectbox(
-        intro_text,
-        options,
-        index = options.index(st.session_state[var_name]),
-        key = var_name
-    )
+            intro_text,
+            options,
+            index = options.index(st.session_state[var_name]),
+            key = var_name
+        )
+
+def radio_choice(var_name, options, intro_text='Choose:'):
+    if var_name not in st.session_state:
+        st.session_state[var_name] = options[0]
+    if st.session_state[var_name] not in options:
+        st.session_state[var_name] = options[0]
+
+    var = st.sidebar.radio(
+            'Choose problem type:', 
+            options,
+            index = options.index(st.session_state[var_name]),
+            key = var_name
+        )
+
+def multiselect_choice(var_name, options, intro_text='Select/Unselect:', default_option='All'):
+    if var_name not in st.session_state:
+        if default_option == 'All':
+            st.session_state[var_name] = options
+        else:
+            st.session_state[var_name] = []
+
+    if st.session_state[var_name] not in options:
+        if default_option == 'All':
+            st.session_state[var_name] = options
+        else:
+            st.session_state[var_name] = [] 
+
+    var = st.multiselect(
+            'Select the input variables you want to use:', 
+            options,
+            default = st.session_state[var_name],
+            key = var_name
+        )
+
 
 def sidebar_config(i):
     with st.sidebar:
@@ -65,27 +99,24 @@ def sidebar_config(i):
         elif i == 3:
 
             st.header('Problem Type')
-            problem_type = st.sidebar.radio(
-                'Choose problem type:', 
-                ['Regression', 'Classification'],
-                index=0 if 'problem_type' not in st.session_state else st.session_state.problem_type
+            radio_choice(
+                'problem_type', 
+                ['Regression', 'Classification'], 
+                'Choose problem type:'
             )
-            st.session_state.problem_type = problem_type
 
             st.header('Variable selection')
-            to_predict = st.selectbox(
-                'Select the variable you want to predict:',
-                st.session_state.df_treated.columns,
-                index=0 if 'to_predict' not in st.session_state else st.session_state.to_predict
+            select_choice(
+                'to_predict', 
+                st.session_state.df_treated.columns, 
+                'Select the variable you want to predict:'
             )
-            st.session_state.to_predict = to_predict
-            
-            input_variables = st.multiselect(
-                'Select the input variables you want to use:', 
+            multiselect_choice(
+                'input_variables',
                 list(set(st.session_state.df_treated.columns) - {to_predict}),
-                default=list(set(st.session_state.df_treated.columns) - {to_predict}) if 'input_variables' not in st.session_state else st.session_state.input_variables
+                'Select the input variables you want to use:',
+                'All'
             )
-            st.session_state.input_variables = input_variables
 
             st.header('Training Parameters')
             parameter_split_size = st.slider(
