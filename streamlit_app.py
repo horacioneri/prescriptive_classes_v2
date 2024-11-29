@@ -8,7 +8,6 @@ from page_body import introduction_text, exploratory_data_analysis, data_prepara
 # Navigation function with forced rerun
 def change_page(delta):
     st.session_state.page = max(0, min(len(page_titles) - 1, st.session_state.page + delta))
-    st.session_state.expander_open = False  # Collapse the expander when going to the next page
     st.rerun()  # Force immediate rerun to reflect the updated page state
 
 # Initialize session state variables
@@ -49,16 +48,16 @@ if current_page > 0:
 # Display title of the page
 st.title(page_titles[current_page], anchor='title')
 
-# Sidebar for accepting input parameters
-sidebar_config(current_page)
-
 if current_page == 0:
+    sidebar_config(current_page)
     introduction_text()
 
 if current_page == 1:
     if not st.session_state.uploaded:
+        sidebar_config(current_page-1)
         st.write('Go back to the previous page and reupload your dataset')
     else:
+        sidebar_config(current_page)
         exploratory_data_analysis()
 
 if current_page == 2:

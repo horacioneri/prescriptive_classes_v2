@@ -45,7 +45,6 @@ def sidebar_config(i):
 
         elif i == 1:
             # Select variables to analyze in detail
-            st.write(st.session_state.col_sep)
             st.header('Variable selection')
             var_1_options = list(set(st.session_state.df_original.columns))
             
@@ -75,7 +74,6 @@ def sidebar_config(i):
             )
 
         elif i == 2:
-            st.write(st.session_state.col_sep)
             st.header('Data preparation')
             st.write('Categorical data')
             options_categorical=['Remove columns', 'Label encoding', 'One-hot encoding']
