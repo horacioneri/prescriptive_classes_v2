@@ -464,23 +464,23 @@ def result_analysis():
                 y_pred = st.session_state.y_test_pred
             
             if st.session_state.problem_type == 'Regression':
-                if st.session_state.mae_analysis:
+                if st.session_state.mae_analysis == 'Yes':
                     mae = mean_absolute_error(y, y_pred)
                     st.write(f"Mean Absolute Error (MAE): {mae:.4f}")
-                if st.session_state.mse_analysis:
+                if st.session_state.mse_analysis == 'Yes':
                     mse = mean_squared_error(y, y_pred)
                     st.write(f"Mean Squared Error (MSE): {mse:.4f}")
-                if st.session_state.rmse_analysis:
+                if st.session_state.rmse_analysis == 'Yes':
                     rmse = np.sqrt(mean_squared_error(y, y_pred))
                     st.write(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
-                if st.session_state.r2_analysis:
+                if st.session_state.r2_analysis == 'Yes':
                     r2 = r2_score(y, y_pred)
                     st.write(f"R² Score: {r2:.4f}")
-                if st.session_state.evs_analysis:
+                if st.session_state.evs_analysis == 'Yes':
                     evs = explained_variance_score(y, y_pred)
                     st.write(f"Explained Variance Score: {evs:.4f}")
             else:
-                if st.session_state.conf_analysis:
+                if st.session_state.conf_analysis == 'Yes':
                     # Calculate the confusion matrix
                     conf_matrix = confusion_matrix(y, y_pred)
                     labels = [f"Class {i}" for i in range(len(conf_matrix))]  # Modify based on your class labels
@@ -515,19 +515,19 @@ def result_analysis():
                     # Display the confusion matrix
                     st.plotly_chart(fig, use_container_width=True, key=f'confusion_graph_{c}')
 
-                if st.session_state.accuracy_analysis:
+                if st.session_state.accuracy_analysis == 'Yes':
                     acc = accuracy_score(y, y_pred)
                     st.write(f"Accuracy: {acc:.4f}")
-                if st.session_state.precision_analysis:
+                if st.session_state.precision_analysis == 'Yes':
                     prec = precision_score(y, y_pred, average='weighted')
                     st.write(f"Precision: {prec:.4f}")
-                if st.session_state.recall_analysis:
+                if st.session_state.recall_analysis == 'Yes':
                     rec = recall_score(y, y_pred, average='weighted')
                     st.write(f"Recall: {rec:.4f}")
-                if st.session_state.f1_analysis:
+                if st.session_state.f1_analysis == 'Yes':
                     f1 = f1_score(y, y_pred, average='weighted')
                     st.write(f"F1 Score: {f1:.4f}")
-                if st.session_state.auc_analysis:
+                if st.session_state.auc_analysis == 'Yes':
                     roc_auc = roc_auc_score(y, y_pred, multi_class='ovr')  # Adjust for multi-class
                     st.write(f"ROC AUC Score: {roc_auc:.4f}")
 
@@ -547,7 +547,7 @@ def result_analysis():
                     )
                     st.plotly_chart(fig, use_container_width=True, key=f'auc_graph_{c}')
                 
-                if st.session_state.logloss_analysis:
+                if st.session_state.logloss_analysis == 'Yes':
                     logloss = log_loss(y, y_pred)
                     st.write(f"Log Loss: {logloss:.4f}")
 
