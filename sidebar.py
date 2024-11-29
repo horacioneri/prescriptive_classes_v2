@@ -24,7 +24,7 @@ def sidebar_config(i):
                 'What is the column separator of your file:',
                 options_col_sep,
                 index = options_col_sep.index(st.session_state.col_sep),
-                key = 'col_sep'
+                key = 'col_sep_2'
             )
             st.session_state.col_sep=col_sep
 
