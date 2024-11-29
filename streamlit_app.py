@@ -29,6 +29,10 @@ if "predict_output" not in st.session_state:
 if "run_id" not in st.session_state:
     st.session_state.run_id = 0
 
+for k, v in st.session_state.items():
+    if k != 'page' and 'next' not in k and 'prev' not in k and 'bot_restart' not in k and 'top_restart' not in k:
+        st.session_state[k] = v
+
 current_page = st.session_state.page
 
 # Page config
@@ -50,10 +54,6 @@ if current_page > 0:
 
 # Display title of the page
 st.title(page_titles[current_page], anchor='title')
-
-for k, v in st.session_state.items():
-    if k != 'page' and 'next' not in k and 'prev' not in k and 'bot_restart' not in k:
-        st.session_state[k] = v
 
 sidebar_config(current_page)
 
