@@ -14,19 +14,17 @@ def sidebar_config(i):
             if 'dec_id' not in st.session_state:
                 st.session_state.dec_id = '.'  # Default value
 
-            col_sep = st.selectbox(
+            st.session_state.col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 [',',';'],
                 index=[',',';'].index(st.session_state.col_sep)
             )
-            st.session_state.col_sep = col_sep
 
-            dec_id = st.selectbox(
+            st.session_state.dec_id = st.selectbox(
                 'What is the decimal point character:',
                 ['.',','],
                 index=['.',','].index(st.session_state.dec_id)
             )
-            st.session_state.dec_id = dec_id
 
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
