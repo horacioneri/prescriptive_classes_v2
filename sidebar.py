@@ -65,6 +65,7 @@ def sidebar_config(i):
                 index=var_2_options.index(st.session_state.var_2),
                 key = 'var_2'
             )
+            st.write(st.session_state.var_1 + ' ' + st.session_state.var_2)
 
         elif i == 2:
             st.header('Data preparation')
