@@ -128,14 +128,13 @@ def sidebar_config(i):
                 list(set(st.session_state.df_treated.columns)), 
                 'Select the variable you want to predict:'
             )
-            st.write(list(set(st.session_state.df_treated.columns) - {st.session_state.to_predict}))
+
             multiselect_choice(
                 'input_variables',
                 list(set(st.session_state.df_treated.columns) - {st.session_state.to_predict}),
                 'Select the input variables you want to use:',
                 'All'
             )
-            st.write(st.session_state.input_variables)
 
             st.header('Training Parameters')
             slider_choice('parameter_split_size', [10,90,80,5],'Data split ratio (% for Training Set)')
