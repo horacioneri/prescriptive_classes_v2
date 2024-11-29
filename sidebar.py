@@ -50,6 +50,7 @@ def sidebar_config(i):
                 index=var_1_options.index(st.session_state.var_1),
                 key = 'var_1'
             )
+            st.session_state.var_1 = var_1
 
             # Generate the options dynamically by excluding `var_1`
             var_2_options = list(set(st.session_state.df_original.columns) - {var_1})  # Convert to a list
