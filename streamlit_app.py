@@ -48,16 +48,15 @@ if current_page > 0:
 # Display title of the page
 st.title(page_titles[current_page], anchor='title')
 
+sidebar_config(current_page)
+
 if current_page == 0:
-    sidebar_config(current_page)
     introduction_text()
 
 if current_page == 1:
     if not st.session_state.uploaded:
-        sidebar_config(current_page-1)
         st.write('Go back to the previous page and reupload your dataset')
     else:
-        sidebar_config(current_page)
         exploratory_data_analysis()
 
 if current_page == 2:
