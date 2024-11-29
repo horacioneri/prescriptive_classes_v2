@@ -14,6 +14,7 @@ def sidebar_config(i):
             # Initialize session state for 'col_sep' and 'dec_id'
             options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
+                st.write('redefault varialble')
                 st.session_state.col_sep = options_col_sep[0]  # Default value
 
             options_dec_id = ['.',',']
