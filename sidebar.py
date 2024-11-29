@@ -10,14 +10,14 @@ def sidebar_config(i):
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 [',',';'],
-                index=0 if 'col_sep' not in st.session_state else st.session_state.col_sep
+                index=0 if 'col_sep' not in st.session_state else [',',';'].index(st.session_state.col_sep)
             )
             st.session_state.col_sep = col_sep
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
                 ['.',','],
-                index=0 if 'dec_id' not in st.session_state else st.session_state.dec_id
+                index=0 if 'dec_id' not in st.session_state else ['.',','].index(st.session_state.dec_id)
             )
             st.session_state.dec_id = dec_id
 
