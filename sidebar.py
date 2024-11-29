@@ -223,7 +223,7 @@ def sidebar_config(i):
                 radio_choice('shap_analysis', ['Yes', 'No'], 'Analyze shap values:', 'No')
                 radio_choice('partial_dep_plot', ['Yes', 'No'], 'Analyze partial dependence plot:', 'No')
                 if st.session_state.partial_dep_plot == 'Yes':
-                    select_choice('var_analysis', st.session_state.x_train.columns, 'Select a variable to analyze in detail:')
+                    select_choice('var_analysis', list(set(st.session_state.x_train.columns)), 'Select a variable to analyze in detail:')
                 
         elif i == 6:
             st.header('Prediction data')
