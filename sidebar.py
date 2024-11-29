@@ -15,7 +15,7 @@ def sidebar_config(i):
             options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
                 def_col_sep = options_col_sep[0]  # Default value
-            else
+            else:
                 def_col_sep = st.session_state.col_sep
 
             options_dec_id = ['.',',']
