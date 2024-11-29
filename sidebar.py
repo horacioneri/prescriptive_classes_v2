@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 
 def change_value(session_state, var):
     session_state = var
@@ -25,7 +26,7 @@ def sidebar_config(i):
                 options_col_sep,
                 index=options_col_sep.index(st.session_state.col_sep),
                 key='col_sep',
-                on_change=change_value(st.session_state.col_sep, col_sep)
+                on_change=time.sleep(0.5)
             )
 
             dec_id = st.selectbox(
