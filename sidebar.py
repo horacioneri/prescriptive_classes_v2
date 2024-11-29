@@ -62,7 +62,7 @@ def sidebar_config(i):
             uploaded_file = st.file_uploader("Upload the training set", type=["csv"])
             if uploaded_file is not None:
                 st.session_state.uploaded  = True
-                st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
+                st.session_state.df_original = pd.read_csv(uploaded_file, sep=st.session_state.col_sep, index_col=False, decimal=st.session_state.dec_id)
 
         elif i == 1:
 
