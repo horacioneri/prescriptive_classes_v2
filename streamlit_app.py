@@ -26,8 +26,10 @@ if "trained" not in st.session_state:
 if "predict_output" not in st.session_state:
     st.session_state.predict_output = False
 
+if "run_id" not in st.session_state:
+    st.session_state.run_id = 0
+
 current_page = st.session_state.page
-st.session_state.run_id = 0
 
 # Page config
 st.set_page_config(page_title='Building a ML model', page_icon='', layout = 'wide')
@@ -93,6 +95,8 @@ if current_page == 6:
     else:
         exercise_summary()
 
+st.session_state.run_id = st.session_state.run_id+1
+
 # Display buttons at the end to navigate between pages
 if current_page == 0:
     left, right = st.columns(2)
@@ -124,8 +128,6 @@ if current_page > 0:
         st.session_state.df_original = pd.DataFrame()
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
-
-st.session_state.run_id = st.session_state.run_id+1
 # Debug
 # df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
 # df
