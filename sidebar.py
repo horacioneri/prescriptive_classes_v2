@@ -36,10 +36,10 @@ def sidebar_config(i):
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
 
-            st.write(st.session_state.col_id)
+            st.write(st.session_state.col_sep)
             st.write(options_col_sep)
             st.write(st.session_state.dec_id)
-            st.write(options_dec_sep)
+            st.write(options_dec_id)
 
         elif i == 1:
             # Select variables to analyze in detail
