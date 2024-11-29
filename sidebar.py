@@ -36,6 +36,11 @@ def sidebar_config(i):
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=col_sep, index_col=False, decimal=dec_id)
 
+            st.write(st.session_state.col_id)
+            st.write(options_col_sep)
+            st.write(st.session_state.dec_id)
+            st.write(options_dec_sep)
+
         elif i == 1:
             # Select variables to analyze in detail
             st.header('Variable selection')
@@ -68,10 +73,6 @@ def sidebar_config(i):
                 index=var_2_options.index(st.session_state.var_2),
                 key = 'var_2'
             )
-            st.write(st.session_state.var_1)
-            st.write(var_1_options)
-            st.write(st.session_state.var_2)
-            st.write(var_2_options)
 
         elif i == 2:
             st.header('Data preparation')
