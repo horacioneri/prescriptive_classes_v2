@@ -46,7 +46,7 @@ def introduction_text():
         st.session_state.df_original = df
 
 def exploratory_data_analysis():
-    df = st.session_state.df_original
+    df = st.session_state.df_original.copy()
     st.header('Single variable analysis', divider='rainbow')
     col = st.columns(2)
     for c in range(len(col)):
@@ -241,7 +241,7 @@ def exploratory_data_analysis():
 def data_preparation():
     st.header('Data preparation', divider='rainbow')
     st.subheader('Treating categorical columns')
-    df = st.session_state.df_original
+    df = st.session_state.df_original.copy()
 
     # Identify categorical columns
     categorical_columns = df.select_dtypes(include=['object', 'category']).columns
@@ -329,7 +329,7 @@ def data_preparation():
     st.session_state.df_treated = df
 
 def model_training():
-    df = st.session_state.df_treated
+    df = st.session_state.df_treated.copy()
     y = df[st.session_state.to_predict]
     x = df[st.session_state.input_variables]
 
@@ -553,10 +553,10 @@ def result_analysis():
 
 def model_interpretation():
     
-    x_train = st.session_state.x_train
-    y_train = st.session_state.y_train
-    x_test = st.session_state.x_test
-    y_test = st.session_state.y_test
+    x_train = st.session_state.x_train.copy()
+    y_train = st.session_state.y_train.copy()
+    x_test = st.session_state.x_test.copy()
+    y_test = st.session_state.y_test.copy()
     ml_mod = st.session_state.ml_mod
     
     if st.session_state.model_to_use == 'Linear regression':
@@ -753,7 +753,7 @@ def exercise_summary():
 
 
     if st.session_state.predict_output:
-        df = st.session_state.df_to_predict
+        df = st.session_state.df_to_predict.copy()
         # Repeat treatment of the dataset -> don't treat for missing values and for outliers
         # Identify categorical columns
         categorical_columns = df.select_dtypes(include=['object', 'category']).columns
