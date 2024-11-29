@@ -238,6 +238,30 @@ def exploratory_data_analysis():
     # Show the plot
     st.plotly_chart(fig, use_container_width=True)
 
+    st.header('Scatter matrix', divider='rainbow')
+    # Create a Scatter Matrix (automatically handles numerical columns)
+    fig = px.scatter_matrix(
+        df,
+        dimensions=df.columns,  # Select numeric columns
+    )
+
+    # Update layout
+    fig.update_layout(
+        title=dict(
+            text="Comparison of all variables in the dataset",
+            x=0,  # Left align the title
+            xanchor='left'
+        ),
+        font=dict(
+            family="Arial",  # Similar to Seaborn's default
+            size=12
+        ),
+        template="seaborn"  # Use the built-in "seaborn" template
+    )
+
+    # Show Plot
+    st.plotly_chart(fig, use_container_width=True)
+
 def data_preparation():
     st.header('Data preparation', divider='rainbow')
     st.subheader('Treating categorical columns')
