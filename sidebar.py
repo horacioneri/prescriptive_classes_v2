@@ -47,27 +47,24 @@ def sidebar_config(i):
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
                 var_1_options,
-                index=0 if 'var_1' not in st.session_state else var_1_options.index(st.session_state.var_1),
+                index=var_1_options.index(st.session_state.var_1),
                 key = 'var_1'
             )
-            st.session_state.var_1 = var_1
 
             # Generate the options dynamically by excluding `var_1`
             var_2_options = list(set(st.session_state.df_original.columns) - {var_1})  # Convert to a list
 
             # Determine the index for the default selection
-            if 'var_2' in st.session_state and st.session_state.var_2 in var_2_options:
-                var_2_index = var_2_options.index(st.session_state.var_2)  # Use Python list's index() method
-            else:
-                var_2_index = 0  # Default to the first option
+            if 'var_2' not in st.session_state or st.session_state.var_2 not in var_2_options:
+                st.session_state.var_2 = var_2_options[0]  # Default to the first option
 
             # Render the selectbox with the computed index
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
                 var_2_options,
-                index=var_2_index
+                index=var_2_options.index(st.session_state.var_2),
+                key = 'var_2'
             )
-            st.session_state.var_2 = var_2
 
         elif i == 2:
             st.header('Data preparation')
