@@ -106,6 +106,8 @@ def sidebar_config(i):
             )
 
             st.header('Variable selection')
+            st.write(st.session_state.df_treated.columns)
+            st.write(st.session_state.df_treated.columns.index('Churn_Yes'))
             select_choice(
                 'to_predict', 
                 st.session_state.df_treated.columns, 
