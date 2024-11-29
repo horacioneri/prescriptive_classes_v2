@@ -14,7 +14,9 @@ def sidebar_config(i):
             # Initialize session state for 'col_sep' and 'dec_id'
             options_col_sep = [',',';']
             if 'col_sep' not in st.session_state:
-                st.session_state.col_sep = options_col_sep[0]  # Default value
+                def_col_sep = options_col_sep[0]  # Default value
+            else
+                def_col_sep = st.session_state.col_sep
 
             options_dec_id = ['.',',']
             if 'dec_id' not in st.session_state:
@@ -24,8 +26,9 @@ def sidebar_config(i):
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
-                key='col_sep'
+                index = options_col_sep.index(def_col_sep)
             )
+            st.session_state.col_sep = col_sep
 
             dec_id = st.selectbox(
                 'What is the decimal point character:',
