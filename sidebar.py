@@ -218,10 +218,12 @@ def sidebar_config(i):
             st.header('Model interpretation')
             st.subheader('Analysis parameters')
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
-                st.session_state.var_analysis = st.selectbox(
-                    'Select a variable to analyze in detail:',
-                    st.session_state.x_train.columns
-                )
+                radio_choice('traditional_imp', ['Yes', 'No'], 'Analyze traditional feature importance:', 'Yes')
+                radio_choice('permutation_imp', ['Yes', 'No'], 'Analyze permutation feature importance:', 'No')
+                radio_choice('shap_analysis', ['Yes', 'No'], 'Analyze shap values:', 'No')
+                radio_choice('partial_dep_plot', ['Yes', 'No'], 'Analyze partial dependence plot:', 'No')
+                if st.session_state.partial_dep_plot == 'Yes':
+                    select_choice('var_analysis', st.session_state.x_train.columns, 'Select a variable to analyze in detail:')
                 
         elif i == 6:
             st.header('Prediction data')

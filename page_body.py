@@ -607,89 +607,93 @@ def model_interpretation():
         st.header("Machine learning model analysis", divider='rainbow')
 
         # Traditional feature importance
-        st.subheader("Traditional Feature Importance")
-        feature_importance = pd.Series(ml_mod.feature_importances_, index=x_train.columns)
-        feature_importance = feature_importance.sort_values(ascending=False)
+        if st.session_state.traditional_imp == 'Yes':
+            st.subheader("Traditional Feature Importance")
+            feature_importance = pd.Series(ml_mod.feature_importances_, index=x_train.columns)
+            feature_importance = feature_importance.sort_values(ascending=False)
         
-        # Plot feature importance using Plotly
-        fig = go.Figure([go.Bar(x=feature_importance.index, y=feature_importance.values, marker_color='royalblue')])
-        fig.update_layout(title="Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
-        st.plotly_chart(fig)
+            # Plot feature importance using Plotly
+            fig = go.Figure([go.Bar(x=feature_importance.index, y=feature_importance.values, marker_color='royalblue')])
+            fig.update_layout(title="Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
+            st.plotly_chart(fig)
 
         # Permutation importance
-        st.subheader("Permutation Importance")
-        perm_importance = permutation_importance(ml_mod, x_test, y_test, n_repeats=10, random_state=st.session_state.parameter_random_state)
-        perm_importance_df = pd.DataFrame({
-            "Feature": x_train.columns,
-            "Importance": perm_importance.importances_mean
-        }).sort_values("Importance", ascending=False)
-        
-        # Plot permutation importance using Plotly
-        fig = go.Figure([go.Bar(x=perm_importance_df['Feature'], y=perm_importance_df['Importance'], marker_color='indianred')])
-        fig.update_layout(title="Permutation Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
-        st.plotly_chart(fig)
+        if st.session_state.permutation_imp == 'Yes':
+            st.subheader("Permutation Importance")
+            perm_importance = permutation_importance(ml_mod, x_test, y_test, n_repeats=10, random_state=st.session_state.parameter_random_state)
+            perm_importance_df = pd.DataFrame({
+                "Feature": x_train.columns,
+                "Importance": perm_importance.importances_mean
+            }).sort_values("Importance", ascending=False)
+            
+            # Plot permutation importance using Plotly
+            fig = go.Figure([go.Bar(x=perm_importance_df['Feature'], y=perm_importance_df['Importance'], marker_color='indianred')])
+            fig.update_layout(title="Permutation Feature Importance", xaxis_title="Features", yaxis_title="Importance", template="seaborn")
+            st.plotly_chart(fig)
 
         # SHAP values
-        st.subheader("SHAP Values")
-        explainer = shap.TreeExplainer(ml_mod)
-        shap_values = explainer.shap_values(x_test)
-        explanation = explainer(x_test)  # New style
+        if st.session_state.shap_analysis == 'Yes':
+            st.subheader("SHAP Values")
+            explainer = shap.TreeExplainer(ml_mod)
+            shap_values = explainer.shap_values(x_test)
+            explanation = explainer(x_test)  # New style
 
-        # Classification: Handle multi-class SHAP values
-        if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Random forest':
-            # Number of classes
-            num_classes = len(explanation.values[0][0])
-            st.write("For classification, select which class to analyze SHAP values.")
+            # Classification: Handle multi-class SHAP values
+            if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Random forest':
+                # Number of classes
+                num_classes = len(explanation.values[0][0])
+                st.write("For classification, select which class to analyze SHAP values.")
 
-            # Interactive class selection
-            class_index = st.selectbox(
-                "Select class to analyze:",
-                options=list(range(num_classes)),
-                format_func=lambda x: f"Class {x}"
-            )
+                # Interactive class selection
+                class_index = st.selectbox(
+                    "Select class to analyze:",
+                    options=list(range(num_classes)),
+                    format_func=lambda x: f"Class {x}"
+                )
 
-            # Extract SHAP values for the selected class
-            shap_class_values = explanation.values[:, :, class_index]
+                # Extract SHAP values for the selected class
+                shap_class_values = explanation.values[:, :, class_index]
 
-            # Beeswarm plot for the selected class
-            st.write(f"Beeswarm plot for class {class_index}:")
-            shap.plots.beeswarm(
-                shap.Explanation(
-                    values=shap_class_values,
-                    base_values=explanation.base_values[:, class_index],
-                    data=explanation.data,
-                    feature_names=explanation.feature_names
-                ),
-                max_display=20,
-                show=False
-            )
-            st.pyplot(bbox_inches="tight")
+                # Beeswarm plot for the selected class
+                st.write(f"Beeswarm plot for class {class_index}:")
+                shap.plots.beeswarm(
+                    shap.Explanation(
+                        values=shap_class_values,
+                        base_values=explanation.base_values[:, class_index],
+                        data=explanation.data,
+                        feature_names=explanation.feature_names
+                    ),
+                    max_display=20,
+                    show=False
+                )
+                st.pyplot(bbox_inches="tight")
 
-        else:
-            shap.plots.beeswarm(explanation, max_display=20, show=False)
-            st.pyplot(bbox_inches='tight')
+            else:
+                shap.plots.beeswarm(explanation, max_display=20, show=False)
+                st.pyplot(bbox_inches='tight')
 
         # Partial dependence plots
-        feature_to_plot = [st.session_state.var_analysis]
+        if st.session_state.partial_dep_plot == 'Yes':
+            feature_to_plot = [st.session_state.var_analysis]
 
-        # Compute Partial Dependence
-        pdp_result = partial_dependence(ml_mod, X=x_test, features=feature_to_plot)
+            # Compute Partial Dependence
+            pdp_result = partial_dependence(ml_mod, X=x_test, features=feature_to_plot)
 
-        # Extract the grid and average predictions for the feature
-        feature_values = pdp_result['grid_values'][0]
-        average_predictions = pdp_result['average'][0]
+            # Extract the grid and average predictions for the feature
+            feature_values = pdp_result['grid_values'][0]
+            average_predictions = pdp_result['average'][0]
 
-        # Plot using Plotly
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=feature_values, y=average_predictions, mode="lines", name="Partial Dependence"))
+            # Plot using Plotly
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=feature_values, y=average_predictions, mode="lines", name="Partial Dependence"))
 
-        fig.update_layout(
-            title="Partial Dependence Plot",
-            xaxis_title=f"Feature: {feature_to_plot[0]}",
-            yaxis_title="Predicted Outcome",
-            template="seaborn"
-        )
-        st.plotly_chart(fig)
+            fig.update_layout(
+                title="Partial Dependence Plot",
+                xaxis_title=f"Feature: {feature_to_plot[0]}",
+                yaxis_title="Predicted Outcome",
+                template="seaborn"
+            )
+            st.plotly_chart(fig)
 
 def exercise_summary():
     st.write('During this exercise you followed a series of steps that are part of a data scientist job. In this page you will find a short summary of each step')
