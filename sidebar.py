@@ -8,8 +8,6 @@ def change_value(session_state, var):
 def sidebar_config(i):
     with st.sidebar:
         if i == 0:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
             
             # Load data
             st.header('Input data')
@@ -47,8 +45,6 @@ def sidebar_config(i):
             st.write(options_dec_id)
 
         elif i == 1:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
 
             # Select variables to analyze in detail
             st.header('Variable selection')
@@ -80,8 +76,6 @@ def sidebar_config(i):
             )
 
         elif i == 2:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
 
             st.header('Data preparation')
             st.write('Categorical data')
@@ -113,8 +107,6 @@ def sidebar_config(i):
             st.session_state.outlier_treat = outlier_treat
 
         elif i == 3:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
 
             st.header('Problem Type')
             problem_type = st.sidebar.radio(
@@ -245,8 +237,6 @@ def sidebar_config(i):
             st.session_state.parameter_random_state = st.slider('Seed number (random_state)', 0, 1000, 42, 1)
 
         elif i == 4:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
 
             st.header('Result Parameters')
             st.subheader('Metric analysis')
@@ -267,9 +257,6 @@ def sidebar_config(i):
                 st.session_state.logloss_analysis = st.sidebar.radio('Compare Log Loss:', ['Yes', 'No'])
         
         elif i == 5:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
-
             st.header('Model interpretation')
             st.subheader('Analysis parameters')
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
@@ -279,9 +266,6 @@ def sidebar_config(i):
                 )
                 
         elif i == 6:
-            for k, v in st.session_state.items():
-                st.session_state[k] = v
-
             st.header('Prediction data')
 
             col_sep_out = st.selectbox(

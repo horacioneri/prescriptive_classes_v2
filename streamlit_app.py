@@ -48,6 +48,9 @@ if current_page > 0:
 # Display title of the page
 st.title(page_titles[current_page], anchor='title')
 
+for k, v in st.session_state.items():
+    st.session_state[k] = v
+
 sidebar_config(current_page)
 
 if current_page == 0:
