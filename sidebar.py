@@ -50,7 +50,8 @@ def slider_choice(var_name, slider_params, intro_text='Choose the value:'):
                         slider_params[0], 
                         slider_params[1], 
                         st.session_state[var_name], 
-                        slider_params[3]
+                        slider_params[3],
+                        key = var_name
                     )
 
 
