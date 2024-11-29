@@ -5,6 +5,8 @@ import time
 def select_choice(var_name, options, intro_text='Select:'):
     if var_name not in st.session_state:
         st.session_state[var_name] = options[0]
+    if st.session_state[var_name] not in options:
+        st.session_state[var_name] = options[0]
 
     var = st.selectbox(
         intro_text,
@@ -32,32 +34,10 @@ def sidebar_config(i):
 
             # Select variables to analyze in detail
             st.header('Variable selection')
-            var_1_options = list(set(st.session_state.df_original.columns))
-            
-            if 'var_1' not in st.session_state:
-                st.session_state.var_1 = var_1_options[0]  # Default value
+            var_1_options = 
 
-            var_1 = st.selectbox(
-                'Select a variable to analyze in detail:',
-                var_1_options,
-                key = 'var_1'
-            )
-
-            # Generate the options dynamically by excluding `var_1`
-            var_2_options = list(set(st.session_state.df_original.columns) - {var_1})  # Convert to a list
-
-            # Determine the index for the default selection
-            if 'var_2' not in st.session_state or st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options[0] # Default to the first option
-            if st.session_state.var_2 not in var_2_options:
-                st.session_state.var_2 = var_2_options.index[0]
-
-            # Render the selectbox with the computed index
-            var_2 = st.selectbox(
-                'Select a second variable to analyze in detail:',
-                var_2_options,
-                key = 'var_2'
-            )
+            select_choice('var_1', list(set(st.session_state.df_original.columns)) , 'Select a variable to analyze in detail:')
+            select_choice('var_2', list(set(st.session_state.df_original.columns) - {var_1}) , 'Select a second variable to analyze in detail:')
 
         elif i == 2:
 
