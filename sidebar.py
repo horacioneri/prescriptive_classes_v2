@@ -75,6 +75,7 @@ def sidebar_config(i):
             )
 
         elif i == 2:
+            st.write(st.session_state.col_sep)
             st.header('Data preparation')
             st.write('Categorical data')
             options_categorical=['Remove columns', 'Label encoding', 'One-hot encoding']
