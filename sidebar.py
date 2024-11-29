@@ -161,19 +161,19 @@ def sidebar_config(i):
                 
                 if st.session_state.problem_type == 'Regression':
                     if st.session_state.model_to_use == 'Random forest':
-                        radio_choice(parameter_criterion, ['squared_error', 'absolute_error', 'poisson', 'friedman_mse'], 'Performance measure (criterion)')
+                        radio_choice('parameter_criterion', ['squared_error', 'absolute_error', 'poisson', 'friedman_mse'], 'Performance measure (criterion)')
 
                     elif st.session_state.model_to_use == 'Gradient boosting machines':
-                        radio_choice(parameter_criterion, ['squared_error', 'absolute_error', 'huber', 'quantile'], 'Loss function (loss)')
+                        radio_choice('parameter_criterion', ['squared_error', 'absolute_error', 'huber', 'quantile'], 'Loss function (loss)')
 
                 elif st.session_state.problem_type == 'Classification':
                     if st.session_state.model_to_use == 'Random forest':
-                        radio_choice(parameter_criterion, ['gini', 'entropy', 'log_loss'], 'Performance measure (criterion)')
+                        radio_choice('parameter_criterion', ['gini', 'entropy', 'log_loss'], 'Performance measure (criterion)')
 
                     elif st.session_state.model_to_use == 'Gradient boosting machines':
-                        radio_choice(parameter_criterion, ['log_loss', 'exponential'], 'Loss function (loss)')
+                        radio_choice('parameter_criterion', ['log_loss', 'exponential'], 'Loss function (loss)')
                         
-                    radio_choice(balance_strat, ['None', 'Balance'], 'Balancing strategy')
+                    radio_choice('balance_strat', ['None', 'Balance'], 'Balancing strategy')
 
                 #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
                 #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
@@ -186,20 +186,20 @@ def sidebar_config(i):
             st.header('Result Parameters')
             st.subheader('Metric analysis')
             if st.session_state.problem_type == 'Regression':
-                radio_choice(mae_analysis, ['Yes', 'No'], 'Compare Mean Absolute Error (MAE):')
-                radio_choice(mse_analysis, ['Yes', 'No'], 'Compare Mean Squared Error (MSE):')
-                radio_choice(rmse_analysis, ['Yes', 'No'], 'Compare Root Mean Squared Error (RMSE):')
-                radio_choice(r2_analysis, ['Yes', 'No'], 'Compare R² Score:')
-                radio_choice(evs_analysis, ['Yes', 'No'], 'Compare Explained Variance Score:')
+                radio_choice('mae_analysis', ['Yes', 'No'], 'Compare Mean Absolute Error (MAE):')
+                radio_choice('mse_analysis', ['Yes', 'No'], 'Compare Mean Squared Error (MSE):')
+                radio_choice('rmse_analysis', ['Yes', 'No'], 'Compare Root Mean Squared Error (RMSE):')
+                radio_choice('r2_analysis', ['Yes', 'No'], 'Compare R² Score:')
+                radio_choice('evs_analysis', ['Yes', 'No'], 'Compare Explained Variance Score:')
 
             else:
-                radio_choice(conf_analysis, ['Yes', 'No'], 'Analyze Confusion Matrix:')
-                radio_choice(accuracy_analysis, ['Yes', 'No'], 'Compare Accuracy:')
-                radio_choice(precision_analysis, ['Yes', 'No'], 'Compare Precision:')
-                radio_choice(recall_analysis, ['Yes', 'No'], 'Compare Recall:')
-                radio_choice(f1_analysis, ['Yes', 'No'], 'Compare F1 Score:')
-                radio_choice(auc_analysis, ['Yes', 'No'], 'Analyze ROC AUC:')
-                radio_choice(logloss_analysis, ['Yes', 'No'], 'Compare Log Loss:')
+                radio_choice('conf_analysis', ['Yes', 'No'], 'Analyze Confusion Matrix:')
+                radio_choice('accuracy_analysis', ['Yes', 'No'], 'Compare Accuracy:')
+                radio_choice('precision_analysis', ['Yes', 'No'], 'Compare Precision:')
+                radio_choice('recall_analysis', ['Yes', 'No'], 'Compare Recall:')
+                radio_choice('f1_analysis', ['Yes', 'No'], 'Compare F1 Score:')
+                radio_choice('auc_analysis', ['Yes', 'No'], 'Analyze ROC AUC:')
+                radio_choice('logloss_analysis', ['Yes', 'No'], 'Compare Log Loss:')
         
         elif i == 5:
             st.header('Model interpretation')
