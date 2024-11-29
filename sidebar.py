@@ -22,7 +22,7 @@ def radio_choice(var_name, options, intro_text='Choose:'):
         st.session_state[var_name] = options[0]
 
     var = st.sidebar.radio(
-            'Choose problem type:', 
+            intro_text, 
             options,
             index = options.index(st.session_state[var_name]),
             key = var_name
