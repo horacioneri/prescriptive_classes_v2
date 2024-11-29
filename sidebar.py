@@ -24,7 +24,7 @@ def sidebar_config(i):
             col_sep = st.selectbox(
                 'What is the column separator of your file:',
                 options_col_sep,
-                key='col_sep',
+                key='col_sep'
             )
 
             dec_id = st.selectbox(
@@ -54,10 +54,8 @@ def sidebar_config(i):
             var_1 = st.selectbox(
                 'Select a variable to analyze in detail:',
                 var_1_options,
-                index=var_1_options.index(st.session_state.var_1),
                 key = 'var_1'
             )
-            st.session_state.var_1 = var_1
 
             # Generate the options dynamically by excluding `var_1`
             var_2_options = list(set(st.session_state.df_original.columns) - {var_1})  # Convert to a list
@@ -72,7 +70,6 @@ def sidebar_config(i):
             var_2 = st.selectbox(
                 'Select a second variable to analyze in detail:',
                 var_2_options,
-                index=var_2_options.index(st.session_state.var_2),
                 key = 'var_2'
             )
 
