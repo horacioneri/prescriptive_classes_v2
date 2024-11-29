@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+def change_value(session_state, var):
+    session_state = var
+
 def sidebar_config(i):
     with st.sidebar:
         if i == 0:
@@ -22,7 +25,7 @@ def sidebar_config(i):
                 options_col_sep,
                 index=options_col_sep.index(st.session_state.col_sep),
                 key='col_sep',
-                on_change=st.rerun()
+                on_change=change_value(st.session_state.col_sep, col_sep)
             )
 
             dec_id = st.selectbox(
