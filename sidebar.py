@@ -34,8 +34,6 @@ def sidebar_config(i):
 
             # Select variables to analyze in detail
             st.header('Variable selection')
-            var_1_options = 
-
             select_choice('var_1', list(set(st.session_state.df_original.columns)) , 'Select a variable to analyze in detail:')
             select_choice('var_2', list(set(st.session_state.df_original.columns) - {var_1}) , 'Select a second variable to analyze in detail:')
 
