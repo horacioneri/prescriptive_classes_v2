@@ -163,7 +163,7 @@ def sidebar_config(i):
             
             if st.session_state.model_to_use == 'Logistic regression':
                 radio_choice('parameter_penalty',['l2', 'none'],'Penalty type (penalty)')
-                slider_choice('parameter_c_value', [0.01, 10.0, 1.0, 0.01], 'Regularization strength (C)')
+                slider_choice('parameter_c_value', [0.01, 10.0, 1, 0.01], 'Regularization strength (C)')
                 radio_choice('parameter_solver',['lbfgs', 'saga', 'liblinear'],'Solver')
             
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
