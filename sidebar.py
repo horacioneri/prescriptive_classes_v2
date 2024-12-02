@@ -56,12 +56,7 @@ def multiselect_choice(var_name, options, intro_text='Select/Unselect:', default
 def slider_choice(var_name, slider_params, intro_text='Choose the value:'):
     if var_name not in st.session_state:
         st.session_state[var_name] = slider_params[2]
-    st.write(slider_params[0])
-    st.write(slider_params[1])
-    st.write(var_name)
-    st.write(st.session_state[var_name])
-    st.write(slider_params[3])
-    st.session_state.parameter_c_value = st.sidebar.slider(
+    var = st.sidebar.slider(
                         intro_text, 
                         slider_params[0], 
                         slider_params[1], 
