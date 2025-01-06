@@ -543,13 +543,13 @@ def result_analysis():
                     acc = accuracy_score(y, y_pred)
                     st.write(f"Accuracy: {acc:.4f}")
                 if st.session_state.precision_analysis == 'Yes':
-                    prec = precision_score(y, y_pred, average='weighted')
+                    prec = precision_score(y, y_pred)
                     st.write(f"Precision: {prec:.4f}")
                 if st.session_state.recall_analysis == 'Yes':
-                    rec = recall_score(y, y_pred, average='weighted')
+                    rec = recall_score(y, y_pred)
                     st.write(f"Recall: {rec:.4f}")
                 if st.session_state.f1_analysis == 'Yes':
-                    f1 = f1_score(y, y_pred, average='weighted')
+                    f1 = f1_score(y, y_pred)
                     st.write(f"F1 Score: {f1:.4f}")
                 if st.session_state.auc_analysis == 'Yes':
                     roc_auc = roc_auc_score(y, y_pred, multi_class='ovr')  # Adjust for multi-class
