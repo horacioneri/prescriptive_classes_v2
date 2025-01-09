@@ -96,7 +96,7 @@ def exploratory_data_analysis():
                 st.plotly_chart(fig, use_container_width=True)
 
                 # Pie chart for proportions
-                fig = px.pie(var_data.value_counts().reset_index(), names=var_data.value_counts().index, 
+                fig = px.pie(var_data, values=1, names=var_data.value_counts().index, 
                             title=f'Pie chart of {var}', 
                             hole=0.3)
                 fig.update_traces(textinfo='percent+label')
