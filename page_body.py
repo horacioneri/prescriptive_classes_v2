@@ -421,11 +421,12 @@ def model_training():
             )
 
         elif st.session_state.model_to_use == 'Gradient boosting machines':
-            if st.session_state.balance_strat == 'Balanced':
-                class_weights = compute_sample_weight(
-                    class_weight='balanced', y=y_train)
-            else:
-                class_weights = None
+            #if st.session_state.balance_strat == 'Balanced':
+            #    class_weights = compute_sample_weight(
+            #        class_weight='balanced', y=y_train)
+            #else:
+            #    class_weights = None
+            class_weights = None
 
             ml_mod = GradientBoostingClassifier(
                 loss=st.session_state.parameter_criterion,
@@ -437,10 +438,12 @@ def model_training():
                 random_state=st.session_state.parameter_random_state
             )
 
-    if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Gradient boosting machines':
-        ml_mod.fit(x_train, y_train, sample_weight=class_weights)
-    else:
-        ml_mod.fit(x_train, y_train)
+    #if st.session_state.problem_type == 'Classification' and st.session_state.model_to_use == 'Gradient boosting machines':
+    #    ml_mod.fit(x_train, y_train, sample_weight=class_weights)
+    #else:
+    #    ml_mod.fit(x_train, y_train)
+    
+    ml_mod.fit(x_train, y_train)
 
     y_train_pred = ml_mod.predict(x_train)
     y_test_pred = ml_mod.predict(x_test)

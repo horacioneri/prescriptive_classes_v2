@@ -182,11 +182,10 @@ def sidebar_config(i):
                 elif st.session_state.problem_type == 'Classification':
                     if st.session_state.model_to_use == 'Random forest':
                         radio_choice('parameter_criterion', ['gini', 'entropy', 'log_loss'], 'Performance measure (criterion)')
+                        radio_choice('balance_strat', ['None', 'Balance'], 'Balancing strategy')
 
                     elif st.session_state.model_to_use == 'Gradient boosting machines':
                         radio_choice('parameter_criterion', ['log_loss', 'exponential'], 'Loss function (loss)')
-                        
-                    radio_choice('balance_strat', ['None', 'Balance'], 'Balancing strategy')
 
                 #parameter_bootstrap = st.select_slider('Bootstrap samples when building trees (bootstrap)', options=[True, False])
                 #parameter_oob_score = st.select_slider('Whether to use out-of-bag samples to estimate the R^2 on unseen data (oob_score)', options=[False, True])
