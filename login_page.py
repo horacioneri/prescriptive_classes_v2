@@ -6,8 +6,6 @@ USERNAME = "LTPlabs"
 PASSWORD = datetime.today().strftime("%m") + datetime.today().strftime("%Y")
 
 def login():
-    st.title("Login")
-
     # Input fields
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
