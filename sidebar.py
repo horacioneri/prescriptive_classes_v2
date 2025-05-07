@@ -68,9 +68,7 @@ def slider_choice(var_name, slider_params, intro_text='Choose the value:'):
 
 def sidebar_config(i):
     with st.sidebar:
-        if i == 0:
-        
-        elif i == 1:
+        if i == 1:
             
             # Load data
             st.header('Input data')
