@@ -12,11 +12,14 @@ def change_page(delta):
     st.rerun()  # Force immediate rerun to reflect the updated page state
 
 # Initialize session state variables
-if "page" not in st.session_state:
-    st.session_state.page = 0
-
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
+
+if "page" not in st.session_state:
+    if st.session_state["logged_in"]:
+        st.session_state.page = 1
+    else:
+        st.session_state.page = 0
 
 if "uploaded" not in st.session_state:
     st.session_state.uploaded = False
