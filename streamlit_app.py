@@ -139,26 +139,26 @@ if current_page > 0:
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
 # Debug
-df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
-df
-df.dtypes
-# col = df.columns[13]
-for col in df.columns:
-    if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.5 * len(df[col]):
-        df[col] = pd.to_numeric(df[col], errors='coerce')
-df.dtypes
-df
-categorical_columns = df.select_dtypes(include=['object', 'category']).columns
-encoder = OneHotEncoder(sparse_output=False, drop='if_binary')
+# df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
+# df
+# df.dtypes
+# # col = df.columns[13]
+# for col in df.columns:
+#     if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.5 * len(df[col]):
+#         df[col] = pd.to_numeric(df[col], errors='coerce')
+# df.dtypes
+# df
+# categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+# encoder = OneHotEncoder(sparse_output=False, drop='if_binary')
 
-# Apply one-hot encoding
-encoded_data = encoder.fit_transform(df[categorical_columns])
+# # Apply one-hot encoding
+# encoded_data = encoder.fit_transform(df[categorical_columns])
 
-# Create a DataFrame for the encoded columns
-encoded_df = pd.DataFrame(
-    encoded_data,
-    columns=encoder.get_feature_names_out(categorical_columns)
-)
+# # Create a DataFrame for the encoded columns
+# encoded_df = pd.DataFrame(
+#     encoded_data,
+#     columns=encoder.get_feature_names_out(categorical_columns)
+# )
 
 # Combine with the original DataFrame (excluding the original categorical columns)
 # df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
