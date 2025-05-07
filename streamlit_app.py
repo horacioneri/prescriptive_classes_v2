@@ -11,17 +11,9 @@ def change_page(delta):
     st.session_state.page = max(0, min(len(page_titles) - 1, st.session_state.page + delta))
     st.rerun()  # Force immediate rerun to reflect the updated page state
 
-
-# Session state check
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
-
-if not st.session_state["logged_in"]:
-    login()
-
 # Initialize session state variables
 if "page" not in st.session_state:
-    st.session_state.page = 0
+    st.session_state.page = -1
 
 if "uploaded" not in st.session_state:
     st.session_state.uploaded = False
@@ -65,6 +57,16 @@ if current_page > 0:
 st.title(page_titles[current_page], anchor='title')
 
 sidebar_config(current_page)
+
+if current_page == -1:
+    # Session state check
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
+
+    if st.session_state["logged_in"]:
+        st.session_state.page = 0
+    else:
+        login()
 
 if current_page == 0:
     introduction_text()
