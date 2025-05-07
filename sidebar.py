@@ -69,6 +69,8 @@ def slider_choice(var_name, slider_params, intro_text='Choose the value:'):
 def sidebar_config(i):
     with st.sidebar:
         if i == 0:
+        
+        elif i == 1:
             
             # Load data
             st.header('Input data')
@@ -81,14 +83,14 @@ def sidebar_config(i):
                 st.session_state.uploaded  = True
                 st.session_state.df_original = pd.read_csv(uploaded_file, sep=st.session_state.col_sep, index_col=False, decimal=st.session_state.dec_id)
 
-        elif i == 1:
+        elif i == 2:
 
             # Select variables to analyze in detail
             st.header('Variable selection')
             select_choice('var_1', list(set(st.session_state.df_original.columns)) , 'Select a variable to analyze in detail:')
             select_choice('var_2', list(set(st.session_state.df_original.columns) - {st.session_state.var_1}) , 'Select a second variable to analyze in detail:')
 
-        elif i == 2:
+        elif i == 3:
 
             st.header('Data preparation')
             st.write('Categorical data')
@@ -113,7 +115,7 @@ def sidebar_config(i):
                 'How to treat outlier values:'
             )
 
-        elif i == 3:
+        elif i == 4:
 
             st.header('Problem Type')
             radio_choice(
@@ -193,7 +195,7 @@ def sidebar_config(i):
             st.header('Other Parameters')
             slider_choice('parameter_random_state', [0, 1000, 42, 1], 'Seed number (random_state)')
 
-        elif i == 4:
+        elif i == 5:
 
             st.header('Result Parameters')
             st.subheader('Metric analysis')
@@ -213,7 +215,7 @@ def sidebar_config(i):
                 radio_choice('auc_analysis', ['Yes', 'No'], 'Analyze ROC AUC:', 'No')
                 radio_choice('logloss_analysis', ['Yes', 'No'], 'Compare Log Loss:', 'No')
         
-        elif i == 5:
+        elif i == 6:
             st.header('Model interpretation')
             st.subheader('Analysis parameters')
             if st.session_state.model_to_use in ['Random forest', 'Gradient boosting machines']:
@@ -224,7 +226,7 @@ def sidebar_config(i):
                 if st.session_state.partial_dep_plot == 'Yes':
                     select_choice('var_analysis', list(set(st.session_state.x_train.columns)), 'Select a variable to analyze in detail:')
                 
-        elif i == 6:
+        elif i == 7:
             st.header('Prediction data')
 
             col_sep_out = st.selectbox(

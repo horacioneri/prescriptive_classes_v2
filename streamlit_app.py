@@ -13,7 +13,7 @@ def change_page(delta):
 
 # Initialize session state variables
 if "page" not in st.session_state:
-    st.session_state.page = -1
+    st.session_state.page = 0
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
@@ -45,9 +45,9 @@ st.set_page_config(page_title='Building a ML model', page_icon='', layout = 'wid
 # Display LTP logo
 st.image(image= "images/Asset 6.png", caption = "Powered by", width = 100)
 
-if current_page > 0:
+if current_page > 1:
     if st.button("Restart", use_container_width=True, key=f"top_restart_{current_page}"):
-        st.session_state.page = 0
+        st.session_state.page = 1
         st.session_state.uploaded = False
         st.session_state.treated = False
         st.session_state.trained = False
@@ -61,59 +61,59 @@ st.title(page_titles[current_page], anchor='title')
 
 sidebar_config(current_page)
 
-if current_page == -1:
+if current_page == 0:
     # Session state check
     if st.session_state["logged_in"]:
-        st.session_state.page = 0
+        st.session_state.page = 1
     else:
         login()
 
-if current_page == 0:
+if current_page == 1:
     introduction_text()
 
-if current_page == 1:
+if current_page == 2:
     if not st.session_state.uploaded:
         st.write('Go back to the previous page and reupload your dataset')
     else:
         exploratory_data_analysis()
 
-if current_page == 2:
+if current_page == 3:
     if not st.session_state.uploaded:
         st.write('Go back to the beginning and reupload your dataset')
     else:
         data_preparation()
 
-if current_page == 3:
+if current_page == 4:
     if not st.session_state.treated:
         st.write('Go back to the previous page and prepare your dataset')
     else:
         model_training()
 
-if current_page == 4:
+if current_page == 5:
     if not st.session_state.trained:
         st.write('Go back to the previous page and train your model')
     else:
         result_analysis()
 
-if current_page == 5:
+if current_page == 6:
     if not st.session_state.trained:
         st.write('Go back to the model training page and train your model')
     else:
         model_interpretation()
 
-if current_page == 6:
+if current_page == 7:
     if not st.session_state.trained:
         st.write('Go back to the model training page and train your model')
     else:
         exercise_summary()
 
 # Display buttons at the end to navigate between pages
-if current_page == 0:
+if current_page == 1:
     left, right = st.columns(2)
     if right.button("Next", use_container_width=True, key=f"next_{current_page}"):
         change_page(1)
 
-elif 0 < current_page < len(page_titles)-1:
+elif 1 < current_page < len(page_titles)-1:
     left, right = st.columns(2)
     if left.button("Previous", use_container_width=True, key=f"prev_{current_page}"):
         change_page(-1)
@@ -128,9 +128,9 @@ elif current_page == len(page_titles)-1:
 else:
     st.session_state.page = 0
 
-if current_page > 0:
+if current_page > 1:
     if st.button("Restart", use_container_width=True, key=f"bot_restart_{current_page}"):
-        st.session_state.page = 0
+        st.session_state.page = 1
         st.session_state.uploaded = False
         st.session_state.treated = False
         st.session_state.trained = False
