@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from config import page_titles
+from login_page import login
 from sidebar import sidebar_config
 from page_body import introduction_text, exploratory_data_analysis, data_preparation, model_training, result_analysis, model_interpretation, exercise_summary
 
@@ -9,6 +10,14 @@ from page_body import introduction_text, exploratory_data_analysis, data_prepara
 def change_page(delta):
     st.session_state.page = max(0, min(len(page_titles) - 1, st.session_state.page + delta))
     st.rerun()  # Force immediate rerun to reflect the updated page state
+
+
+# Session state check
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if not st.session_state["logged_in"]:
+    login()
 
 # Initialize session state variables
 if "page" not in st.session_state:
@@ -128,13 +137,49 @@ if current_page > 0:
         st.session_state.df_treated = pd.DataFrame()
         st.rerun()
 # Debug
-# df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
-# df
-# df.dtypes
-# # col = df.columns[13]
-# for col in df.columns:
-#     if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.5 * len(df[col]):
-#         df[col] = pd.to_numeric(df[col], errors='coerce')
-# df.dtypes
-# df
-#
+df = pd.read_csv('Customer_Churn.csv', sep=';', index_col=False, decimal='.')  
+df
+df.dtypes
+# col = df.columns[13]
+for col in df.columns:
+    if len(pd.to_numeric(df[col], errors='coerce').dropna().unique()) >= 0.5 * len(df[col]):
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+df.dtypes
+df
+categorical_columns = df.select_dtypes(include=['object', 'category']).columns
+encoder = OneHotEncoder(sparse_output=False, drop='if_binary')
+
+# Apply one-hot encoding
+encoded_data = encoder.fit_transform(df[categorical_columns])
+
+# Create a DataFrame for the encoded columns
+encoded_df = pd.DataFrame(
+    encoded_data,
+    columns=encoder.get_feature_names_out(categorical_columns)
+)
+
+# Combine with the original DataFrame (excluding the original categorical columns)
+# df = pd.concat([df.drop(columns=categorical_columns), encoded_df], axis=1)
+# to_predict = 'ChurnNext6Months_Yes'
+# input_variables=list(set(df.columns) - {to_predict})
+# y = df[to_predict]
+# x = df[input_variables]
+# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=20/100, random_state=42)
+# ml_mod = LogisticRegression()
+# ml_mod.fit(x_train, y_train)
+# y_train_pred = ml_mod.predict(x_train)
+# y_test_pred = ml_mod.predict(x_test)
+# conf_matrix = confusion_matrix(y_test, y_test_pred)
+
+# x_train_sm = sm.add_constant(x_train)  # Add intercept term
+# logit_model = sm.Logit(y_train, x_train_sm).fit()
+
+# coeffs_df = pd.DataFrame({
+#             "Feature": ["Intercept"] + list(x_train.columns),
+#             "Coefficient": [logit_model.params[0]] + list(logit_model.params[1:]),
+#             "Odds Ratio": np.exp([logit_model.params[0]] + list(logit_model.params[1:])),
+#             "P-Value": [logit_model.pvalues[0]] + list(logit_model.pvalues[1:]),
+#             "95% CI Lower": logit_model.conf_int().iloc[:, 0],
+#             "95% CI Upper": logit_model.conf_int().iloc[:, 1]
+#         })
+# coeffs_df = coeffs_df.sort_values("Odds Ratio", key=abs, ascending=False)
