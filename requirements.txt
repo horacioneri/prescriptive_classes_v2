@@ -1,6 +1,4 @@
-pandas
-scikit-learn
-shap
+streamlit
+pulp
 plotly
-statsmodels
-matplotlib
+openai
