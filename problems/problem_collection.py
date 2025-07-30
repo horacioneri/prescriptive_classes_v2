@@ -71,13 +71,13 @@ def food_distribution_problem():
         "vars": {
             "title": "Country",
             "vars": {
-                "Democratic Republic of the Congo": {"Packages needs": 10000.0, "Distribution cost": 0.8, "Population served": 500},
-                "South Sudan": {"Packages needs": 30000.0, "Distribution cost": 0.8, "Population served": 500},
-                "Central African Republic": {"Packages needs": 50000.0, "Distribution cost": 0.8, "Population served": 500},
-                "Syria": {"Packages needs": 45000.0, "Distribution cost": 0.53, "Population served": 400},
-                "Yemen": {"Packages needs": 14000.0, "Distribution cost": 0.53, "Population served": 400},
-                "Myanmar": {"Packages needs": 23000.0, "Distribution cost": 0.67, "Population served": 350},
-                "Bangladesh": {"Packages needs": 29000.0, "Distribution cost": 0.67, "Population served": 350}
+                "Democratic Republic of the Congo": {"Packages needs": 10000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
+                "South Sudan": {"Packages needs": 30000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
+                "Central African Republic": {"Packages needs": 50000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
+                "Syria": {"Packages needs": 45000.0, "Distribution cost per package": 0.53, "Population served by 1000 packages": 400},
+                "Yemen": {"Packages needs": 14000.0, "Distribution cost per package": 0.53, "Population served by 1000 packages": 400},
+                "Myanmar": {"Packages needs": 23000.0, "Distribution cost per package": 0.67, "Population served by 1000 packages": 350},
+                "Bangladesh": {"Packages needs": 29000.0, "Distribution cost per package": 0.67, "Population served by 1000 packages": 350}
             }
         },
         "constraints": {
