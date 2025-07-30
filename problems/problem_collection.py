@@ -101,7 +101,7 @@ def food_distribution_problem():
                 of countries needing help. The following table identifies the packages needs per
                 country and the unitary distribution cost.
 
-                {dataframe(df)}
+                {df}
 
                 The total available budget for the distribution amounts to 100 000€. How
                 should the food packages be distributed to maximize the total population
