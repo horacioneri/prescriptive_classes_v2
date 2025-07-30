@@ -1,6 +1,6 @@
 
 import streamlit as st
-from problems.problem_collection import diet_problem
+from problems.problem_collection import diet_problem, solution_evaluation
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
@@ -34,15 +34,21 @@ else:
         submitted = st.form_submit_button("Evaluate")
 
         if submitted:
-            total_cost = chicken * 2 + rice * 0.5 + broccoli * 1.0
-            protein = chicken*30 + rice*3 + broccoli*2
-            carbs = rice*30 + broccoli*10
-            fat = chicken*4 + broccoli*1
+            constraints_evaluation = {}
+            objective_evaluation = 0
+            constraints_met = False
+            objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, user_input)
 
-            st.metric("Total Cost", f"${total_cost:.2f}")
-            st.write(f"Protein: {protein}g | Carbs: {carbs}g | Fat: {fat}g")
+            st.metric("Objective", f"{objective_evaluation:.2f}")
 
-            if protein >= 50 and carbs <= 70 and fat <= 10:
+            constraints_string = ""
+
+            for constraint_name in PROBLEM["constraints"].items():
+                constraints_string = constraints_string + constraint_name + ": " + constraints_evaluation[constraint_name] + "  |  "
+
+            st.write(constraints_string)
+
+            if constraints_met:
                 st.success("Constraints met!")
             else:
                 st.warning("Constraints not satisfied.")
