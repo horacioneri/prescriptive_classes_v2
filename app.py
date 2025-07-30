@@ -83,12 +83,12 @@ else:
                 st.metric("Objective", f"{objective_evaluation:.2f}")
 
                 constraints_string = ""
-                for constraint_name, value in PROBLEM["constraints"].items():
-                    if constraint_name != "other":
-                        actual = constraints_evaluation.get(constraint_name, "N/A")
-                        constraints_string += f"{constraint_name}: {actual} (limit: {value})  |  "
+                for constraint_name, actual in constraints_evaluation.items():
+                    if constraint_name in PROBLEM["constraints"]:
+                        limit = PROBLEM["constraints"][constraint_name]
+                        constraints_string += f"{constraint_name}: {actual} (limit: {limit})  |  "
                     else:
-                        constraints_string += constraints_evaluation.get(constraint_name, "N/A") + "  |  "
+                        constraints_string += f"{actual}  |  "
 
                 st.write(constraints_string)
 
