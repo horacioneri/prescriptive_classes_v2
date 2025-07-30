@@ -84,8 +84,11 @@ else:
 
                 constraints_string = ""
                 for constraint_name, value in PROBLEM["constraints"].items():
-                    actual = constraints_evaluation.get(constraint_name, "N/A")
-                    constraints_string += f"{constraint_name}: {actual} (limit: {value})  |  "
+                    if constraint_name != "other":
+                        actual = constraints_evaluation.get(constraint_name, "N/A")
+                        constraints_string += f"{constraint_name}: {actual} (limit: {value})  |  "
+                    else:
+                        constraints_string += constraints_evaluation.get(constraint_name, "N/A") + "  |  "
 
                 st.write(constraints_string)
 
