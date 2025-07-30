@@ -31,10 +31,11 @@ def evaluate_and_generate_code(user_vars, user_constraints, user_objective, prob
             - Objective: {user_objective}
 
             1. Determine if this are the correct answers to the three questions.
-            2. If they are correct, generate Python code using PuLP that defines and solves the problem. Explain the though-process and the code in a user-friendly manner.
-            3. Return only the code inside a Python triple-quoted string (no explanation).
+            2. Give an overall assessment of the answer.
+            3. If they are correct, generate Python code using PuLP that defines and solves the problem. Explain the though-process and the code in a user-friendly manner.
+            4. Return the code inside a Python triple-quoted string.
 
-            Only return the code inside triple backticks.
+            Return the code inside triple backticks.
             """
     #"gpt-4o-mini", "gpt-4", "claude-3-5-sonnet", "claude-3-7-sonnet"
     response = client.chat.completions.create(
