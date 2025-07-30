@@ -69,46 +69,13 @@ else:
                     exec(pulp_code, {}, local_vars)
                     if "result" in local_vars:
                         result = local_vars["result"]
-                        st.subheader("📈 Optimized Solution")
-                        for food, qty in result["solution"].items():
-                            st.write(f"**{food.title()}**: {qty:.2f} units")
-                        st.metric("Optimized Cost", f"${result['objective']:.2f}")
+                        st.header('Optimization model assessment', divider='rainbow')
+                        for var, qty in result["solution"].items():
+                            st.write(f"**{var.title()}**: {qty:.2f} units")
+                        st.metric("Optimized goal", f"${result['objective']:.2f}")
                     else:
                         st.error("Optimization result not found in generated code.")
                 except Exception as e:
                     st.error(f"Error running generated code: {e}")
             else:
                 st.warning("Try to correct your model and resubmit.")
-    
-    st.header('Optimization model assessment', divider='rainbow')
-
-pulp_code = """"
-        from pulp import LpProblem, LpVariable, LpMinimize, lpSum, LpStatus, value
-
-        # Define the problem
-        problem = LpProblem("Minimize_Costs", LpMinimize)
-
-        # Decision variables
-        chicken = LpVariable("Chicken_Breast", lowBound=0, cat='Continuous')
-        rice = LpVariable("Rice", lowBound=0, cat='Continuous')
-        broccoli = LpVariable("Broccoli", lowBound=0, cat='Continuous')
-
-        # Objective function: Minimize cost
-        problem += 2 * chicken + 0.5 * rice + 1 * broccoli, "Total_Cost"
-
-        # Constraints
-        problem += 30 * chicken + 3 * rice + 2 * broccoli >= 50, "Protein_Requirement"
-        problem += 30 * rice + 10 * broccoli <= 70, "Carbs_Requirement"
-        problem += 4 * chicken + 1 * broccoli <= 10, "Fat_Requirement"
-
-        # Solve the problem
-        problem.solve()
-
-        # Print the results
-        print("Status:", LpStatus[problem.status])
-        print("Optimal quantities:")
-        print("Chicken Breast:", value(chicken))
-        print("Rice:", value(rice))
-        print("Broccoli:", value(broccoli))
-        print("Total Cost:", value(problem.objective))
-    """
