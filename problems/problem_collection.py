@@ -1,5 +1,5 @@
 
-def diet_prolem():
+def diet_problem():
     STRUCTURED_DATA = {
         "vars": {
             "title": "foods",

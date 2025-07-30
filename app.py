@@ -1,6 +1,6 @@
 
 import streamlit as st
-from problems.problem_collection import diet_prolem
+from problems.problem_collection import diet_problem
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
