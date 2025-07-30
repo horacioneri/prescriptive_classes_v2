@@ -121,15 +121,16 @@ else:
                     local_vars = {}
                     try:
                         exec(pulp_code, {}, local_vars)
-                        if "result" in local_vars:
-                            result = local_vars["result"]
+                        result = local_vars.get("result")
+                        if result is not None:
                             st.header('Optimization model assessment', divider='rainbow')
                             for var, qty in result["solution"].items():
                                 st.write(f"**{var.title()}**: {qty:.2f} units")
                             st.metric("Optimized goal", f"${result['objective']:.2f}")
                         else:
-                            st.error("Optimization result not found in generated code.")
+                            st.error("Optimization result not found. Check if 'result' is assigned in your code.")
                     except Exception as e:
                         st.error(f"Error running generated code: {e}")
+                        st.code(pulp_code, language='python')
                 else:
                     st.warning("Try to correct your model and resubmit.")
