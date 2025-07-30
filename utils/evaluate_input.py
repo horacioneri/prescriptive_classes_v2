@@ -30,7 +30,7 @@ def evaluate_and_generate_code(user_vars, user_constraints, user_objective, prob
             - Constraints: {user_constraints}
             - Objective: {user_objective}
 
-            1. Determine if this are the correct answers to the three questions.
+            1. Determine if these are the correct answers to the three questions.
             2. Give an overall assessment of the answer.
             3. If you consider all the answers correct, generate Python code using PuLP that defines and solves the problem. Explain the though-process and the code in a user-friendly manner.
             4. If you consider all the answers correct, return the code inside a Python triple-quoted string.
