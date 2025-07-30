@@ -86,6 +86,7 @@ def diet_problem():
                 - At most {STRUCTURED_DATA["constraints"]["fat_max"]}g fat
             """,
         **STRUCTURED_DATA,
+        "structured_data": STRUCTURED_DATA,
         "objective": "minimize_cost",
         "type": "linear"
     }
@@ -132,6 +133,7 @@ def food_distribution_problem():
             """,
         "dataframe": df,
         **STRUCTURED_DATA,
+        "structured_data": STRUCTURED_DATA,
         "objective": "maximize_population_served",
         "type": "linear"
     }

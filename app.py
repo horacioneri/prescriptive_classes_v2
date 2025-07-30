@@ -109,7 +109,7 @@ else:
             # Evaluate the user responses and generate a solution for the problem
             if submitted_model:
                 success, feedback, pulp_code = evaluate_and_generate_code(
-                    decision_vars, constraints, objective, PROBLEM["description"], PROBLEM["STRUCTURED_DATA"]
+                    decision_vars, constraints, objective, PROBLEM["description"], PROBLEM["structured_data"]
                 )
 
                 st.markdown(feedback)
