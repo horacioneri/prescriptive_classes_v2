@@ -35,7 +35,7 @@ def solution_evaluation(problem, user_vars):
 
         for var_name, attributes in problem["vars"]["vars"].items():
             quantity = user_vars.get(var_name, 0)
-            objective_function += (quantity/1000.0) * attributes["Population served by 1000 packages"]
+            objective_function += quantity * attributes["Population served per package"]
             budget += quantity * attributes["Distribution cost per package"]
             packages += quantity
             if quantity > attributes["Packages needs"]:
@@ -96,13 +96,13 @@ def food_distribution_problem():
         "vars": {
             "title": "Country",
             "vars": {
-                "Democratic Republic of the Congo": {"Packages needs": 10000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
-                "South Sudan": {"Packages needs": 30000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
-                "Central African Republic": {"Packages needs": 50000.0, "Distribution cost per package": 0.8, "Population served by 1000 packages": 500},
-                "Syria": {"Packages needs": 45000.0, "Distribution cost per package": 0.53, "Population served by 1000 packages": 400},
-                "Yemen": {"Packages needs": 14000.0, "Distribution cost per package": 0.53, "Population served by 1000 packages": 400},
-                "Myanmar": {"Packages needs": 23000.0, "Distribution cost per package": 0.67, "Population served by 1000 packages": 350},
-                "Bangladesh": {"Packages needs": 29000.0, "Distribution cost per package": 0.67, "Population served by 1000 packages": 350}
+                "Democratic Republic of the Congo": {"Packages needs": 10000.0, "Distribution cost per package": 0.8, "Population served per package": 0.500},
+                "South Sudan": {"Packages needs": 30000.0, "Distribution cost per package": 0.8, "Population served per package": 0.500},
+                "Central African Republic": {"Packages needs": 50000.0, "Distribution cost per package": 0.8, "Population served per package": 0.500},
+                "Syria": {"Packages needs": 45000.0, "Distribution cost per package": 0.53, "Population served per package": 0.400},
+                "Yemen": {"Packages needs": 14000.0, "Distribution cost per package": 0.53, "Population served per package": 0.400},
+                "Myanmar": {"Packages needs": 23000.0, "Distribution cost per package": 0.67, "Population served per package": 0.350},
+                "Bangladesh": {"Packages needs": 29000.0, "Distribution cost per package": 0.67, "Population served per package": 0.350}
             }
         },
         "constraints": {
