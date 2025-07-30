@@ -57,6 +57,8 @@ else:
         st.title("Prescriptive AI - " + PROBLEM["title"])
         st.header('Problem description', divider='rainbow')
         st.markdown(PROBLEM["description"])
+        if "dataframe" in problem:
+            st.dataframe(problem["dataframe"])
 
         # Allow user to play with solution for the problem and check results
         st.header('Autonomous solution', divider='rainbow')

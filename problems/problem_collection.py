@@ -99,15 +99,14 @@ def food_distribution_problem():
         "description": f"""
                 A food distribution program assists countries in emergency.
                 On a weekly basis a total of 170 000 food packages are available to sent to a set
-                of countries needing help. The following table identifies the packages needs per
+                of countries needing help. The table below, identifies the packages needs per
                 country and the unitary distribution cost.
-
-                {st.dataframe(df)}
 
                 The total available budget for the distribution amounts to 100 000€. How
                 should the food packages be distributed to maximize the total population
                 served?
             """,
+        "dataframe": df,
         **STRUCTURED_DATA,
         "objective": "minimize_cost",
         "type": "linear"
