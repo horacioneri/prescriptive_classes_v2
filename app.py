@@ -1,7 +1,6 @@
 
 import streamlit as st
 from problems.diet_problem import PROBLEM
-from utils.optimizer import solve_diet_problem
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
@@ -48,9 +47,9 @@ else:
 
     st.header('Optimization model construction', divider='rainbow')
     with st.form("model_entry"):
-        decision_vars = st.text_input("What are the decision variables of the problem?")
+        decision_vars = st.text_area("What are the decision variables of the problem?")
         constraints = st.text_area("What are the constraints of the problem?")
-        objective = st.text_input("What is the objective function of the problem?")
+        objective = st.text_area("What is the objective function of the problem?")
 
         submitted_model = st.form_submit_button("Submit Model")
         if submitted_model:
