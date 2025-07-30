@@ -26,8 +26,26 @@ def solution_evaluation(problem, user_vars):
             carbs <= problem["constraints"]["carbs_max"] and
             fat <= problem["constraints"]["fat_max"]):
             constraints_met = True
+    
+    elif problem["title"] == "The Food Distribution Problem":
+        budget = 0
+        packages = 0
+        too_much = False
 
-        return objective_function, constraints, constraints_met
+        for var_name, attributes in problem["vars"]["vars"].items():
+            quantity = user_vars.get(var_name, 0)
+            objective_function += (quantity/1000.0) * attributes["Population served by 1000 packages"]
+            budget += quantity * attributes["Distribution cost per package"]
+            packages += quantity
+            if quantity > attributes["Packages needs"]:
+                too_much = True
+    
+        if (budget <= problem["constraints"]["budget_max"] and
+            packages <= problem["constraints"]["food_packages_max"] and
+            not too_much):
+            constraints_met = True
+
+    return objective_function, constraints, constraints_met
 
 
 def diet_problem():
@@ -108,6 +126,6 @@ def food_distribution_problem():
             """,
         "dataframe": df,
         **STRUCTURED_DATA,
-        "objective": "minimize_cost",
+        "objective": "maximize_population_served",
         "type": "linear"
     }
