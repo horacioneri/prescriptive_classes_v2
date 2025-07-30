@@ -68,9 +68,9 @@ else:
             col1, col2 = st.columns(2)
 
             for i, (var_name, _) in enumerate(var_items):
-            col = col1 if i % 2 == 0 else col2
-            with col:
-                user_input[var_name] = st.number_input(f"Units of {var_name}", min_value=0.0, step=0.1)
+                col = col1 if i % 2 == 0 else col2
+                with col:
+                    user_input[var_name] = st.number_input(f"Units of {var_name}", min_value=0.0, step=0.1)
 
             submitted = st.form_submit_button("Evaluate")
 
