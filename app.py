@@ -131,6 +131,6 @@ else:
                             st.error("Optimization result not found. Check if 'result' is assigned in your code.")
                     except Exception as e:
                         st.error(f"Error running generated code: {e}")
-                        st.code(pulp_code, language='python')
+                        #st.code(pulp_code, language='python')
                 else:
                     st.warning("Try to correct your model and resubmit.")
