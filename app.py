@@ -1,6 +1,6 @@
 
 import streamlit as st
-from problems.diet_problem import PROBLEM
+from problems.problem_collection import diet_prolem
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
@@ -20,6 +20,7 @@ if not st.session_state["logged_in"]:
     login()
 
 else:
+    PROBLEM = diet_problem()
     st.title("Prescriptive AI - " + PROBLEM["title"])
     st.header('Problem description', divider='rainbow')
     st.markdown(PROBLEM["description"])
