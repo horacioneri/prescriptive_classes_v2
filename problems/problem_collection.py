@@ -45,7 +45,6 @@ def solution_evaluation(problem, user_vars):
         constraints["budget_max"] = budget
         constraints["food_packages_max"] = packages
         constraints["other"] = other_string
-        st.markdown(other_string)
     
         if (budget <= problem["constraints"]["budget_max"] and
             packages <= problem["constraints"]["food_packages_max"] and

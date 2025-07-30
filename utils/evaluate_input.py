@@ -19,11 +19,13 @@ def extract_text_and_code(content):
 
     return text_before_code, code_block
 
-def evaluate_and_generate_code(user_vars, user_constraints, user_objective, problem_description):
+def evaluate_and_generate_code(user_vars, user_constraints, user_objective, problem_description, structured_data):
     prompt = f"""
             Problem given to the studen:
             {problem_description}
-            
+
+            Structured data for the problem:
+            {structured_data}
 
             The student provided:
             - Decision variables: {user_vars}
