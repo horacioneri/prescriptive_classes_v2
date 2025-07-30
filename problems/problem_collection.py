@@ -35,29 +35,29 @@ def diet_problem():
         "type": "linear"
     }
 
-    def solution_evaluation(problem, user_vars):
-        objective_function = 0
-        contraints = {}
-        constraints_met = False
-        if problem["title"] = "The Diet Problem":
-            protein = 0 
-            carbs = 0
-            fat = 0
-            for var_name, attributes in problem["vars"]["vars"].items():
-                objective_function = objective_function + user_vars[var_name] * attributes["cost"]
-                protein = protein + user_vars[var_name] * attributes["protein"]
-                carbs = carbs + user_vars[var_name] * attributes["carbs"]
-                fat = fat + user_vars[var_name] * attributes["fat"]
-            
-            constraints["protein_min"] = protein
-            constraints["carbs_max"] = carbs
-            constraints["fat_max"] = fat
+def solution_evaluation(problem, user_vars):
+    objective_function = 0
+    contraints = {}
+    constraints_met = False
+    if problem["title"] = "The Diet Problem":
+        protein = 0 
+        carbs = 0
+        fat = 0
+        for var_name, attributes in problem["vars"]["vars"].items():
+            objective_function = objective_function + user_vars[var_name] * attributes["cost"]
+            protein = protein + user_vars[var_name] * attributes["protein"]
+            carbs = carbs + user_vars[var_name] * attributes["carbs"]
+            fat = fat + user_vars[var_name] * attributes["fat"]
+        
+        constraints["protein_min"] = protein
+        constraints["carbs_max"] = carbs
+        constraints["fat_max"] = fat
 
-            if protein >= problem["constraints"]["protein_min"]:
-                if carbs <= problem["constraints"]["carbs_max"]:
-                    if fat <= problem["constraints"]["fat_max"]:
-                        constraints_met = True
+        if protein >= problem["constraints"]["protein_min"]:
+            if carbs <= problem["constraints"]["carbs_max"]:
+                if fat <= problem["constraints"]["fat_max"]:
+                    constraints_met = True
 
-            return objective_function, constraints, constraints_met
+        return objective_function, constraints, constraints_met
 
             
