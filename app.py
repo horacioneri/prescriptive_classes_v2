@@ -12,6 +12,10 @@ st.set_page_config(page_title='Using GenAI in practice', page_icon='', layout = 
 st.image(image= "images/Asset 6.png", caption = "Powered by", width = 100)
 #st.info("This app demonstrates the use of GenAI and agents for document understanding, Q&A, and dynamic visualization generation in practical sessions. It is a simplified version designed for instructional purposes.")
 
+# Session state initialization
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
 # Log in page
 if not st.session_state["logged_in"]:
     login()
