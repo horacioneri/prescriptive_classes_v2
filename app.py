@@ -120,7 +120,7 @@ else:
 
                     local_vars = {}
                     try:
-                        exec(pulp_code, {}, local_vars)
+                        exec(code_object, local_vars, local_vars)
                         result = local_vars.get("result")
                         if result is not None:
                             st.header('Optimization model assessment', divider='rainbow')

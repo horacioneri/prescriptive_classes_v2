@@ -23,10 +23,11 @@ __pycache__/
 dist/
 build/
 
-# Ignore excel files, csv files, zip files
+# Ignore excel files, csv files, text files, zip files
 *.xlsx
 *.csv
 *.zip
+*.txt
 
 # Debugging files
 debug/
