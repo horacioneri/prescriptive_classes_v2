@@ -27,7 +27,7 @@ def evaluate_and_generate_code(user_vars, user_constraints, user_objective, prob
             Only return the code inside triple backticks.
             """
     #"gpt-4o-mini", "gpt-4", "claude-3-5-sonnet", "claude-3-7-sonnet"
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[  
                 {"role": "system", "content": "You are an expert in mathematical optimization, experienced at using PuLP library to model optimization problems in Python. Help solving the problems, explaining the thought-process to an audience with little knowledge about the topic"},
