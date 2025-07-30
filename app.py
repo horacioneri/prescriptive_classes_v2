@@ -122,7 +122,7 @@ else:
                     try:
                         exec(pulp_code, {}, local_vars)
                         if "result" in local_vars:
-                            result = local_vars.get("result")
+                            result = local_vars["result"]
                             st.header('Optimization model assessment', divider='rainbow')
                             for var, qty in result["solution"].items():
                                 st.write(f"**{var.title()}**: {qty:.2f} units")
