@@ -1,6 +1,6 @@
 
 import streamlit as st
-from problems.problem_collection import diet_problem, solution_evaluation
+from problems.problem_collection import solution_evaluation, diet_problem, food_distribution_problem
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
@@ -22,7 +22,7 @@ if not st.session_state["logged_in"]:
 
 else:
     st.sidebar.title("Prescriptive Analytics Tool")
-    st.session_state["selected_page"] = st.sidebar.radio("Choose what to do:", ["Home", "Diet problem"])
+    st.session_state["selected_page"] = st.sidebar.radio("Choose what to do:", ["Home", "Diet problem", "Food distribution problem"])
     if st.session_state["selected_page"] == "Home":
         # Introduction to the tool
         st.title("Welcome to the Prescriptive Analytics Learning Tool")
@@ -48,6 +48,8 @@ else:
     else:
         if st.session_state["selected_page"] == "Diet problem":
             PROBLEM = diet_problem()
+        elif st.session_state["selected_page"] == "Food distribution problem":
+            PROBLEM = food_distribution_problem()
         else:
             PROBLEM = diet_problem()
 
