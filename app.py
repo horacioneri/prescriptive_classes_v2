@@ -54,11 +54,8 @@ else:
 
         submitted_model = st.form_submit_button("Submit Model")
         if submitted_model:
-            var_list = [v.strip().lower() for v in decision_vars.split(",")]
-
             success, feedback, pulp_code = evaluate_and_generate_code(
-                decision_vars, constraints, objective,
-                food_data=PROBLEM["foods"], constraints_data=PROBLEM["constraints"]
+                decision_vars, constraints, objective, PROBLEM["description"]
             )
 
             st.markdown(feedback)

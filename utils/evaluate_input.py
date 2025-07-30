@@ -9,16 +9,11 @@ client = AzureOpenAI(
         api_version=st.secrets["AZURE_OPENAI_API_VERSION"]
     )
 
-def evaluate_and_generate_code(user_vars, user_constraints, user_objective, food_data, constraints_data):
+def evaluate_and_generate_code(user_vars, user_constraints, user_objective, problem_description):
     prompt = f"""
-            Problem:
-            Choose quantities of foods to meet nutritional needs at the lowest cost.
-
-            Available foods:
-            {food_data}
-
-            Constraints:
-            {constraints_data}
+            Problem given to the studen:
+            {problem_description}
+            
 
             The student provided:
             - Decision variables: {user_vars}
