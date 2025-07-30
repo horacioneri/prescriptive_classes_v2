@@ -40,7 +40,7 @@ def solution_evaluation(problem, user_vars):
             packages += quantity
             if quantity > attributes["Packages needs"]:
                 too_much = True
-                other_string += var_name " is receiving more quantity than needed, "
+                other_string += var_name + " is receiving more quantity than needed, "
 
         constraints["budget_max"] = budget
         constraints["food_packages_max"] = packages
