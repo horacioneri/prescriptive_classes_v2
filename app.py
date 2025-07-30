@@ -27,9 +27,10 @@ else:
 
     st.header('Autonomous solution', divider='rainbow')
     with st.form("manual_guess"):
-        chicken = st.number_input("Units of Chicken", min_value=0.0, step=0.1)
-        rice = st.number_input("Units of Rice", min_value=0.0, step=0.1)
-        broccoli = st.number_input("Units of Broccoli", min_value=0.0, step=0.1)
+        user_input = {}
+        for var_name, _ in PROBLEM["vars"]["vars"].items():
+            user_input[var_name] = st.number_input(f"Units of {var_name}", min_value=0.0, step=0.1)
+        
         submitted = st.form_submit_button("Evaluate")
 
         if submitted:
