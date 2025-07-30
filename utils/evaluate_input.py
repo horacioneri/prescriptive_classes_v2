@@ -9,6 +9,16 @@ client = AzureOpenAI(
         api_version=st.secrets["AZURE_OPENAI_API_VERSION"]
     )
 
+def extract_text_and_code(content):
+    parts = content.split("```python")
+    text_before_code = parts[0].strip()
+
+    code_block = ""
+    if len(parts) > 1 and "```" in parts[1]:
+        code_block = parts[1].split("```")[0].strip()
+
+    return text_before_code, code_block
+
 def evaluate_and_generate_code(user_vars, user_constraints, user_objective, problem_description):
     prompt = f"""
             Problem given to the studen:
@@ -37,13 +47,14 @@ def evaluate_and_generate_code(user_vars, user_constraints, user_objective, prob
     )
 
     code_block = None
+    core_message = None
     for choice in response.choices:
         content = choice.message.content
         if "```python" in content:
-            code_block = content.split("```python")[1].split("```")[0].strip()
+            core_message, code_block = extract_text_and_code(content)
             break
 
     if not code_block:
-        return False, "❌ Model evaluation failed or was incorrect.", None
+        return False, choice.message.content, None
 
-    return True, "✅ Model correct and code generated.", code_block
+    return True, core_message, code_block
