@@ -25,7 +25,7 @@ def solution_evaluation(problem, user_vars):
         constraints["fat_max"] = totals["fat"]
         constraints["sodium_max"] = totals["sodium"]
         constraints["fiber_min"] = totals["fiber"]
-        constraints["food_diversity_min"] = sum(1 for v in user_vars.values() if v > 0)
+        constraints["food_diversity_min"] = sum(1 for v in user_vars.values() if v >= 1)
 
         if (constraints["protein_min"] >= problem["constraints"]["protein_min"] and
             constraints["carbs_max"] <= problem["constraints"]["carbs_max"] and
@@ -108,7 +108,7 @@ def diet_problem():
                 - At most {STRUCTURED_DATA["constraints"]["fat_max"]}g fat
                 - At most {STRUCTURED_DATA["constraints"]["sodium_max"]}g sodium
                 - At least {STRUCTURED_DATA["constraints"]["fiber_min"]}g fiber
-                - At least {STRUCTURED_DATA["constraints"]["food_diversity_min"]} different types of food
+                - At least {STRUCTURED_DATA["constraints"]["food_diversity_min"]} different types of food with at least 1 unit
 
             """,
         "dataframe": df,
