@@ -32,12 +32,13 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
                 marker=dict(color='lightgray'),
                 hoverinfo='x'
             ))
+
             fig.add_trace(go.Bar(
                 x=[actual],
                 y=[constraint_name],
-                name="Actual",
+                name="Solution",
                 orientation='h',
-                marker=dict(color='lightgreen' if satisfied else 'lightred'),
+                marker=dict(color='green' if satisfied else 'red'),
                 hovertemplate=f"{constraint_name}: {actual:.2f} (limit: {limit})<extra></extra>"
             ))
 
