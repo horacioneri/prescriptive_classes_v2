@@ -1,6 +1,6 @@
 
 import streamlit as st
-from problems.problem_collection import solution_evaluation, diet_problem, food_distribution_problem
+from problems.problem_collection import evaluation_printing, solution_evaluation, diet_problem, food_distribution_problem
 from utils.evaluate_input import evaluate_and_generate_code
 from login_page import login
 
