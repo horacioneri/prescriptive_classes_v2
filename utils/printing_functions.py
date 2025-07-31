@@ -38,7 +38,7 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
                 y=[constraint_name],
                 name="Solution",
                 orientation='h',
-                marker=dict(color='green' if satisfied else 'red'),
+                marker=dict(color='lightgreen' if satisfied else 'lightred'),
                 hovertemplate=f"{constraint_name}: {actual:.2f} (limit: {limit})<extra></extra>"
             ))
 
