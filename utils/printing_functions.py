@@ -23,6 +23,7 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
 
             fig = go.Figure()
 
+            # Main bars
             fig.add_trace(go.Bar(
                 x=[limit],
                 y=[constraint_name],
@@ -31,22 +32,38 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
                 marker=dict(color='lightgray'),
                 hoverinfo='x'
             ))
-
             fig.add_trace(go.Bar(
                 x=[actual],
                 y=[constraint_name],
                 name="Actual",
                 orientation='h',
-                marker=dict(color='green' if satisfied else 'red'),
+                marker=dict(color='lightgreen' if satisfied else 'lightred'),
                 hovertemplate=f"{constraint_name}: {actual:.2f} (limit: {limit})<extra></extra>"
             ))
 
+            # Add a line showing the limit, if actual > limit (for max) or actual < limit (for min)
+            show_limit_line = (
+                (constraint_name.endswith("max") and actual > limit) or
+                (constraint_name.endswith("min") and actual < limit) or
+                (not constraint_name.endswith(("max", "min")) and actual < limit)  # default: Min
+            )
+
+            if show_limit_line:
+                fig.add_shape(
+                    type="line",
+                    x0=limit,
+                    x1=limit,
+                    y0=-0.5,
+                    y1=0.5,
+                    line=dict(color="black", dash="dash"),
+                )
+
+            # Layout
             fig.update_layout(
                 barmode='overlay',
-                title=f"{constraint_name}",
-                xaxis=dict(title='Value'),
-                height=100,
-                margin=dict(t=30, b=30, l=50, r=20),
+                xaxis=dict(title=''),
+                height=120,
+                margin=dict(t=25, b=25, l=25, r=10),
                 showlegend=False
             )
 
