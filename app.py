@@ -62,40 +62,44 @@ else:
 
         # Allow user to play with solution for the problem and check results
         st.header('Autonomous solution', divider='rainbow')
-        with st.form("manual_guess"):
-            user_input = {}
-            var_items = list(PROBLEM["vars"]["vars"].items())
-            col1, col2 = st.columns(2)
+        user_input = {}
+        var_items = list(PROBLEM["vars"]["vars"].items())
+        columns = st.columns(2 if len(PROBLEM["vars"]["vars"]) > 4 else 1)
 
-            for i, (var_name, _) in enumerate(var_items):
-                col = col1 if i % 2 == 0 else col2
-                with col:
-                    user_input[var_name] = st.number_input(f"Units of {var_name}", min_value=0.0, step=0.1)
 
-            submitted = st.form_submit_button("Evaluate")
+        for idx, (var_name, _) in enumerate(var_items):
+            col = columns[idx % 2] if len(columns) > 1 else st
+            user_input[var_name] = col.number_input(
+                f"Units of {var_name}",
+                min_value=0.0,
+                step=0.1,
+                key=var_name
+            )
 
-            if submitted:
-                constraints_evaluation = {}
-                objective_evaluation = 0
-                constraints_met = False
-                objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, user_input)
+        constraints_evaluation = {}
+        objective_evaluation = 0
+        constraints_met = False
+        objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, user_input)
 
-                st.metric("Objective", f"{objective_evaluation:.2f}")
+        # Feedback
+        st.markdown("### Evaluation")
 
-                constraints_string = ""
-                for constraint_name, actual in constraints_evaluation.items():
-                    if constraint_name in PROBLEM["constraints"]:
-                        limit = PROBLEM["constraints"][constraint_name]
-                        constraints_string += f"{constraint_name}: {actual} (limit: {limit})  |  "
-                    else:
-                        constraints_string += f"{actual}  |  "
+        st.metric("Objective", f"{objective_evaluation:.2f}")
 
-                st.write(constraints_string)
+        constraints_string = ""
+        for constraint_name, actual in constraints_evaluation.items():
+            if constraint_name in PROBLEM["constraints"]:
+                limit = PROBLEM["constraints"][constraint_name]
+                constraints_string += f"{constraint_name}: {actual} (limit: {limit})  |  "
+            else:
+                constraints_string += f"{actual}  |  "
 
-                if constraints_met:
-                    st.success("Constraints met!")
-                else:
-                    st.warning("Constraints not satisfied.")
+        st.write(constraints_string)
+
+        if constraints_met:
+            st.success("Constraints met!")
+        else:
+            st.warning("Constraints not satisfied.")
 
         # Ask the user what are the key characteristics of the problem
         st.header('Optimization model construction', divider='rainbow')
