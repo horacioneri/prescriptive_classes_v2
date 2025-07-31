@@ -8,7 +8,7 @@ def solution_evaluation(problem, user_vars):
     
     if problem["title"] == "The Diet Problem":
         
-        foods = problem_data["vars"]["vars"]
+        foods = problem["vars"]["vars"]
         # Initialize totals
         totals = {"protein": 0, "carbs": 0, "fat": 0, "sodium": 0, "fiber": 0}
 
