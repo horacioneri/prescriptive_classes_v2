@@ -19,20 +19,20 @@ def solution_evaluation(problem, user_vars):
             objective_function += food_data.get("cost", 0) * qty
 
         
-        constraints["protein_min"] = protein
-        constraints["carbs_max"] = carbs
-        constraints["carbs_min"] = carbs
-        constraints["fat_max"] = fat
-        constraints["sodium_max"] = sodium
-        constraints["fiber_min"] = fiber
+        constraints["protein_min"] = totals["protein"]
+        constraints["carbs_max"] = totals["carbs"]
+        constraints["carbs_min"] = totals["carbs"]
+        constraints["fat_max"] = totals["fat"]
+        constraints["sodium_max"] = totals["sodium"]
+        constraints["fiber_min"] = totals["fiber"]
         constraints["food_diversity_min"] = sum(1 for v in user_vars.values() if v > 0)
 
-        if (protein >= problem["constraints"]["protein_min"] and
-            carbs <= problem["constraints"]["carbs_max"] and
-            carbs >= problem["constraints"]["carbs_min"] and
-            fat <= problem["constraints"]["fat_max"] and
-            sodium <= problem["constraints"]["sodium_max"] and
-            fiber >= problem["constraints"]["fiber_min"] and
+        if (constraints["protein_min"] >= problem["constraints"]["protein_min"] and
+            constraints["carbs_max"] <= problem["constraints"]["carbs_max"] and
+            constraints["carbs_min"] >= problem["constraints"]["carbs_min"] and
+            constraints["fat_max"] <= problem["constraints"]["fat_max"] and
+            constraints["sodium_max"] <= problem["constraints"]["sodium_max"] and
+            constraints["fiber_min"] >= problem["constraints"]["fiber_min"] and
             constraints["food_diversity_min"] >= problem["constraints"]["food_diversity_min"]
             ):
             constraints_met = True
