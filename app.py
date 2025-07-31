@@ -84,22 +84,7 @@ else:
         # Feedback
         st.markdown("### Evaluation")
 
-        st.metric("Objective", f"{objective_evaluation:.2f}")
-
-        constraints_string = ""
-        for constraint_name, actual in constraints_evaluation.items():
-            if constraint_name in PROBLEM["constraints"]:
-                limit = PROBLEM["constraints"][constraint_name]
-                constraints_string += f"{constraint_name}: {actual} (limit: {limit})  |  "
-            else:
-                constraints_string += f"{actual}  |  "
-
-        st.write(constraints_string)
-
-        if constraints_met:
-            st.success("Constraints met!")
-        else:
-            st.warning("Constraints not satisfied.")
+        evaluation_printing(objective_evaluation, constraints_evaluation, constraints_met, PROBLEM)
 
         # Ask the user what are the key characteristics of the problem
         st.header('Optimization model construction', divider='rainbow')
@@ -130,7 +115,12 @@ else:
                             st.header('Optimization model assessment', divider='rainbow')
                             for var, qty in result["solution"].items():
                                 st.write(f"**{var.title()}**: {qty:.2f} units")
-                            st.metric("Optimized goal", f"{result['objective']:.2f}")
+
+                            constraints_evaluation = {}
+                            objective_evaluation = 0
+                            constraints_met = False
+                            objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, result["solution"])
+                            evaluation_printing(objective_evaluation, constraints_evaluation, constraints_met, PROBLEM)
                         else:
                             st.error("Optimization result not found. Check if 'result' is assigned in your code.")
                     except Exception as e:
