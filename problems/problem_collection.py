@@ -1,24 +1,6 @@
-import streamlit as st
 import pandas as pd
 
-def evaluation_printing(objective, constraints, constraints_met, problem):
-    st.markdown("### Evaluation")
-    st.metric("Objective", f"{objective:.2f}")
 
-    constraints_string = ""
-    for constraint_name, actual in constraints.items():
-        if constraint_name in problem["constraints"]:
-            limit = problem["constraints"][constraint_name]
-            constraints_string += f"{constraint_name}: {actual} (limit: {limit})  |  "
-        else:
-            constraints_string += f"{actual}  |  "
-
-    st.write(constraints_string)
-
-    if constraints_met:
-        st.success("Constraints met!")
-    else:
-        st.warning("Constraints not satisfied.")
 
 def solution_evaluation(problem, user_vars):
     objective_function = 0
