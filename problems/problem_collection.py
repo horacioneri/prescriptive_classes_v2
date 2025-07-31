@@ -7,24 +7,32 @@ def solution_evaluation(problem, user_vars):
     constraints_met = False
     
     if problem["title"] == "The Diet Problem":
-        protein = 0 
-        carbs = 0
-        fat = 0
+        # Initialize totals
+        totals = {"protein": 0, "carbs": 0, "fat": 0, "sodium": 0, "fiber": 0}
 
-        for var_name, attributes in problem["vars"]["vars"].items():
-            quantity = user_vars.get(var_name, 0)
-            objective_function += quantity * attributes["cost"]
-            protein += quantity * attributes["protein"]
-            carbs += quantity * attributes["carbs"]
-            fat += quantity * attributes["fat"]
+        for food, qty in user_input.items():
+            food_data = foods[food]
+            for nutrient in totals:
+                totals[nutrient] += food_data.get(nutrient, 0) * qty
+            objective_function += food_data.get("cost", 0) * qty
+
         
         constraints["protein_min"] = protein
         constraints["carbs_max"] = carbs
+        constraints["carbs_min"] = carbs
         constraints["fat_max"] = fat
+        constraints["sodium_max"] = sodium
+        constraints["fiber_min"] = fiber
+        constraints["food_diversity_min"] = sum(1 for v in user_input.values() if v > 0)
 
         if (protein >= problem["constraints"]["protein_min"] and
             carbs <= problem["constraints"]["carbs_max"] and
-            fat <= problem["constraints"]["fat_max"]):
+            carbs >= problem["constraints"]["carbs_min"] and
+            fat <= problem["constraints"]["fat_max"] and
+            sodium <= problem["constraints"]["sodium_max"] and
+            fiber >= problem["constraints"]["fiber_min"] and
+            constraints["food_diversity_min"] >= problem["constraints"]["food_diversity_min"]
+            ):
             constraints_met = True
     
     elif problem["title"] == "The Food Distribution Problem":
@@ -57,34 +65,51 @@ def solution_evaluation(problem, user_vars):
 def diet_problem():
     STRUCTURED_DATA = {
         "vars": {
-            "title": "foods",
             "vars": {
-                "chicken": {"cost": 3.0, "protein": 30, "carbs": 0, "fat": 4},
-                "rice": {"cost": 0.5, "protein": 4, "carbs": 30, "fat": 0},
-                "broccoli": {"cost": 1.0, "protein": 3, "carbs": 10, "fat": 1}
+            "Chicken Breast": {"cost": 2.5, "protein": 30, "fat": 3, "carbs": 0, "sodium": 70, "fiber": 0},
+            "Tofu": {"cost": 1.5, "protein": 10, "fat": 5, "carbs": 3, "sodium": 15, "fiber": 2},
+            "Rice": {"cost": 0.5, "protein": 3, "fat": 1, "carbs": 40, "sodium": 0, "fiber": 1},
+            "Broccoli": {"cost": 0.7, "protein": 2.5, "fat": 0.5, "carbs": 6, "sodium": 30, "fiber": 2.5},
+            "Cheese": {"cost": 1.2, "protein": 6, "fat": 9, "carbs": 1, "sodium": 180, "fiber": 0},
+            "Avocado": {"cost": 1.3, "protein": 2, "fat": 15, "carbs": 9, "sodium": 10, "fiber": 7},
+            "Oats": {"cost": 0.8, "protein": 5, "fat": 3, "carbs": 27, "sodium": 0, "fiber": 4}
             }
         },
         "constraints": {
             "protein_min": 50,
-            "carbs_max": 70,
-            "fat_max": 10
+            "carbs_min": 130,
+            "carbs_max": 300,
+            "fat_max": 70,
+            "sodium_max": 2000,
+            "fiber_min": 25,
+            "food_diversity_min": 3,
         }
     }
+    # Access the nested data
+    food_data = STRUCTURED_DATA["vars"]["vars"]
+
+    # Convert to DataFrame
+    df = pd.DataFrame.from_dict(food_data, orient='index')
+
+    # Optionally reset index to make 'Country' a column
+    df = df.reset_index().rename(columns={"index": "Food"})
     return {
         "title": "The Diet Problem",
         "description": f"""
-                You need to choose a combination of foods to meet your daily nutritional requirements at the lowest cost.
-
-                You can choose from:
-                - Chicken Breast (${STRUCTURED_DATA["vars"]["vars"]["chicken"]["cost"]}/unit): {STRUCTURED_DATA["vars"]["vars"]["chicken"]["protein"]}g protein, {STRUCTURED_DATA["vars"]["vars"]["chicken"]["fat"]}g fat
-                - Rice (${STRUCTURED_DATA["vars"]["vars"]["rice"]["cost"]}/unit): {STRUCTURED_DATA["vars"]["vars"]["rice"]["protein"]}g protein, {STRUCTURED_DATA["vars"]["vars"]["rice"]["carbs"]}g carbs
-                - Broccoli (${STRUCTURED_DATA["vars"]["vars"]["broccoli"]["cost"]}/unit): {STRUCTURED_DATA["vars"]["vars"]["broccoli"]["protein"]}g protein, {STRUCTURED_DATA["vars"]["vars"]["broccoli"]["carbs"]}g carbs, {STRUCTURED_DATA["vars"]["vars"]["broccoli"]["fat"]}g fat
+                Design a meal plan that meets nutritional needs at the lowest cost. Balance your food choices to avoid too much fat or sodium, and ensure fiber and variety.
+                Find below the options available and their characteristics. 
 
                 Daily requirements:
                 - At least {STRUCTURED_DATA["constraints"]["protein_min"]}g protein
+                - At least {STRUCTURED_DATA["constraints"]["carbs_min"]}g carbs
                 - At most {STRUCTURED_DATA["constraints"]["carbs_max"]}g carbs
                 - At most {STRUCTURED_DATA["constraints"]["fat_max"]}g fat
+                - At most {STRUCTURED_DATA["constraints"]["sodium_max"]}g sodium
+                - At least {STRUCTURED_DATA["constraints"]["fiber_min"]}g carbs
+                - At least {STRUCTURED_DATA["constraints"]["food_diversity_min"]} different types of food
+
             """,
+        "dataframe": df,
         **STRUCTURED_DATA,
         "structured_data": STRUCTURED_DATA,
         "objective": "minimize_cost",
