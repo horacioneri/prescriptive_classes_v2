@@ -1,7 +1,5 @@
 import pandas as pd
 
-
-
 def solution_evaluation(problem, user_vars):
     objective_function = 0
     constraints = {}
