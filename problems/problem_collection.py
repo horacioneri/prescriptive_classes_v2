@@ -108,7 +108,7 @@ def diet_problem():
                 - At most {STRUCTURED_DATA["constraints"]["fat_max"]}g fat
                 - At most {STRUCTURED_DATA["constraints"]["sodium_max"]}g sodium
                 - At least {STRUCTURED_DATA["constraints"]["fiber_min"]}g fiber
-                - At least {STRUCTURED_DATA["constraints"]["food_diversity_min"]} different types of food with at least 1 unit
+                - At least 1 unit of at least {STRUCTURED_DATA["constraints"]["food_diversity_min"]} different types of food
 
             """,
         "dataframe": df,
