@@ -81,9 +81,6 @@ else:
         constraints_met = False
         objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, user_input)
 
-        # Feedback
-        st.markdown("### Evaluation")
-
         evaluation_printing(objective_evaluation, constraints_evaluation, constraints_met, PROBLEM)
 
         # Ask the user what are the key characteristics of the problem
