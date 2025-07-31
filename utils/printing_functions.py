@@ -15,6 +15,7 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
     st.metric("Objective", f"{objective:.2f}")
 
     constraints_string = ""
+    columns = st.columns(4)
     for idx, (constraint_name, actual) in enumerate(constraints.items()):
         if constraint_name in problem["constraints"]:
             limit = problem["constraints"][constraint_name]
