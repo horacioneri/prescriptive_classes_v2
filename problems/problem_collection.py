@@ -10,7 +10,7 @@ def solution_evaluation(problem, user_vars):
         # Initialize totals
         totals = {"protein": 0, "carbs": 0, "fat": 0, "sodium": 0, "fiber": 0}
 
-        for food, qty in user_input.items():
+        for food, qty in user_vars.items():
             food_data = foods[food]
             for nutrient in totals:
                 totals[nutrient] += food_data.get(nutrient, 0) * qty
@@ -23,7 +23,7 @@ def solution_evaluation(problem, user_vars):
         constraints["fat_max"] = fat
         constraints["sodium_max"] = sodium
         constraints["fiber_min"] = fiber
-        constraints["food_diversity_min"] = sum(1 for v in user_input.values() if v > 0)
+        constraints["food_diversity_min"] = sum(1 for v in user_vars.values() if v > 0)
 
         if (protein >= problem["constraints"]["protein_min"] and
             carbs <= problem["constraints"]["carbs_max"] and
