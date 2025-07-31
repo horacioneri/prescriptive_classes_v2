@@ -49,7 +49,8 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
                 showlegend=False
             )
 
-            st.plotly_chart(fig, use_container_width=True)
+            col = columns[idx % 4]
+            col.plotly_chart(fig, use_container_width=True)
         else:
             constraints_string += f"{actual}  |  "
 
