@@ -44,9 +44,7 @@ def evaluation_printing(objective, constraints, constraints_met, problem):
 
             # Add a line showing the limit, if actual > limit (for max) or actual < limit (for min)
             show_limit_line = (
-                (constraint_name.endswith("max") and actual > limit) or
-                (constraint_name.endswith("min") and actual < limit) or
-                (not constraint_name.endswith(("max", "min")) and actual < limit)  # default: Min
+                actual > limit
             )
 
             if show_limit_line:
