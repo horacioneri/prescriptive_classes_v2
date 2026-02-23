@@ -106,10 +106,8 @@ else:
                 # Persist the latest visible order
                 st.session_state["route_order"] = ordered_names
                 applied_order = st.session_state["route_order"]
-                st.write("Debug — applied_order:", applied_order)
                 user_route_ids = build_route_ids({"route": applied_order}, PROBLEM)
                 user_input = {"route": user_route_ids}
-                st.write("Debug — user_route_ids:", user_route_ids)
 
             with cols[1]:
                 if user_route_ids:
