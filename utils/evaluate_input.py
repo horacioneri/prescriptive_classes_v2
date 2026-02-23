@@ -36,7 +36,7 @@ def evaluate_and_generate_code(user_vars, user_constraints, user_objective, prob
             2. Give an overall assessment of the answer.
             3. If you consider all the answers correct, generate Python code using PuLP that defines and solves the problem. Explain the though-process and the code in a user-friendly manner. The optimization model must use Mixed Integer Linear Programming (MILP). Introduce binary variables when needed to ensure linearity. Use big-M or a small-epsilon constraint to link continuous and binary variables.
             4. If you consider all the answers correct, return the code inside a Python triple-quoted string.
-            5. If code is returned, ensure that all variables are defined within the code itself, do not create dependences to outside variables.
+            5. If code is returned, ensure that all variables are defined explicitly within the code itself, do not try to read from problem variables.
             6. If code is returned, it must define a variable named `result` as a dictionary like:
                 result = {{
                     "solution": {{"var1": ..., "var2": ..., "var3": ...}},
