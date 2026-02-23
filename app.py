@@ -99,8 +99,9 @@ else:
 
             if user_route_ids:
                 st.subheader("Map — Your Route")
-                deck = render_route_map(user_route_ids, None, PROBLEM, map_key="user_map")
-                st.pydeck_chart(deck, use_container_width=True)
+                map_key = f"user_map_{hash(tuple(user_route_ids))}"
+                deck = render_route_map(user_route_ids, None, PROBLEM, map_key=map_key)
+                st.pydeck_chart(deck, use_container_width=True, key=map_key)
         
         constraints_evaluation = {}
         objective_evaluation = 0
@@ -148,8 +149,9 @@ else:
                             if PROBLEM["title"] == "The Europe Traveling Route Problem":
                                 auto_route = build_route_ids(result["solution"], PROBLEM)
                                 st.subheader("Map — Your Route vs. Model Route")
-                                deck = render_route_map(user_route_ids, auto_route, PROBLEM, map_key="overlay_map")
-                                st.pydeck_chart(deck, use_container_width=True)
+                                map_key = f"overlay_map_{hash(tuple(user_route_ids))}_{hash(tuple(auto_route))}"
+                                deck = render_route_map(user_route_ids, auto_route, PROBLEM, map_key=map_key)
+                                st.pydeck_chart(deck, use_container_width=True, key=map_key)
                         else:
                             st.error("Optimization result not found. Check if 'result' is assigned in your code.")
                     except Exception as e:
