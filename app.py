@@ -90,18 +90,20 @@ else:
                     key=var_name
                 )
         else:
-            st.caption("Drag the cities to set the visit order (top = first). The tour auto-closes back to the start.")
-            city_names = [c["name"] for c in PROBLEM["vars"]["cities"]]
-            ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
+            cols = st.columns([1, 1])
+            with cols[0]:
+                st.caption("Drag the cities to set the visit order (top = first). The tour auto-closes back to the start.")
+                city_names = [c["name"] for c in PROBLEM["vars"]["cities"]]
+                ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
+                user_route_ids = build_route_ids({"route": ordered_names}, PROBLEM)
+                user_input = {"route": user_route_ids}
 
-            user_route_ids = build_route_ids({"route": ordered_names}, PROBLEM)
-            user_input = {"route": user_route_ids}
-
-            if user_route_ids:
-                st.subheader("Map — Your Route")
-                map_key = f"user_map_{hash(tuple(user_route_ids))}"
-                deck = render_route_map(user_route_ids, None, PROBLEM, map_key=map_key)
-                st.pydeck_chart(deck, use_container_width=True, key=map_key)
+            with cols[1]:
+                if user_route_ids:
+                    st.subheader("Map — Your Route")
+                    map_key = f"user_map_{hash(tuple(user_route_ids))}"
+                    deck = render_route_map(user_route_ids, None, PROBLEM, map_key=map_key)
+                    st.pydeck_chart(deck, use_container_width=True, height=380, key=map_key)
         
         constraints_evaluation = {}
         objective_evaluation = 0
