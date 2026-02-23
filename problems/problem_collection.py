@@ -66,9 +66,6 @@ def solution_evaluation(problem, user_vars):
         distance_matrix = problem["vars"]["distance_matrix_km"]
 
         route = build_route_ids(user_vars, problem)
-        # ensure tour closes back to start for evaluation
-        if route and route[0] != route[-1]:
-            route.append(route[0])
 
         if len(route) < 2:
             constraints.update({
@@ -86,8 +83,9 @@ def solution_evaluation(problem, user_vars):
         unique_cities = len(set(route_core))
         duplicates = len(route_core) - unique_cities
 
-        # Sum distances along the provided path (includes closing leg if supplied)
-        for i in range(len(route) - 1):
+        # Sum distances along the provided path (use provided closure only)
+        stop = len(route) - 1 if closed else len(route) - 1
+        for i in range(stop):
             objective_function += distance_matrix[route[i]][route[i + 1]]
 
         constraints["visited_cities_min"] = unique_cities
