@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from streamlit_sortables import sort_items
 from problems.problem_collection import (
     solution_evaluation,
     diet_problem,
@@ -89,27 +90,11 @@ else:
                     key=var_name
                 )
         else:
-            cities_df = pd.DataFrame(PROBLEM["vars"]["cities"])
-            base_df = cities_df[["name"]].copy()
-            base_df["visit_order"] = list(range(len(base_df)))
+            st.caption("Drag the cities to set the visit order (top = first). The tour auto-closes back to the start.")
+            city_names = [c["name"] for c in PROBLEM["vars"]["cities"]]
+            ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
 
-            edited_df = st.data_editor(
-                base_df,
-                column_config={
-                    "name": st.column_config.TextColumn("City", disabled=True),
-                    "visit_order": st.column_config.NumberColumn(
-                        "Visit order (0 = first)",
-                        step=1,
-                        format="%d",
-                        help="Use integers; tour auto-closes to the first city."
-                    ),
-                },
-                num_rows="fixed",
-                key="route_editor",
-            )
-
-            ordered = edited_df.sort_values("visit_order")
-            user_route_ids = build_route_ids({"route": ordered["name"].tolist()}, PROBLEM)
+            user_route_ids = build_route_ids({"route": ordered_names}, PROBLEM)
             user_input = {"route": user_route_ids}
 
             if user_route_ids:
@@ -117,7 +102,6 @@ else:
                 deck = render_route_map(user_route_ids, None, PROBLEM, map_key="user_map")
                 st.pydeck_chart(deck, use_container_width=True)
         
-
         constraints_evaluation = {}
         objective_evaluation = 0
         constraints_met = False

@@ -1,4 +1,5 @@
 import pandas as pd
+from utils.route_utils import build_route_ids
 
 def solution_evaluation(problem, user_vars):
     objective_function = 0
@@ -63,39 +64,11 @@ def solution_evaluation(problem, user_vars):
     elif problem["title"] == "The Europe Traveling Route Problem":
         cities = problem["vars"]["cities"]
         distance_matrix = problem["vars"]["distance_matrix_km"]
-        city_id_set = {c["id"] for c in cities}
-        name_to_id = {c["name"]: c["id"] for c in cities}
 
-        def build_route_ids(raw_vars):
-            # Accept {"route": [...]}, {"Porto": 1, "Paris": 2, ...}, or list/tuple
-            if isinstance(raw_vars, dict) and "route" in raw_vars:
-                candidate = raw_vars["route"]
-            elif isinstance(raw_vars, dict):
-                ordered = sorted(
-                    [(k, v) for k, v in raw_vars.items() if isinstance(v, (int, float))],
-                    key=lambda kv: kv[1]
-                )
-                candidate = [k for k, _ in ordered]
-            elif isinstance(raw_vars, (list, tuple)):
-                candidate = list(raw_vars)
-            else:
-                candidate = []
-
-            route_ids = []
-            for item in candidate:
-                try:
-                    if isinstance(item, str):
-                        item = item.strip()
-                        route_ids.append(name_to_id.get(item, int(item)))
-                    elif isinstance(item, dict) and "id" in item:
-                        route_ids.append(int(item["id"]))
-                    else:
-                        route_ids.append(int(item))
-                except (ValueError, TypeError):
-                    continue
-            return [cid for cid in route_ids if cid in city_id_set]
-
-        route = build_route_ids(user_vars)
+        route = build_route_ids(user_vars, problem)
+        # ensure tour closes back to start for evaluation
+        if route and route[0] != route[-1]:
+            route.append(route[0])
 
         if len(route) < 2:
             constraints.update({
@@ -296,7 +269,8 @@ def europe_traveling_route():
     return {
         "title": "The Europe Traveling Route Problem",
         "description": f"""
-                An australian man is traveling to Europe and wants to visit all the selected 13 cities in the shortest distance possible.
+                An australian man is traveling to Europe and wants to visit all the selected 13 cities in the shortest distance possible. 
+                The flight from Sydney and the flight back to Sydney are both to/from the same airport.
                 
                 In what ordet should he visit the cities?
             """,
