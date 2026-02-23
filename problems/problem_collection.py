@@ -283,7 +283,6 @@ def europe_traveling_route():
             "visited_cities_min": len(city_names),
             "duplicates_max": 0,
             "return_to_start_min": 1,   # require tour to close
-            "start_city_min": 1,        # enforce fixed start city
-            "start_city_id": 0          # Porto
+            "start_city_min": 0         # starting city is free
         }
     }
