@@ -94,14 +94,17 @@ else:
             with cols[0]:
                 st.caption("Drag the cities to set the visit order (top = first). The tour auto-closes back to the start.")
                 city_names = [c["name"] for c in PROBLEM["vars"]["cities"]]
-                ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
-
-                # keep latest order in session state (auto-updates on drag-drop rerun)
                 if "route_order" not in st.session_state:
                     st.session_state["route_order"] = city_names
-                if ordered_names:
-                    st.session_state["route_order"] = ordered_names
 
+                ordered_names = sort_items(
+                    items=st.session_state["route_order"],
+                    direction="vertical",
+                    key="route_sortable"
+                ) or st.session_state["route_order"]
+
+                # Persist the latest visible order
+                st.session_state["route_order"] = ordered_names
                 applied_order = st.session_state["route_order"]
                 user_route_ids = build_route_ids({"route": applied_order}, PROBLEM)
                 user_input = {"route": user_route_ids}
