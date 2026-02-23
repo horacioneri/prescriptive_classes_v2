@@ -151,7 +151,12 @@ else:
                         if result is not None:
                             st.header('Optimization model assessment', divider='rainbow')
                             for var, qty in result["solution"].items():
-                                st.write(f"**{var.title()}**: {qty:.2f} units")
+                                if isinstance(qty, (int, float)):
+                                    st.write(f"**{var.title()}**: {qty:.2f} units")
+                                elif isinstance(qty, (list, tuple)):
+                                    st.write(f"**{var.title()}**: {', '.join(map(str, qty))}")
+                                else:
+                                    st.write(f"**{var.title()}**: {qty}")
 
                             constraints_evaluation = {}
                             objective_evaluation = 0
