@@ -5,14 +5,19 @@ def build_route_ids(raw_vars, problem):
     cities = problem["vars"]["cities"]
     name_to_id = {c["name"]: c["id"] for c in cities}
     ids = []
-    if isinstance(raw_vars, dict) and "route" in raw_vars:
-        candidate = raw_vars["route"]
-    elif isinstance(raw_vars, dict):
-        ordered = sorted(
-            [(k, v) for k, v in raw_vars.items() if isinstance(v, (int, float))],
-            key=lambda kv: kv[1],
-        )
-        candidate = [k for k, _ in ordered]
+    if isinstance(raw_vars, dict):
+        if "tour_indices" in raw_vars and isinstance(raw_vars["tour_indices"], (list, tuple)) and len(raw_vars["tour_indices"]) > 0:
+            candidate = raw_vars["tour_indices"]
+        elif "tour" in raw_vars and isinstance(raw_vars["tour"], (list, tuple)) and len(raw_vars["tour"]) > 0:
+            candidate = raw_vars["tour"]
+        elif "route" in raw_vars:
+            candidate = raw_vars["route"]
+        else:
+            ordered = sorted(
+                [(k, v) for k, v in raw_vars.items() if isinstance(v, (int, float))],
+                key=lambda kv: kv[1],
+            )
+            candidate = [k for k, _ in ordered]
     elif isinstance(raw_vars, (list, tuple)):
         candidate = list(raw_vars)
     else:
