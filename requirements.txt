@@ -3,3 +3,4 @@ pulp
 plotly
 openai
 pandas
+pydeck>=0.8

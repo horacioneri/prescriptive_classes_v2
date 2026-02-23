@@ -1,5 +1,12 @@
 import streamlit as st
-from problems.problem_collection import solution_evaluation, diet_problem, food_distribution_problem
+import pandas as pd
+from problems.problem_collection import (
+    solution_evaluation,
+    diet_problem,
+    food_distribution_problem,
+    europe_traveling_route,
+)
+from utils.route_utils import build_route_ids, render_route_map
 from utils.evaluate_input import evaluate_and_generate_code
 from utils.printing_functions import evaluation_printing
 from login_page import login
@@ -22,7 +29,11 @@ if not st.session_state["logged_in"]:
 
 else:
     st.sidebar.title("Prescriptive Analytics Tool")
-    st.session_state["selected_page"] = st.sidebar.radio("Choose what to do:", ["Home", "Diet problem", "Food distribution problem"])
+    st.session_state["selected_page"] = st.sidebar.radio(
+        "Choose what to do:",
+        ["Home", "Diet problem", "Food distribution problem", "Europe traveling route"],
+    )
+
     if st.session_state["selected_page"] == "Home":
         # Introduction to the tool
         st.title("Welcome to the Prescriptive Analytics Learning Tool")
@@ -50,6 +61,8 @@ else:
             PROBLEM = diet_problem()
         elif st.session_state["selected_page"] == "Food distribution problem":
             PROBLEM = food_distribution_problem()
+        elif st.session_state["selected_page"] == "Europe traveling route":
+            PROBLEM = europe_traveling_route()
         else:
             PROBLEM = diet_problem()
 
@@ -62,19 +75,48 @@ else:
 
         # Allow user to play with solution for the problem and check results
         st.header('Autonomous solution', divider='rainbow')
-        user_input = {}
-        var_items = list(PROBLEM["vars"]["vars"].items())
-        columns = st.columns(2 if len(PROBLEM["vars"]["vars"]) > 4 else 1)
+        if PROBLEM["title"] != "The Europe Traveling Route Problem":
+            user_input = {}
+            var_items = list(PROBLEM["vars"]["vars"].items())
+            columns = st.columns(2 if len(PROBLEM["vars"]["vars"]) > 4 else 1)
 
+            for idx, (var_name, _) in enumerate(var_items):
+                col = columns[idx % 2] if len(columns) > 1 else st
+                user_input[var_name] = col.number_input(
+                    f"Units of {var_name}",
+                    min_value=0.0,
+                    step=0.1,
+                    key=var_name
+                )
+        else:
+            cities_df = pd.DataFrame(PROBLEM["vars"]["cities"])
+            base_df = cities_df[["name"]].copy()
+            base_df["visit_order"] = list(range(len(base_df)))
 
-        for idx, (var_name, _) in enumerate(var_items):
-            col = columns[idx % 2] if len(columns) > 1 else st
-            user_input[var_name] = col.number_input(
-                f"Units of {var_name}",
-                min_value=0.0,
-                step=0.1,
-                key=var_name
+            edited_df = st.data_editor(
+                base_df,
+                column_config={
+                    "name": st.column_config.TextColumn("City", disabled=True),
+                    "visit_order": st.column_config.NumberColumn(
+                        "Visit order (0 = first)",
+                        step=1,
+                        format="%d",
+                        help="Use integers; tour auto-closes to the first city."
+                    ),
+                },
+                num_rows="fixed",
+                key="route_editor",
             )
+
+            ordered = edited_df.sort_values("visit_order")
+            user_route_ids = build_route_ids({"route": ordered["name"].tolist()}, PROBLEM)
+            user_input = {"route": user_route_ids}
+
+            if user_route_ids:
+                st.subheader("Map — Your Route")
+                deck = render_route_map(user_route_ids, None, PROBLEM, map_key="user_map")
+                st.pydeck_chart(deck, use_container_width=True)
+        
 
         constraints_evaluation = {}
         objective_evaluation = 0
@@ -118,6 +160,12 @@ else:
                             constraints_met = False
                             objective_evaluation, constraints_evaluation, constraints_met = solution_evaluation(PROBLEM, result["solution"])
                             evaluation_printing(objective_evaluation, constraints_evaluation, constraints_met, PROBLEM)
+
+                            if PROBLEM["title"] == "The Europe Traveling Route Problem":
+                                auto_route = build_route_ids(result["solution"], PROBLEM)
+                                st.subheader("Map — Your Route vs. Model Route")
+                                deck = render_route_map(user_route_ids, auto_route, PROBLEM, map_key="overlay_map")
+                                st.pydeck_chart(deck, use_container_width=True)
                         else:
                             st.error("Optimization result not found. Check if 'result' is assigned in your code.")
                     except Exception as e:

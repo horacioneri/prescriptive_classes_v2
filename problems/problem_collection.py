@@ -60,6 +60,79 @@ def solution_evaluation(problem, user_vars):
             not too_much):
             constraints_met = True
 
+    elif problem["title"] == "The Europe Traveling Route Problem":
+        cities = problem["vars"]["cities"]
+        distance_matrix = problem["vars"]["distance_matrix_km"]
+        city_id_set = {c["id"] for c in cities}
+        name_to_id = {c["name"]: c["id"] for c in cities}
+
+        def build_route_ids(raw_vars):
+            # Accept {"route": [...]}, {"Porto": 1, "Paris": 2, ...}, or list/tuple
+            if isinstance(raw_vars, dict) and "route" in raw_vars:
+                candidate = raw_vars["route"]
+            elif isinstance(raw_vars, dict):
+                ordered = sorted(
+                    [(k, v) for k, v in raw_vars.items() if isinstance(v, (int, float))],
+                    key=lambda kv: kv[1]
+                )
+                candidate = [k for k, _ in ordered]
+            elif isinstance(raw_vars, (list, tuple)):
+                candidate = list(raw_vars)
+            else:
+                candidate = []
+
+            route_ids = []
+            for item in candidate:
+                try:
+                    if isinstance(item, str):
+                        item = item.strip()
+                        route_ids.append(name_to_id.get(item, int(item)))
+                    elif isinstance(item, dict) and "id" in item:
+                        route_ids.append(int(item["id"]))
+                    else:
+                        route_ids.append(int(item))
+                except (ValueError, TypeError):
+                    continue
+            return [cid for cid in route_ids if cid in city_id_set]
+
+        route = build_route_ids(user_vars)
+
+        if len(route) < 2:
+            constraints.update({
+                "visited_cities_min": len(set(route)),
+                "duplicates_max": 0,
+                "return_to_start_min": 0,
+                "start_city_min": 0,
+            })
+            constraints_met = False
+            return float("inf"), constraints, constraints_met
+
+        closed = route[0] == route[-1]
+        route_core = route[:-1] if closed else route
+
+        unique_cities = len(set(route_core))
+        duplicates = len(route_core) - unique_cities
+
+        # Sum distances along the provided path (includes closing leg if supplied)
+        for i in range(len(route) - 1):
+            objective_function += distance_matrix[route[i]][route[i + 1]]
+
+        constraints["visited_cities_min"] = unique_cities
+        constraints["duplicates_max"] = duplicates
+        constraints["return_to_start_min"] = 1 if closed else 0
+
+        start_id = problem.get("constraints", {}).get("start_city_id")
+        start_ok = start_id is None or route[0] == start_id
+        constraints["start_city_min"] = 1 if start_ok else 0
+
+        constraints_met = (
+            unique_cities >= problem["constraints"]["visited_cities_min"]
+            and duplicates <= problem["constraints"]["duplicates_max"]
+            and constraints["return_to_start_min"] >= problem["constraints"]["return_to_start_min"]
+            and constraints["start_city_min"] >= problem["constraints"]["start_city_min"]
+        )
+
+
     return objective_function, constraints, constraints_met
 
 
@@ -162,4 +235,81 @@ def food_distribution_problem():
         "structured_data": STRUCTURED_DATA,
         "objective": "maximize_population_served",
         "type": "linear"
+    }
+
+def europe_traveling_route():
+    STRUCTURED_DATA = {
+        "vars": {
+            "title": "Cities",
+            "cities": [
+                {"id": 0, "name": "Porto", "latitude": 41.1579, "longitude": -8.6291},
+                {"id": 1, "name": "London", "latitude": 51.5074, "longitude": -0.1278},
+                {"id": 2, "name": "Paris", "latitude": 48.8566, "longitude": 2.3522},
+                {"id": 3, "name": "Madrid", "latitude": 40.4168, "longitude": -3.7038},
+                {"id": 4, "name": "Berlin", "latitude": 52.5200, "longitude": 13.4050},
+                {"id": 5, "name": "Rome", "latitude": 41.9028, "longitude": 12.4964},
+                {"id": 6, "name": "Amsterdam", "latitude": 52.3676, "longitude": 4.9041},
+                {"id": 7, "name": "Barcelona", "latitude": 41.3851, "longitude": 2.1734},
+                {"id": 8, "name": "Brussels", "latitude": 50.8503, "longitude": 4.3517},
+                {"id": 9, "name": "Vienna", "latitude": 48.2082, "longitude": 16.3738},
+                {"id": 10, "name": "Lisbon", "latitude": 38.7223, "longitude": -9.1393},
+                {"id": 11, "name": "Prague", "latitude": 50.0755, "longitude": 14.4378},
+                {"id": 12, "name": "Munich", "latitude": 48.1351, "longitude": 11.5820},
+                {"id": 13, "name": "Milan", "latitude": 45.4642, "longitude": 9.1900}
+            ],
+            "distance_matrix_km": [
+                [0,1321,1213,423,2085,1756,1612,903,1468,2115,274,2038,1770,1515],
+                [1321,0,344,1263,932,1434,358,1139,321,1235,1586,1038,919,1183],
+                [1213,344,0,1053,877,1105,430,831,264,1033,1456,1034,878,637],
+                [423,1263,1053,0,1869,1364,1481,505,1317,1810,502,1864,1413,1189],
+                [2085,932,877,1869,0,1183,576,1499,651,524,2319,280,504,846],
+                [1756,1434,1105,1364,1183,0,1296,859,1173,764,1776,1185,681,590],
+                [1612,358,430,1481,576,1296,0,1238,173,935,1850,897,636,889],
+                [903,1139,831,505,1499,859,1238,0,1066,1350,1166,1418,1213,772],
+                [1468,321,264,1317,651,1173,173,1066,0,915,1680,867,690,741],
+                [2115,1235,1033,1810,524,764,935,1350,915,0,2358,676,598,780],
+                [274,1586,1456,502,2319,1776,1850,1166,1680,2358,0,2167,1876,1706],
+                [2038,1038,1034,1864,280,1185,897,1418,867,676,2167,0,296,657],
+                [1770,919,878,1413,504,681,636,1213,690,598,1876,296,0,385],
+                [1515,1183,637,1189,846,590,889,772,741,780,1706,657,385,0]
+            ]
+        },
+    }
+    # Access the nested data
+    city_data = STRUCTURED_DATA["vars"]["cities"]
+    distance_matrix = STRUCTURED_DATA["vars"]["distance_matrix_km"]
+
+    # Extract city names in correct order
+    city_names = [c["name"] for c in city_data]
+    
+    # Build base dataframe (city + coordinates)
+    wide_df = pd.DataFrame({
+        "city": city_names,
+        "latitude": [c["latitude"] for c in city_data],
+        "longitude": [c["longitude"] for c in city_data]
+    })
+    
+    # Add distance columns
+    for i, city in enumerate(city_names):
+        wide_df[f"dist_to_{city}"] = [row[i] for row in distance_matrix]
+
+    return {
+        "title": "The Europe Traveling Route Problem",
+        "description": f"""
+                An australian man is traveling to Europe and wants to visit all the selected 13 cities in the shortest distance possible.
+                
+                In what ordet should he visit the cities?
+            """,
+        "dataframe": wide_df,
+        **STRUCTURED_DATA,
+        "structured_data": STRUCTURED_DATA,
+        "objective": "minimize_distance",
+        "type": "linear",
+        "constraints": {
+            "visited_cities_min": len(city_names),
+            "duplicates_max": 0,
+            "return_to_start_min": 1,   # require tour to close
+            "start_city_min": 1,        # enforce fixed start city
+            "start_city_id": 0          # Porto
+        }
     }
