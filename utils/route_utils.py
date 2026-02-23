@@ -21,7 +21,11 @@ def build_route_ids(raw_vars, problem):
     for item in candidate:
         try:
             if isinstance(item, str):
-                ids.append(name_to_id.get(item.strip(), int(item)))
+                item_clean = item.strip()
+                if item_clean in name_to_id:
+                    ids.append(name_to_id[item_clean])
+                else:
+                    ids.append(int(item_clean))
             elif isinstance(item, dict) and "id" in item:
                 ids.append(int(item["id"]))
             else:
