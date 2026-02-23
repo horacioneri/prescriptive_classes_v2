@@ -94,8 +94,18 @@ else:
             with cols[0]:
                 st.caption("Drag the cities to set the visit order (top = first). The tour auto-closes back to the start.")
                 city_names = [c["name"] for c in PROBLEM["vars"]["cities"]]
-                ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
-                user_route_ids = build_route_ids({"route": ordered_names}, PROBLEM)
+                with st.form("route_form"):
+                    ordered_names = sort_items(items=city_names, direction="vertical", key="route_sortable") or city_names
+                    submitted_route = st.form_submit_button("Update route")
+
+                # keep latest applied route in session state
+                if "route_order" not in st.session_state:
+                    st.session_state["route_order"] = city_names
+                if submitted_route:
+                    st.session_state["route_order"] = ordered_names
+
+                applied_order = st.session_state["route_order"]
+                user_route_ids = build_route_ids({"route": applied_order}, PROBLEM)
                 user_input = {"route": user_route_ids}
 
             with cols[1]:
