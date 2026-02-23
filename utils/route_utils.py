@@ -41,13 +41,8 @@ def build_route_ids(raw_vars, problem):
     # Keep only valid city ids
     ids = [i for i in ids if i in name_to_id.values()]
 
-    # If nothing was parsed, fall back to the given city order so evaluation
-    # never returns an empty route.
-    if not ids:
-        ids = [c["id"] for c in problem["vars"]["cities"]]
-
-    # Ensure the tour is closed
-    if ids and ids[0] != ids[-1]:
+    # Ensure the tour is closed (only if we have at least 2 stops)
+    if len(ids) >= 2 and ids[0] != ids[-1]:
         ids.append(ids[0])
 
     return ids
